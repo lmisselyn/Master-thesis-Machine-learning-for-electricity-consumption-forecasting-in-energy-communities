@@ -74,8 +74,9 @@ def linear_predict_model(filename, variables):
 
 
 if __name__ == '__main__':
+    corr_matrice('one_year_10.csv', [])
     variables = ["Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
-                "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation"]
+                "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall"]
     coeff_correl('one_year_10.csv', variables)
     regress_visu('one_year_10.csv', variables)
     linear_predict_model('one_year_10.csv', variables)

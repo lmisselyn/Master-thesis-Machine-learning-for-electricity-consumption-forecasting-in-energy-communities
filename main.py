@@ -2,7 +2,7 @@ import pandas as pd
 import datetime
 
 
-def data_get_csv():
+def get_data_csv_10():
     df = pd.read_csv("../donneeconso10.csv")[["Date", "Heure", "Index(Wh)"]]
     one_year = df.loc[34:35199]
     one_year_df = pd.DataFrame(one_year, columns=df.columns)
@@ -39,9 +39,10 @@ def data_get_csv():
         Day_y.append(date.toordinal() - first_d.toordinal())
         Day.append(date.isoweekday())
         Month.append(date.month)
-        if date.weekday() == 5 or date.weekday() == 6 :
+        if date.weekday() == 5 or date.weekday() == 6:
             Weekend.append(1)
-        else : Weekend.append(0)
+        else:
+            Weekend.append(0)
         Week.append(Day_y[i] // 7)
     one_year_df["Day of year"] = Day_y
     one_year_df["Day"] = Day
@@ -61,9 +62,27 @@ def data_get_csv():
         val = one_year_w_df.at[i, "Irradiation"]
         val = format_irradiation(val)
         one_year_w_df.at[i, "Irradiation"] = float(val)
-
+        rain_val = format_rainfall(one_year_w_df.at[i, "Rainfall"])
+        one_year_w_df.at[i, "Rainfall"] = float(rain_val)
     df_concat = pd.concat([one_year_df, one_year_w_df], axis=1)
     df_concat.to_csv("one_year_10.csv")
+
+
+def get_data_csv_09():
+    df = pd.read_csv('one_year_09.csv')
+    """
+    weather_df = pd.read_csv('../weather_data.csv')
+    one_year_w = weather_df.loc[70175:105214]
+    one_year_w_df = pd.DataFrame(one_year_w, columns=weather_df.columns)
+    df['Irradiation'] = one_year_w_df['Short-wave irradiation,'].values
+    df['Pressure'] = one_year_w_df['Pressure'].values
+    df.reset_index(inplace=True)
+    """
+    for i in range(len(df)):
+        if type(df.at[i, "Rainfall"]) == type('str'):
+            df.at[i, "Rainfall"] = float(format_rainfall(df.at[i, "Rainfall"]))
+    df.to_csv('one_year_09.csv')
+
 
 def format_irradiation(val):
     new_val = val.replace(",", "", 1)
@@ -72,5 +91,14 @@ def format_irradiation(val):
     return new_val
 
 
+def format_rainfall(val):
+    cnt = val.count(",")
+    if cnt > 0:
+        val = val.replace(",", ".", cnt)
+    if val.count(".") > 1:
+        return val.replace(".", "", 2)
+    return val
+
+
 if __name__ == '__main__':
-    data_get_csv()
+    print('ok')
