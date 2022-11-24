@@ -33,22 +33,23 @@ def coeff_correl(variables, filename=False, bool=False, data=False):
             pearson(x=var, y=Consumption)
     """
     df = 0
-    if data is False:
+    if data is not False:
         df = data
     else:
         df = pd.read_csv(filename)
-    correl_df = pd.DataFrame([[0 for i in range(len(variables))]], columns=variables)
+    correl = {}
     for v in variables:
         x = df[v]
         y = df["Consumption(Wh)"]
         pearson = scipy.pearsonr(x, y)[0]
-        correl_df[v][0] = pearson
+        correl[v] = np.round(pearson, 3)
+    correl_df = pd.DataFrame([correl])
     if bool:
-        print(correl_df.to_string())
+        print("Correlation coefficients computed using scipy function\n" + correl_df.to_string())
     return correl_df
 
 
-def coeff_correl_manuel(filename, variables, print):
+def coeff_correl_manuel(filename, variables, bool=False):
     """
     parameters ;
         filename : name of the csv file
@@ -59,7 +60,7 @@ def coeff_correl_manuel(filename, variables, print):
             pearson(x=var, y=Consumption)
     """
     df = pd.read_csv(filename)
-    correl_df = pd.DataFrame([[0 for i in range(len(variables))]], columns=variables)
+    correl = {}
     y = df["Consumption(Wh)"]
     y_mean = y.mean()
     for var in variables:
@@ -73,9 +74,10 @@ def coeff_correl_manuel(filename, variables, print):
             sum_x += np.power((x[i] - x_mean), 2)
             sum_y += np.power((y[i] - y_mean), 2)
         denominator = np.sqrt(sum_x * sum_y)
-        correl_df[var][0] = (numerator / denominator)
-    if print:
-        print(correl_df.to_string())
+        correl[var] = np.round((numerator / denominator), 3)
+    correl_df = pd.DataFrame([correl])
+    if bool:
+        print("Correlation coefficients computed manually\n" + correl_df.to_string())
     return correl_df
 
 
@@ -144,25 +146,43 @@ def make_sets(filename):
 def variable_selection(filename, variables):
     train_df, validation_df, test_df = make_sets(filename)
     selected_var = []
+    best_accuracy = 0
     y = train_df["Consumption(Wh)"]
+    iter = 0
     while len(variables) > 0:
         max_accur = 0
-        best_var
+        best_var = ""
         for v in variables:
             y_validation = validation_df["Consumption(Wh)"]
             model = LinearRegression()
-            model.fit(train_df[v].to_numpy().reshape(-1, 1), y)
-            y_predict = model.predict(validation_df[v].to_numpy().reshape(-1, 1))
-            cvrmse = (np.sqrt(mean_squared_error(y_validation, y_predict)))/y_validation.mean()
+            x = []
+            x_validation = []
+            if len(selected_var) == 0:
+                x = train_df[v].to_numpy().reshape(-1, 1)
+                x_validation = validation_df[v].to_numpy().reshape(-1, 1)
+            else:
+                x = [train_df[var].to_numpy() for var in selected_var]
+                x.append(train_df[v].to_numpy())
+                x_validation = [validation_df[var].to_numpy() for var in selected_var]
+                x_validation.append(validation_df[v].to_numpy())
+                x = np.array(x).transpose()
+                x_validation = np.array(x_validation).transpose()
+            model.fit(x, y)
+            y_predict = model.predict(x_validation)
+            cvrmse = (np.sqrt(mean_squared_error(y_validation, y_predict))) / y_validation.mean()
             MBE = np.mean(y_predict - y_validation)
             R2 = r2_score(y_validation, y_predict)
-            accuracy = 0.4*cvrmse + 0.3*MBE + 0.3*R2
+            accuracy = 0.4 * cvrmse + 0.3 * MBE + 0.3 * R2
             if accuracy > max_accur:
                 max_accur = accuracy
                 best_var = v
+            if accuracy > best_accuracy:
+                best_accuracy = accuracy
         selected_var.append(best_var)
         variables.remove(best_var)
-
+        print("Iteration " + str(iter) + ":" + str(best_accuracy))
+        iter+=1
+    return selected_var, best_accuracy
 
 
 if __name__ == '__main__':
@@ -174,8 +194,10 @@ if __name__ == '__main__':
     coeff_correl('one_year_10.csv', variables)
     regress_visu('one_year_10.csv', variables)
     linear_predict_model('one_year_10.csv', variables)
-    
-    coeff_correl_manuel('one_year_10.csv', variables)
-    coeff_correl('one_year_10.csv', variables)
     """
-    variable_selection('one_year_10.csv', variables)
+    coeff_correl_manuel('one_year_10.csv', variables, True)
+    coeff_correl(filename='one_year_10.csv', variables=variables, bool=True)
+
+    best_var, best_accuracy = variable_selection('one_year_10.csv', variables)
+    print(best_var)
+    print(best_accuracy)
