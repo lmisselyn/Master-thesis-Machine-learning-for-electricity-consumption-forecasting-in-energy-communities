@@ -172,7 +172,8 @@ def variable_selection(filename, variables):
             cvrmse = (np.sqrt(mean_squared_error(y_validation, y_predict))) / y_validation.mean()
             MBE = np.mean(y_predict - y_validation)
             R2 = r2_score(y_validation, y_predict)
-            accuracy = 0.4 * cvrmse + 0.3 * MBE + 0.3 * R2
+            #accuracy = 0.4 * cvrmse + 0.3 * MBE + 0.3 * R2
+            accuracy = 0.6 * (1-cvrmse) + 0.4 * (1-MBE)
             if accuracy > max_accur:
                 max_accur = accuracy
                 best_var = v
@@ -189,15 +190,14 @@ if __name__ == '__main__':
     variables = ["Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
                  "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall"]
     """
-    corr_matrice('one_year_10.csv', [])
-
-    coeff_correl('one_year_10.csv', variables)
+    corr_matrix('one_year_10.csv', [])
+    coeff_correl(filename='one_year_10.csv', variables=variables, bool=True)
     regress_visu('one_year_10.csv', variables)
     linear_predict_model('one_year_10.csv', variables)
     """
-    coeff_correl_manuel('one_year_10.csv', variables, True)
-    coeff_correl(filename='one_year_10.csv', variables=variables, bool=True)
+    #coeff_correl_manuel('one_year_10.csv', variables, True)
+    #coeff_correl(filename='one_year_10.csv', variables=variables, bool=True)
 
-    best_var, best_accuracy = variable_selection('one_year_10.csv', variables)
+    best_var, best_accuracy = variable_selection('one_year_09.csv', variables)
     print(best_var)
     print(best_accuracy)
