@@ -6,6 +6,7 @@ import seaborn as sns
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
+import helper
 
 
 def corr_matrix(filename, col_to_drop):
@@ -122,29 +123,8 @@ def linear_predict_model(filename, variables):
     print('R2 score {}'.format(r2))
 
 
-def make_sets(filename):
-    """
-    parameters ;
-        filename : name of the csv file
-    return ;
-        training set, validation set, test set
-    """
-    df = pd.read_csv(filename)
-    data = [[], [], []]
-    i = 0
-    for j in range(len(df)):
-        data[i].append(df.loc[j])
-        i += 1
-        if i > 2:
-            i = 0
-    train_df = pd.DataFrame(data[0], columns=df.columns)
-    validation_df = pd.DataFrame(data[1], columns=df.columns)
-    test_df = pd.DataFrame(data[2], columns=df.columns)
-    return train_df, validation_df, test_df
-
-
 def variable_selection(filename, variables):
-    train_df, validation_df, test_df = make_sets(filename)
+    train_df, validation_df, test_df = helper.make_sets(filename)
     selected_var = []
     best_accuracy = 0
     y = train_df["Consumption(Wh)"]
@@ -171,18 +151,23 @@ def variable_selection(filename, variables):
             y_predict = model.predict(x_validation)
             cvrmse = (np.sqrt(mean_squared_error(y_validation, y_predict))) / y_validation.mean()
             MBE = np.mean(y_predict - y_validation)
-            R2 = r2_score(y_validation, y_predict)
-            #accuracy = 0.4 * cvrmse + 0.3 * MBE + 0.3 * R2
-            accuracy = 0.6 * (1-cvrmse) + 0.4 * (1-MBE)
+            #R2 = r2_score(y_validation, y_predict)
+            # accuracy = 0.4 * cvrmse + 0.3 * MBE + 0.3 * R2
+            accuracy = 0.6 * (1 - cvrmse) + 0.4 * (1 - MBE)
             if accuracy > max_accur:
                 max_accur = accuracy
                 best_var = v
-            if accuracy > best_accuracy:
-                best_accuracy = accuracy
+
         selected_var.append(best_var)
         variables.remove(best_var)
         print("Iteration " + str(iter) + ":" + str(best_accuracy))
-        iter+=1
+        iter += 1
+        if max_accur > best_accuracy:
+            if best_accuracy != 0 and max_accur-best_accuracy < 0.0001:
+                best_accuracy = max_accur
+                return selected_var, best_accuracy
+            best_accuracy = max_accur
+
     return selected_var, best_accuracy
 
 
@@ -195,9 +180,9 @@ if __name__ == '__main__':
     regress_visu('one_year_10.csv', variables)
     linear_predict_model('one_year_10.csv', variables)
     """
-    #coeff_correl_manuel('one_year_10.csv', variables, True)
-    #coeff_correl(filename='one_year_10.csv', variables=variables, bool=True)
+    # coeff_correl_manuel('one_year_10.csv', variables, True)
+    # coeff_correl(filename='one_year_10.csv', variables=variables, bool=True)
 
-    best_var, best_accuracy = variable_selection('one_year_09.csv', variables)
+    best_var, best_accuracy = variable_selection('one_year_10.csv', variables)
     print(best_var)
     print(best_accuracy)
