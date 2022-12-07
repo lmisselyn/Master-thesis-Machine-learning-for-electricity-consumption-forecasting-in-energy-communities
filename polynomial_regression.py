@@ -22,6 +22,28 @@ def regress_visu(filename, variables):
         ax.legend(facecolor='white')
         plt.show()
 
+
+def final_model(filename, variables):
+    train_df, validation_df, test_df = helper.make_sets(filename)
+    x = np.transpose([train_df[var].to_numpy() for var in variables])
+    y = train_df["Consumption(Wh)"]
+    polynomial_features = PolynomialFeatures(degree=4)
+    poly_x = polynomial_features.fit_transform(x)
+    model = LinearRegression()
+    model.fit(poly_x, y)
+    x_test = np.transpose([test_df[var].to_numpy() for var in variables])
+    x_test_poly = polynomial_features.fit_transform(x_test)
+    y_test = test_df["Consumption(Wh)"]
+    y_predict = model.predict(x_test_poly)
+    cvrmse = (np.sqrt(mean_squared_error(y_test, y_predict))) / y_test.mean()
+    MBE = np.mean(y_predict - y_test)
+    MSE = mean_squared_error(y_test, y_predict)
+    accuracy = 0.6 * (1 - cvrmse) + 0.4 * (1 - MBE)
+    print("accuracy on test set : " + str(accuracy))
+    print("R2 score : " + str(model.score(x_test_poly, y_test)))
+    print("Root Mean Square error : " + str(np.sqrt(MSE)))
+
+
 def variable_selection(filename, variables):
     train_df, validation_df, test_df = helper.make_sets(filename)
     selected_var = []
@@ -51,14 +73,14 @@ def variable_selection(filename, variables):
                 x = np.array(x).transpose()
                 x_validation = np.array(x_validation).transpose()
 
-            polynomial_features = PolynomialFeatures(degree=5, include_bias=False)
+            polynomial_features = PolynomialFeatures(degree=4)
             x_poly = polynomial_features.fit_transform(x)
             model.fit(x_poly, y)
             x_valid_poly = polynomial_features.fit_transform(x_validation)
             y_predict = model.predict(x_valid_poly)
             cvrmse = (np.sqrt(mean_squared_error(y_validation, y_predict))) / y_validation.mean()
             MBE = np.mean(y_predict - y_validation)
-            accuracy = 0.6 * (1-cvrmse) + 0.4 * (1-MBE)
+            accuracy = 0.6 * (1 - cvrmse) + 0.4 * (1 - MBE)
             if accuracy > max_accur:
                 max_accur = accuracy
                 best_var = v
@@ -71,12 +93,14 @@ def variable_selection(filename, variables):
             return selected_var, best_accuracy
         if max_accur > best_accuracy:
             # return if accuracy gain is low
-            if best_accuracy != 0 and max_accur-best_accuracy < 0.0005:
+            if best_accuracy != 0 and max_accur - best_accuracy < 0.0005:
                 best_accuracy = max_accur
 
                 return selected_var, best_accuracy
             best_accuracy = max_accur
     return selected_var, best_accuracy
+
+
 
 
 if __name__ == '__main__':
@@ -86,3 +110,4 @@ if __name__ == '__main__':
     best_var, best_accuracy = variable_selection('one_year_10.csv', variables)
     print(best_var)
     print(best_accuracy)
+    final_model('one_year_10.csv', best_var)

@@ -97,6 +97,15 @@ def regress_visu(filename, variables):
         plt.show()
 
 
+def plot_model(y, y_predict, x):
+    fig, ax = plt.subplot()
+    ax.plot(x, y, label='True values')
+    ax.plot(x, y_predict, label='Predicted values')
+    ax.set_ylabel("Consumption(Wh)")
+    plt.show()
+
+
+
 def linear_predict_model(filename, variables):
     df = pd.read_csv(filename)
     X_train, X_test, Y_train, Y_test = train_test_split(df[variables],
@@ -121,6 +130,23 @@ def linear_predict_model(filename, variables):
     print('--------------------------------------')
     print('Mean squre error {}'.format(rmse))
     print('R2 score {}'.format(r2))
+
+def final_model(filename, variables):
+    train_df, validation_df, test_df = helper.make_sets(filename)
+    x = np.transpose([train_df[var].to_numpy() for var in variables])
+    y = train_df["Consumption(Wh)"]
+    model = LinearRegression()
+    model.fit(x, y)
+    x_test = np.transpose([test_df[var].to_numpy() for var in variables])
+    y_test = test_df["Consumption(Wh)"]
+    y_predict = model.predict(x_test)
+    cvrmse = (np.sqrt(mean_squared_error(y_test, y_predict))) / y_test.mean()
+    MBE = np.mean(y_predict - y_test)
+    MSE = mean_squared_error(y_test, y_predict)
+    accuracy = 0.6 * (1 - cvrmse) + 0.4 * (1 - MBE)
+    print("accuracy on test set : " + str(accuracy))
+    print("R2 score : " + str(model.score(x_test, y_test)))
+    print("Root Mean Square error : " + str(np.sqrt(MSE)))
 
 
 def variable_selection(filename, variables):
@@ -151,8 +177,7 @@ def variable_selection(filename, variables):
             y_predict = model.predict(x_validation)
             cvrmse = (np.sqrt(mean_squared_error(y_validation, y_predict))) / y_validation.mean()
             MBE = np.mean(y_predict - y_validation)
-            #R2 = r2_score(y_validation, y_predict)
-            # accuracy = 0.4 * cvrmse + 0.3 * MBE + 0.3 * R2
+            MSE = mean_squared_error(y_validation, y_predict)
             accuracy = 0.6 * (1 - cvrmse) + 0.4 * (1 - MBE)
             if accuracy > max_accur:
                 max_accur = accuracy
@@ -186,3 +211,4 @@ if __name__ == '__main__':
     best_var, best_accuracy = variable_selection('one_year_10.csv', variables)
     print(best_var)
     print(best_accuracy)
+    final_model('one_year_10.csv', best_var)
