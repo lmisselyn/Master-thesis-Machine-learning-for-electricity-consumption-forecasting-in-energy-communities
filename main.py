@@ -83,6 +83,15 @@ def get_data_csv_09():
             df.at[i, "Rainfall"] = float(format_rainfall(df.at[i, "Rainfall"]))
     df.to_csv('one_year_09.csv')
 
+def change_hour(filename):
+    df = pd.read_csv(filename, index_col=0)
+    new_hour = []
+    for i in range(len(df)):
+        h = df.at[i, "Hour"]
+        new_hour.append(format_hour(h))
+    df["Minutes"] = new_hour
+    df.to_csv(filename)
+
 
 def format_irradiation(val):
     new_val = val.replace(",", "", 1)
@@ -99,6 +108,13 @@ def format_rainfall(val):
         return val.replace(".", "", 2)
     return val
 
+def format_hour(val):
+    minutes = 0
+    minutes += 60 * int(val[:2])
+    minutes += int(val[3:])
+    return minutes
+
 
 if __name__ == '__main__':
-    print('ok')
+
+    change_hour('one_year_09.csv')

@@ -35,24 +35,23 @@ def final_model(filename, variables):
     x_test_poly = polynomial_features.fit_transform(x_test)
     y_test = test_df["Consumption(Wh)"]
     y_predict = model.predict(x_test_poly)
-    cvrmse = (np.sqrt(mean_squared_error(y_test, y_predict))) / y_test.mean()
-    MBE = np.mean(y_predict - y_test)
-    MSE = mean_squared_error(y_test, y_predict)
-    accuracy = 0.6 * (1 - cvrmse) + 0.4 * (1 - MBE)
-    print("accuracy on test set : " + str(accuracy))
-    print("R2 score : " + str(model.score(x_test_poly, y_test)))
-    print("Root Mean Square error : " + str(np.sqrt(MSE)))
 
+    MAE = np.mean(np.abs(y_predict - y_test))
+    RMSE = np.sqrt(mean_squared_error(y_test, y_predict))
+    print("Mean absolute error : " + str(MAE))
+    print("Root Mean square error : " + str(RMSE))
+    df = pd.DataFrame({"true values": y_test[:50], "predicted values": y_predict[:50]})
+    print(df)
 
 def variable_selection(filename, variables):
     train_df, validation_df, test_df = helper.make_sets(filename)
     selected_var = []
-    best_accuracy = 0
+    best_accuracy = -10000
     y = train_df["Consumption(Wh)"]
     iter = 0
 
     while len(variables) > 0:
-        max_accur = 0
+        max_accur = -10000
         best_var = ""
 
         for v in variables:
@@ -80,7 +79,9 @@ def variable_selection(filename, variables):
             y_predict = model.predict(x_valid_poly)
             cvrmse = (np.sqrt(mean_squared_error(y_validation, y_predict))) / y_validation.mean()
             MBE = np.mean(y_predict - y_validation)
-            accuracy = 0.6 * (1 - cvrmse) + 0.4 * (1 - MBE)
+            MAE = np.mean(np.abs(y_predict - y_validation))
+            #accuracy = 0.6 * (1 - cvrmse) + 0.4 * (1 - MBE)
+            accuracy = -MAE
             if accuracy > max_accur:
                 max_accur = accuracy
                 best_var = v
@@ -93,9 +94,8 @@ def variable_selection(filename, variables):
             return selected_var, best_accuracy
         if max_accur > best_accuracy:
             # return if accuracy gain is low
-            if best_accuracy != 0 and max_accur - best_accuracy < 0.0005:
+            if best_accuracy != -10000 and max_accur - best_accuracy < 0.01:
                 best_accuracy = max_accur
-
                 return selected_var, best_accuracy
             best_accuracy = max_accur
     return selected_var, best_accuracy
@@ -105,9 +105,12 @@ def variable_selection(filename, variables):
 
 if __name__ == '__main__':
     variables = ["Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
-                 "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall"]
+                 "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall", "Minutes"]
 
-    best_var, best_accuracy = variable_selection('one_year_10.csv', variables)
+    best_var, best_accuracy = variable_selection('one_year_09.csv', variables)
     print(best_var)
     print(best_accuracy)
-    final_model('one_year_10.csv', best_var)
+
+    # best : ['Minutes', 'Weekend', 'Temperature', 'Irradiation', 'Week', 'Wind speed', 'Humidity', 'Pressure', 'Wind direction', 'Day', 'Month', 'Snow depth', 'Day of year', 'Snowfall']
+    #best = ['Minutes', 'Weekend', 'Temperature', 'Irradiation', 'Week', 'Wind speed', 'Humidity', 'Pressure', 'Wind direction', 'Day']
+    final_model('one_year_09.csv', best_var)

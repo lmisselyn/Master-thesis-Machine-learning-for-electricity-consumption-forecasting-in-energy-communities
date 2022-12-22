@@ -141,22 +141,28 @@ def final_model(filename, variables):
     y_test = test_df["Consumption(Wh)"]
     y_predict = model.predict(x_test)
     cvrmse = (np.sqrt(mean_squared_error(y_test, y_predict))) / y_test.mean()
-    MBE = np.mean(y_predict - y_test)
     MSE = mean_squared_error(y_test, y_predict)
-    accuracy = 0.6 * (1 - cvrmse) + 0.4 * (1 - MBE)
-    print("accuracy on test set : " + str(accuracy))
-    print("R2 score : " + str(model.score(x_test, y_test)))
+    MAE = np.mean(np.abs(y_predict - y_test))
+    print("Mean Absolute Error on test set : " + str(MAE))
     print("Root Mean Square error : " + str(np.sqrt(MSE)))
+    df = pd.DataFrame({"true values" : y_test[:50], "predicted values" : y_predict[:50]})
+    print(df)
+
+def get_y(x, coefs, intercep):
+    y = 0
+    for i in range(len(x)):
+        y += coefs[i]*x[i]
+    return y + intercep
 
 
 def variable_selection(filename, variables):
     train_df, validation_df, test_df = helper.make_sets(filename)
     selected_var = []
-    best_accuracy = 0
+    best_accuracy = -10000
     y = train_df["Consumption(Wh)"]
     iter = 0
     while len(variables) > 0:
-        max_accur = 0
+        max_accur = -10000
         best_var = ""
         for v in variables:
             y_validation = validation_df["Consumption(Wh)"]
@@ -175,20 +181,27 @@ def variable_selection(filename, variables):
                 x_validation = np.array(x_validation).transpose()
             model.fit(x, y)
             y_predict = model.predict(x_validation)
-            cvrmse = (np.sqrt(mean_squared_error(y_validation, y_predict))) / y_validation.mean()
-            MBE = np.mean(y_predict - y_validation)
-            MSE = mean_squared_error(y_validation, y_predict)
-            accuracy = 0.6 * (1 - cvrmse) + 0.4 * (1 - MBE)
+            #cvrmse = (np.sqrt(mean_squared_error(y_validation, y_predict))) / y_validation.mean()
+            #MBE = np.mean(y_predict - y_validation)
+            #MSE = mean_squared_error(y_validation, y_predict)
+            MAE = np.mean(np.abs(y_predict - y_validation))
+            R2 = model.score(x_validation, y_validation)
+            #accuracy = 0.6 * (1 - cvrmse) + 0.4 * (1 - MBE)
+            accuracy = -MAE
             if accuracy > max_accur:
                 max_accur = accuracy
                 best_var = v
 
-        selected_var.append(best_var)
-        variables.remove(best_var)
+        # return if no variable selected
+        if best_var != "":
+            selected_var.append(best_var)
+            variables.remove(best_var)
+        else:
+            return selected_var, best_accuracy
         print("Iteration " + str(iter) + ":" + str(best_accuracy))
         iter += 1
         if max_accur > best_accuracy:
-            if best_accuracy != 0 and max_accur-best_accuracy < 0.0001:
+            if best_accuracy != -10000 and max_accur-best_accuracy < 0.01:
                 best_accuracy = max_accur
                 return selected_var, best_accuracy
             best_accuracy = max_accur
@@ -198,7 +211,7 @@ def variable_selection(filename, variables):
 
 if __name__ == '__main__':
     variables = ["Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
-                 "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall"]
+                 "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall", "Minutes"]
     """
     corr_matrix('one_year_10.csv', [])
     coeff_correl(filename='one_year_10.csv', variables=variables, bool=True)
@@ -208,7 +221,9 @@ if __name__ == '__main__':
     # coeff_correl_manuel('one_year_10.csv', variables, True)
     # coeff_correl(filename='one_year_10.csv', variables=variables, bool=True)
 
-    best_var, best_accuracy = variable_selection('one_year_10.csv', variables)
+    best_var, best_accuracy = variable_selection('one_year_09.csv', variables)
     print(best_var)
     print(best_accuracy)
-    final_model('one_year_10.csv', best_var)
+
+    #best = ['Minutes', 'Weekend', 'Temperature', 'Wind direction', 'Wind speed', 'Day of year', 'Day', 'Snowfall', 'Rainfall']
+    final_model('one_year_09.csv', best_var)
