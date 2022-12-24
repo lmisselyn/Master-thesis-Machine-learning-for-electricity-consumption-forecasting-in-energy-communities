@@ -97,13 +97,13 @@ def regress_visu(filename, variables):
         plt.show()
 
 
-def plot_model(y, y_predict, x):
-    fig, ax = plt.subplot()
-    ax.plot(x, y, label='True values')
-    ax.plot(x, y_predict, label='Predicted values')
+def plot_model(y, y_predict):
+    fig, ax = plt.subplots()
+    ax.plot(y, label='True values')
+    ax.plot(y_predict, label='Predicted values')
     ax.set_ylabel("Consumption(Wh)")
+    ax.legend(facecolor='white')
     plt.show()
-
 
 
 def linear_predict_model(filename, variables):
@@ -119,7 +119,7 @@ def linear_predict_model(filename, variables):
     r2 = r2_score(Y_train, y_train_predict)
     print('Training')
     print('--------------------------------------')
-    print('Mean squre error : {}'.format(rmse))
+    print('Root Mean squre error : {}'.format(rmse))
     print('R2 score : {}'.format(r2))
     print('\n')
     # model evaluation for testing set
@@ -128,7 +128,7 @@ def linear_predict_model(filename, variables):
     r2 = r2_score(Y_test, y_test_predict)
     print('Testing')
     print('--------------------------------------')
-    print('Mean squre error {}'.format(rmse))
+    print('Root Mean squre error {}'.format(rmse))
     print('R2 score {}'.format(r2))
 
 def final_model(filename, variables):
@@ -145,14 +145,9 @@ def final_model(filename, variables):
     MAE = np.mean(np.abs(y_predict - y_test))
     print("Mean Absolute Error on test set : " + str(MAE))
     print("Root Mean Square error : " + str(np.sqrt(MSE)))
-    df = pd.DataFrame({"true values" : y_test[:50], "predicted values" : y_predict[:50]})
-    print(df)
-
-def get_y(x, coefs, intercep):
-    y = 0
-    for i in range(len(x)):
-        y += coefs[i]*x[i]
-    return y + intercep
+    print(y_test.values)
+    print(y_predict)
+    plot_model(y_test.values, y_predict)
 
 
 def variable_selection(filename, variables):
@@ -212,18 +207,10 @@ def variable_selection(filename, variables):
 if __name__ == '__main__':
     variables = ["Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
                  "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall", "Minutes"]
-    """
-    corr_matrix('one_year_10.csv', [])
-    coeff_correl(filename='one_year_10.csv', variables=variables, bool=True)
-    regress_visu('one_year_10.csv', variables)
-    linear_predict_model('one_year_10.csv', variables)
-    """
-    # coeff_correl_manuel('one_year_10.csv', variables, True)
-    # coeff_correl(filename='one_year_10.csv', variables=variables, bool=True)
 
     best_var, best_accuracy = variable_selection('one_year_09.csv', variables)
     print(best_var)
     print(best_accuracy)
 
-    #best = ['Minutes', 'Weekend', 'Temperature', 'Wind direction', 'Wind speed', 'Day of year', 'Day', 'Snowfall', 'Rainfall']
-    final_model('one_year_09.csv', best_var)
+    best = ['Minutes', 'Weekend', 'Temperature', 'Wind direction', 'Wind speed', 'Day of year', 'Day', 'Snowfall', 'Rainfall']
+    final_model('one_year_10.csv', best)

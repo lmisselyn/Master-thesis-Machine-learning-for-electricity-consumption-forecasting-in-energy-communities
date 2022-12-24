@@ -4,7 +4,6 @@ import pandas as pd
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
-
 import helper
 
 
@@ -35,13 +34,11 @@ def final_model(filename, variables):
     x_test_poly = polynomial_features.fit_transform(x_test)
     y_test = test_df["Consumption(Wh)"]
     y_predict = model.predict(x_test_poly)
-
-    MAE = np.mean(np.abs(y_predict - y_test))
-    RMSE = np.sqrt(mean_squared_error(y_test, y_predict))
+    MAE = np.mean(np.abs(y_predict - y_test.values))
+    RMSE = np.sqrt(mean_squared_error(y_test.values, y_predict))
     print("Mean absolute error : " + str(MAE))
     print("Root Mean square error : " + str(RMSE))
-    df = pd.DataFrame({"true values": y_test[:50], "predicted values": y_predict[:50]})
-    print(df)
+    helper.plot_model(y_test.values, y_predict)
 
 def variable_selection(filename, variables):
     train_df, validation_df, test_df = helper.make_sets(filename)
@@ -107,10 +104,10 @@ if __name__ == '__main__':
     variables = ["Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
                  "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall", "Minutes"]
 
-    best_var, best_accuracy = variable_selection('one_year_09.csv', variables)
-    print(best_var)
-    print(best_accuracy)
+    #best_var, best_accuracy = variable_selection('one_year_09.csv', variables)
+    #print(best_var)
+    #print(best_accuracy)
 
-    # best : ['Minutes', 'Weekend', 'Temperature', 'Irradiation', 'Week', 'Wind speed', 'Humidity', 'Pressure', 'Wind direction', 'Day', 'Month', 'Snow depth', 'Day of year', 'Snowfall']
-    #best = ['Minutes', 'Weekend', 'Temperature', 'Irradiation', 'Week', 'Wind speed', 'Humidity', 'Pressure', 'Wind direction', 'Day']
-    final_model('one_year_09.csv', best_var)
+    best10 = ['Minutes', 'Weekend', 'Temperature', 'Irradiation', 'Month', 'Wind direction', 'Wind speed', 'Pressure', 'Day', 'Week', 'Humidity']
+    best09 = ['Minutes', 'Week', 'Temperature', 'Irradiation', 'Pressure', 'Snow depth', 'Month', 'Wind direction', 'Weekend', 'Day', 'Humidity', 'Wind speed']
+    final_model('one_year_09.csv', best09)
