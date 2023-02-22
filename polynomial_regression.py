@@ -34,10 +34,7 @@ def final_model(filename, variables):
     x_test_poly = polynomial_features.fit_transform(x_test)
     y_test = test_df["Consumption(Wh)"]
     y_predict = model.predict(x_test_poly)
-    MAE = np.mean(np.abs(y_predict - y_test.values))
-    RMSE = np.sqrt(mean_squared_error(y_test.values, y_predict))
-    print("Mean absolute error : " + str(MAE))
-    print("Root Mean square error : " + str(RMSE))
+    helper.evaluate_model(y_test.values, y_predict)
     helper.plot_model(y_test.values, y_predict)
 
 def variable_selection(filename, variables):
@@ -104,10 +101,8 @@ if __name__ == '__main__':
     variables = ["Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
                  "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall", "Minutes"]
 
-    #best_var, best_accuracy = variable_selection('one_year_09.csv', variables)
-    #print(best_var)
-    #print(best_accuracy)
-
     best10 = ['Minutes', 'Weekend', 'Temperature', 'Irradiation', 'Month', 'Wind direction', 'Wind speed', 'Pressure', 'Day', 'Week', 'Humidity']
     best09 = ['Minutes', 'Week', 'Temperature', 'Irradiation', 'Pressure', 'Snow depth', 'Month', 'Wind direction', 'Weekend', 'Day', 'Humidity', 'Wind speed']
-    final_model('one_year_09.csv', best09)
+
+    final_model('one_year_10.csv', helper.get_features('one_year_10.csv'))
+    final_model('one_year_09.csv', helper.get_features('one_year_09.csv'))

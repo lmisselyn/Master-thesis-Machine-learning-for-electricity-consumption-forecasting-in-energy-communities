@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import pandas as pd
 import datetime
 
@@ -83,6 +84,7 @@ def get_data_csv_09():
             df.at[i, "Rainfall"] = float(format_rainfall(df.at[i, "Rainfall"]))
     df.to_csv('one_year_09.csv')
 
+
 def change_hour(filename):
     df = pd.read_csv(filename, index_col=0)
     new_hour = []
@@ -108,6 +110,7 @@ def format_rainfall(val):
         return val.replace(".", "", 2)
     return val
 
+
 def format_hour(val):
     minutes = 0
     minutes += 60 * int(val[:2])
@@ -115,6 +118,40 @@ def format_hour(val):
     return minutes
 
 
-if __name__ == '__main__':
+def at_home_feature(filename):
+    df = pd.read_csv(filename)
+    mean_comsumptiom = df["Consumption(Wh)"].mean()
+    print(mean_comsumptiom)
+    at_home = []
+    for i in range(len(df)):
+        c = df.at[i, "Consumption(Wh)"]
+        if c > mean_comsumptiom:
+            at_home.append(1)
+        else:
+            at_home.append(0)
+    df["AtHome"] = at_home
+    df.to_csv("test.csv")
 
-    change_hour('one_year_09.csv')
+
+def day_of_year_feature(filename):
+    df = pd.read_csv(filename)
+    doy = []
+    for i in range(len(df)):
+        date = df.at[i, "Date"]
+        doy.append(day_of_year(date))
+    df["Day of year"] = doy
+    df.to_csv(filename)
+
+
+def day_of_year(date):
+    d = int(date[:2])
+    m = int(date[3:5])
+    y = int(date[6:])
+    if (y % 4 == 0 and y % 100 != 0) or y % 400 == 0:
+        return (0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366)[m - 1] + d
+    else:
+        return (0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365)[m - 1] + d
+
+
+if __name__ == '__main__':
+    print("ok")
