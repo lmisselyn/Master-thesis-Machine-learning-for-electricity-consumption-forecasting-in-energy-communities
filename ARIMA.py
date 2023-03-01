@@ -16,6 +16,8 @@ Test de Dickey-Fuller augmenté (ADF) : La série temporelle est considérée
 comme stationnaire si la valeur p est faible (selon l’hypothèse nulle) 
 et si les valeurs critiques à des intervalles de confiance de 1%, 5%, 10%
  sont aussi proches que possible des statistiques de l’ADF (Augmented Dickey-Fuller)
+ 
+ https://www.kaggle.com/code/chandra03/how-to-use-sarimax-and-arimax/notebook
 '''
 
 def get_stationarity(filename):

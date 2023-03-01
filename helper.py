@@ -2,6 +2,8 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn import metrics
 from sklearn.feature_selection import SelectKBest, f_regression
+from datetime import datetime
+
 def make_sets(filename):
     """
     parameters ;
@@ -22,6 +24,7 @@ def make_sets(filename):
     test_df = pd.DataFrame(data[2], columns=df.columns)
     return train_df, validation_df, test_df
 
+
 def plot_model(y, y_predict):
     fig, ax = plt.subplots()
     ax.plot(y, label='True values')
@@ -29,6 +32,7 @@ def plot_model(y, y_predict):
     ax.set_ylabel("Consumption(Wh)")
     ax.legend(facecolor='white')
     plt.show()
+
 
 def evaluate_model(y, y_pred):
     MAE = metrics.mean_absolute_error(y, y_pred)
@@ -47,9 +51,11 @@ def feature_selection(filename):
     y = df["Consumption(Wh)"]
     selection = SelectKBest(f_regression, k=11)
     selection.fit(x, y)
-    features = ["Minutes", "Day", "Weekend", "Week", "Month", "Day of year", "Temperature", "Humidity", "Pressure", "Wind speed",
+    features = ["Minutes", "Day", "Weekend", "Week", "Month", "Day of year", "Temperature", "Humidity", "Pressure",
+                "Wind speed",
                 "Wind direction", "Rainfall", "Snowfall", "Snow depth", "Irradiation"]
     print(selection.get_feature_names_out())
+
 
 def get_features(filename):
     if filename == "one_year_10.csv":
@@ -59,6 +65,11 @@ def get_features(filename):
         return ['Minutes', 'Week', 'Month', 'Day of year', 'Temperature',
                 'Humidity', 'Wind speed', 'Snowfall', 'Snow depth', 'Irradiation']
 
+
 if __name__ == '__main__':
-    feature_selection("one_year_10.csv")
-    feature_selection('one_year_09.csv')
+    # feature_selection("one_year_10.csv")
+    # feature_selection('one_year_09.csv')
+
+    dt_string = "01/06/2020 01:00"
+    dt_object1 = datetime.strptime(dt_string, "%d/%m/%Y %H:%M")
+    print(dt_object1)

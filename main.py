@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-import datetime
+from datetime import datetime
 
 
 def get_data_csv_10():
@@ -152,6 +152,14 @@ def day_of_year(date):
     else:
         return (0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365)[m - 1] + d
 
+def datetime_format(filename):
+    df = pd.read_csv('one_year_10.csv')
+    new_datetime = []
+    for i in range(len(df)):
+        date = df.at[i, "Date"] + ' ' + df.at[i, "Hour"]
+        new_datetime.append(datetime.strptime(date, "%d/%m/%Y %H:%M"))
+    df["Datetime"] = new_datetime
+    df.to_csv("test.csv")
 
 if __name__ == '__main__':
-    print("ok")
+    datetime_format('one_year_10.csv')

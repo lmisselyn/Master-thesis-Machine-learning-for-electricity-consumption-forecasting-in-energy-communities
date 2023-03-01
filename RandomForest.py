@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.metrics import mean_squared_error, r2_score
 import pandas as pd
 
+
 def random_forest_model_2(filename, variables):
     train_df, validation_df, test_df = helper.make_sets(filename)
     x = np.transpose([train_df[var].to_numpy() for var in variables])
@@ -21,29 +22,54 @@ def random_forest_model_2(filename, variables):
     print("Root Mean square error : " + str(RMSE))
     helper.plot_model(y_test.values, y_predict)
 
-def random_forest_model(filename, variables):
+
+def random_forest_model(filename):
     df = pd.read_csv(filename)
-    x = np.transpose([df[var].to_numpy() for var in variables])
+    x = df[["Minutes", "Day", "Weekend", "Week", "Month, Temperature"]]
     y = df["Consumption(Wh)"]
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+    # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+    size = len(df) - 96
+    x_train = x[:size]
+    y_train = y[:size]
+    x_test = x[size:]
+    y_test = y[size:]
 
-    sc = StandardScaler()
-    scaler = sc.fit(x_train)
-    trainX_scaled = scaler.transform(x_train)
-    testX_scaled = scaler.transform(x_test)
+    #sc = StandardScaler()
+    #scaler = sc.fit(x_train)
+    #x_train_scaled = scaler.transform(x_train)
+    #x_test_scaled = scaler.transform(x_test)
 
-    model = RandomForestRegressor(max_features='auto', bootstrap=True, criterion='absolute_error')
-    model.fit(trainX_scaled, y_train)
+    model = RandomForestRegressor(
+        n_estimators=100,
+        criterion='absolute_error',
+        max_depth=150,
+        min_samples_split=2,
+        min_samples_leaf=1,
+        min_weight_fraction_leaf=0.0,
+        max_features='auto',
+        max_leaf_nodes=None,
+        min_impurity_decrease=0.0,
+        bootstrap=True,
+        oob_score=False,
+        n_jobs=2,
+        random_state=5,
+        verbose=2,
+        warm_start=False,
+        ccp_alpha=0.0,
+        max_samples=None)
 
-    y_predict = model.predict(testX_scaled)
+    model.fit(x_train, y_train)
+
+    y_predict = model.predict(x_test)
 
     helper.evaluate_model(y_test.values, y_predict)
     helper.plot_model(y_test.values, y_predict)
 
 
 if __name__ == '__main__':
-
-    best10 = ['Minutes', 'Weekend', 'Temperature', 'Wind direction', 'Wind speed', 'Day of year', 'Day', 'Snowfall', 'Rainfall']
-    best09 = ['Minutes', 'Week', 'Temperature', 'Irradiation', 'Pressure', 'Snow depth', 'Month', 'Wind direction', 'Weekend', 'Day', 'Humidity', 'Wind speed']
-    random_forest_model('one_year_10.csv', helper.get_features('one_year_10.csv'))
-    random_forest_model('one_year_09.csv', helper.get_features('one_year_09.csv'))
+    best10 = ['Minutes', 'Weekend', 'Temperature', 'Wind direction', 'Wind speed', 'Day of year', 'Day', 'Snowfall',
+              'Rainfall']
+    best09 = ['Minutes', 'Week', 'Temperature', 'Irradiation', 'Pressure', 'Snow depth', 'Month', 'Wind direction',
+              'Weekend', 'Day', 'Humidity', 'Wind speed']
+    random_forest_model('one_year_10.csv')
+    random_forest_model('one_year_09.csv')

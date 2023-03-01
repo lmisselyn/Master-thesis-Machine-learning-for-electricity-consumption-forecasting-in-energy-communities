@@ -23,17 +23,24 @@ def regress_visu(filename, variables):
 
 
 def final_model(filename, variables):
-    train_df, validation_df, test_df = helper.make_sets(filename)
-    x = np.transpose([train_df[var].to_numpy() for var in variables])
-    y = train_df["Consumption(Wh)"]
+    df = pd.read_csv(filename)
+    # x = np.transpose([df[var].to_numpy() for var in variables])
+    x = df[["Minutes", "Day", "Weekend", "Week", "Month"]]
+    y = df["Consumption(Wh)"]
+    size = len(df) - 96
+    x_train = x[:size]
+    y_train = y[:size]
+    x_test = x[size:]
+    y_test = y[size:]
     polynomial_features = PolynomialFeatures(degree=4)
-    poly_x = polynomial_features.fit_transform(x)
+    poly_x = polynomial_features.fit_transform(x_train)
     model = LinearRegression()
-    model.fit(poly_x, y)
-    x_test = np.transpose([test_df[var].to_numpy() for var in variables])
+    model.fit(poly_x, y_train)
+    #x_test = np.transpose([test_df[var].to_numpy() for var in variables])
     x_test_poly = polynomial_features.fit_transform(x_test)
-    y_test = test_df["Consumption(Wh)"]
+    #y_test = test_df["Consumption(Wh)"]
     y_predict = model.predict(x_test_poly)
+
     helper.evaluate_model(y_test.values, y_predict)
     helper.plot_model(y_test.values, y_predict)
 
@@ -66,7 +73,7 @@ def variable_selection(filename, variables):
                 x = np.array(x).transpose()
                 x_validation = np.array(x_validation).transpose()
 
-            polynomial_features = PolynomialFeatures(degree=4)
+            polynomial_features = PolynomialFeatures(degree=10)
             x_poly = polynomial_features.fit_transform(x)
             model.fit(x_poly, y)
             x_valid_poly = polynomial_features.fit_transform(x_validation)

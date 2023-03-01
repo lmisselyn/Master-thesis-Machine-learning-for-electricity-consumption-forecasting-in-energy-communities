@@ -10,21 +10,48 @@ from sklearn import metrics
 
 def mlp_model(filename, variables):
     df = pd.read_csv(filename)
-    x = np.transpose([df[var].to_numpy() for var in variables])
+    #x = np.transpose([df[var].to_numpy() for var in variables])
+    x = df[["Minutes", "Day", "Weekend", "Week", "Month", "Temperature"]]
     y = df["Consumption(Wh)"]
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+    size = len(df)-96
+    x_train = x[:size]
+    y_train = y[:size]
+    x_test = x[size:]
+    y_test = y[size:]
 
     sc = StandardScaler()
-    scaler = sc.fit(x_train)
-    trainX_scaled = scaler.transform(x_train)
-    testX_scaled = scaler.transform(x_test)
+    scaled_x = sc.fit(x_train)
+    x_train_scaled = sc.fit(x_train)
+    x_test_scaled = sc.fit(x_test)
 
-    model = MLPRegressor(hidden_layer_sizes=(150, 100, 50),
-                           max_iter=300, activation='relu',
-                           solver='adam')
-    model.fit(trainX_scaled, y_train)
+    model = MLPRegressor(
+        hidden_layer_sizes=(250, 500,),
+        activation='relu',
+        solver='adam',
+        alpha=0.0005,
+        batch_size='auto',
+        learning_rate='adaptive',
+        learning_rate_init=0.007,
+        power_t=0.5,
+        max_iter=500,
+        shuffle=True,
+        random_state=None,
+        tol=0.00005,
+        verbose=1,
+        warm_start=False,
+        momentum=0.9,
+        nesterovs_momentum=True,
+        early_stopping=False,
+        validation_fraction=0.1,
+        beta_1=0.9,
+        beta_2=0.999,
+        epsilon=1e-08,
+        n_iter_no_change=10,
+        max_fun=15000)
 
-    y_predict = model.predict(testX_scaled)
+    model.fit(x_train, y_train)
+
+    y_predict = model.predict(x_test)
 
     helper.evaluate_model(y_test.values, y_predict)
     helper.plot_model(y_test.values, y_predict)
