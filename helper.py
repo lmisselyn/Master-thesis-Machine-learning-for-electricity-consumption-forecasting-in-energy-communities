@@ -5,6 +5,8 @@ from sklearn import metrics
 from sklearn.feature_selection import SelectKBest, f_regression
 from datetime import datetime
 
+import RandomForest
+
 
 def make_sets(filename):
     """
@@ -74,22 +76,23 @@ def one_week_test(filename, model, variables):
     x = np.transpose([df[var].to_numpy() for var in variables])
     y = df["Consumption(Wh)"]
 
-
+    results = {"MAE": [], "MSE": [], "RMSE": [], "MAPE": []}
     for i in range(1, 8):
         index = len(x) - i * 96
         x_train = x[:index]
         y_train = y[:index]
         x_test = x[index:index + 96]
         y_test = y[index:index + 96]
+        print(df['Datetime'][index])
 
-        model(set=[x_train, y_train, x_test, y_test])
+        acc = model(set=[x_train, y_train, x_test, y_test])
+        print(acc)
+        for k in acc.keys():
+            results[k].append(acc[k])
+    for k in results.keys():
+        print(np.mean(results[k]))
 
 
 if __name__ == '__main__':
-    # feature_selection("one_year_10.csv")
-    # feature_selection('one_year_09.csv')
 
-    dt_string = "01/06/2020 01:00"
-    dt_object1 = datetime.strptime(dt_string, "%d/%m/%Y %H:%M")
-    print(dt_object1)
-    one_week_test('one_year_10.csv, ')
+    #one_week_test('one_year_10.csv', RandomForest.random_forest_model,  )
