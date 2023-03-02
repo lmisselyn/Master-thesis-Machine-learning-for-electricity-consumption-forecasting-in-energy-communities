@@ -1,8 +1,10 @@
+import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn import metrics
 from sklearn.feature_selection import SelectKBest, f_regression
 from datetime import datetime
+
 
 def make_sets(filename):
     """
@@ -43,6 +45,7 @@ def evaluate_model(y, y_pred):
     print("Mean squared error : " + str(MSE))
     print("Root Mean square error : " + str(RMSE))
     print("Mean absolute percentage error : " + str(MAPE))
+    return {"MAE": MAE, "MSE": MSE, "RMSE": RMSE, "MAPE": MAPE}
 
 
 def feature_selection(filename):
@@ -66,6 +69,22 @@ def get_features(filename):
                 'Humidity', 'Wind speed', 'Snowfall', 'Snow depth', 'Irradiation']
 
 
+def one_week_test(filename, model, variables):
+    df = pd.read_csv(filename)
+    x = np.transpose([df[var].to_numpy() for var in variables])
+    y = df["Consumption(Wh)"]
+
+
+    for i in range(1, 8):
+        index = len(x) - i * 96
+        x_train = x[:index]
+        y_train = y[:index]
+        x_test = x[index:index + 96]
+        y_test = y[index:index + 96]
+
+        model(set=[x_train, y_train, x_test, y_test])
+
+
 if __name__ == '__main__':
     # feature_selection("one_year_10.csv")
     # feature_selection('one_year_09.csv')
@@ -73,3 +92,4 @@ if __name__ == '__main__':
     dt_string = "01/06/2020 01:00"
     dt_object1 = datetime.strptime(dt_string, "%d/%m/%Y %H:%M")
     print(dt_object1)
+    one_week_test('one_year_10.csv, ')

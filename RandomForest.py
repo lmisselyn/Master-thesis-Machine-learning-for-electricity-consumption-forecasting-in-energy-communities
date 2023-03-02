@@ -23,21 +23,30 @@ def random_forest_model_2(filename, variables):
     helper.plot_model(y_test.values, y_predict)
 
 
-def random_forest_model(filename):
-    df = pd.read_csv(filename)
-    x = df[["Minutes", "Day", "Weekend", "Week", "Month, Temperature"]]
-    y = df["Consumption(Wh)"]
-    # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
-    size = len(df) - 96
-    x_train = x[:size]
-    y_train = y[:size]
-    x_test = x[size:]
-    y_test = y[size:]
+def random_forest_model(filename=None, set=[], scale=False ):
 
-    #sc = StandardScaler()
-    #scaler = sc.fit(x_train)
-    #x_train_scaled = scaler.transform(x_train)
-    #x_test_scaled = scaler.transform(x_test)
+    if len(set) != 0:
+        x_train = set[0]
+        y_train = set[1]
+        x_test = set[2]
+        y_test = set[3]
+
+    else:
+        df = pd.read_csv(filename)
+        x = df[["Minutes", "Day", "Weekend", "Week", "Month, Temperature"]]
+        y = df["Consumption(Wh)"]
+        # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+        size = len(df) - 96
+        x_train = x[:size]
+        y_train = y[:size]
+        x_test = x[size:]
+        y_test = y[size:]
+
+    if scale:
+        sc = StandardScaler()
+        scaler = sc.fit(x_train)
+        x_train_scaled = scaler.transform(x_train)
+        x_test_scaled = scaler.transform(x_test)
 
     model = RandomForestRegressor(
         n_estimators=100,
@@ -59,11 +68,11 @@ def random_forest_model(filename):
         max_samples=None)
 
     model.fit(x_train, y_train)
-
     y_predict = model.predict(x_test)
 
-    helper.evaluate_model(y_test.values, y_predict)
     helper.plot_model(y_test.values, y_predict)
+    return helper.evaluate_model(y_test.values, y_predict)
+
 
 
 if __name__ == '__main__':
@@ -71,5 +80,5 @@ if __name__ == '__main__':
               'Rainfall']
     best09 = ['Minutes', 'Week', 'Temperature', 'Irradiation', 'Pressure', 'Snow depth', 'Month', 'Wind direction',
               'Weekend', 'Day', 'Humidity', 'Wind speed']
-    random_forest_model('one_year_10.csv')
-    random_forest_model('one_year_09.csv')
+    #random_forest_model('one_year_10.csv')
+    #random_forest_model('one_year_09.csv')
