@@ -23,7 +23,7 @@ def random_forest_model_2(filename, variables):
     helper.plot_model(y_test.values, y_predict)
 
 
-def random_forest_model(filename=None, set=[], scale=False ):
+def random_forest_model(filename=None, set=[], scale=False):
     """
     train a random forest model with the dataset 'filename'
     - set (optional) : provide train and test sets
@@ -74,11 +74,10 @@ def random_forest_model(filename=None, set=[], scale=False ):
     model.fit(x_train, y_train)
     y_predict = model.predict(x_test)
     aggregated = helper.aggregate(y_test.values, y_predict)
-    #helper.plot_model(y_test.values, y_predict)
-    #helper.plot_model(aggregated[0], aggregated[1], 'R_F')
-    #return helper.evaluate_model(y_test.values, y_predict)
+    # helper.plot_model(y_test.values, y_predict)
+    # helper.plot_model(aggregated[0], aggregated[1], 'R_F')
+    # return helper.evaluate_model(y_test.values, y_predict)
     return helper.evaluate_model(aggregated[0], aggregated[1])
-
 
 
 if __name__ == '__main__':
@@ -86,5 +85,6 @@ if __name__ == '__main__':
               'Rainfall']
     best09 = ['Minutes', 'Week', 'Temperature', 'Irradiation', 'Pressure', 'Snow depth', 'Month', 'Wind direction',
               'Weekend', 'Day', 'Humidity', 'Wind speed']
-    print(random_forest_model('one_year_10.csv'))
-    #random_forest_model('one_year_09.csv')
+    res = (random_forest_model('one_year_10.csv'))
+    # random_forest_model('one_year_09.csv')
+

@@ -145,5 +145,7 @@ def select_best_features(filename, model, variables, selected=[], accuracy=[]):
 
 
 if __name__ == '__main__':
-    one_week_test('test.csv', RandomForest.random_forest_model, ['Minutes', 'Day', 'Week', 'Weekend',
+    res = one_week_test('test.csv', RandomForest.random_forest_model, ['Minutes', 'Day', 'Week', 'Weekend',
                                                                  'Temperature', 'Humidity', 'Irradiation'])
+    with open('one_week_10_RF.txt', 'w') as f:
+        f.write(res)
