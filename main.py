@@ -10,4 +10,3 @@ if __name__ == '__main__':
     with open('Select_best_var_RF_10.txt', 'w') as f:
         for i in range(len(selected)):
             f.write(selected[i] + ': ' + str(acc[i]) + '\n')
-    

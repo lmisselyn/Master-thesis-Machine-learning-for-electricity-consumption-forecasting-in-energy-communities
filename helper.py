@@ -125,6 +125,9 @@ def select_best_features(filename, model, variables, selected=[], accuracy=[]):
         current = selected.copy()
         current.append(v)
         measures = one_week_test(filename, model, current)
+        if len(current) == 1 and measures['MAPE'] > 0.6:
+            variables.remove(v)
+            continue
         if measures['MAPE'] < min_MAPE:
             min_MAPE = measures['MAPE']
             best_var = v

@@ -53,7 +53,7 @@ def random_forest_model(filename=None, set=[], scale=False ):
         x_test = scaler.transform(x_test)
 
     model = RandomForestRegressor(
-        n_estimators=100,
+        n_estimators=30,
         criterion='absolute_error',
         max_depth=150,
         min_samples_split=2,
