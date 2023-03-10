@@ -24,7 +24,11 @@ def random_forest_model_2(filename, variables):
 
 
 def random_forest_model(filename=None, set=[], scale=False ):
-
+    """
+    train a random forest model with the dataset 'filename'
+    - set (optional) : provide train and test sets
+    - scale (boolean) : scale data if true
+    """
     if len(set) != 0:
         x_train = set[0]
         y_train = set[1]
@@ -33,7 +37,7 @@ def random_forest_model(filename=None, set=[], scale=False ):
 
     else:
         df = pd.read_csv(filename)
-        x = df[["Minutes", "Day", "Weekend", "Week", "Month, Temperature"]]
+        x = df[["Minutes", "Day", "Weekend", "Week", "Month", "Temperature"]]
         y = df["Consumption(Wh)"]
         # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
         size = len(df) - 96
@@ -45,8 +49,8 @@ def random_forest_model(filename=None, set=[], scale=False ):
     if scale:
         sc = StandardScaler()
         scaler = sc.fit(x_train)
-        x_train_scaled = scaler.transform(x_train)
-        x_test_scaled = scaler.transform(x_test)
+        x_train = scaler.transform(x_train)
+        x_test = scaler.transform(x_test)
 
     model = RandomForestRegressor(
         n_estimators=100,
@@ -69,9 +73,11 @@ def random_forest_model(filename=None, set=[], scale=False ):
 
     model.fit(x_train, y_train)
     y_predict = model.predict(x_test)
-
-    helper.plot_model(y_test.values, y_predict)
-    return helper.evaluate_model(y_test.values, y_predict)
+    aggregated = helper.aggregate(y_test.values, y_predict)
+    #helper.plot_model(y_test.values, y_predict)
+    #helper.plot_model(aggregated[0], aggregated[1], 'R_F')
+    #return helper.evaluate_model(y_test.values, y_predict)
+    return helper.evaluate_model(aggregated[0], aggregated[1])
 
 
 
@@ -80,5 +86,5 @@ if __name__ == '__main__':
               'Rainfall']
     best09 = ['Minutes', 'Week', 'Temperature', 'Irradiation', 'Pressure', 'Snow depth', 'Month', 'Wind direction',
               'Weekend', 'Day', 'Humidity', 'Wind speed']
-    #random_forest_model('one_year_10.csv')
+    print(random_forest_model('one_year_10.csv'))
     #random_forest_model('one_year_09.csv')

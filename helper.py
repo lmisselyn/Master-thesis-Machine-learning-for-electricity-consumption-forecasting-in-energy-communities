@@ -29,12 +29,14 @@ def make_sets(filename):
     return train_df, validation_df, test_df
 
 
-def plot_model(y, y_predict):
+def plot_model(y, y_predict, model_name):
     fig, ax = plt.subplots()
     ax.plot(y, label='True values')
     ax.plot(y_predict, label='Predicted values')
     ax.set_ylabel("Consumption(Wh)")
     ax.legend(facecolor='white')
+    fig1 = plt.gcf()
+    fig1.savefig('plots/' + model_name)
     plt.show()
 
 
@@ -50,7 +52,7 @@ def evaluate_model(y, y_pred):
     return {"MAE": MAE, "MSE": MSE, "RMSE": RMSE, "MAPE": MAPE}
 
 
-def feature_selection(filename):
+def select_k_best(filename):
     df = pd.read_csv(filename)
     x = df.drop(columns=["Date", "Hour", "Index(Wh)", "Consumption(Wh)"])
     y = df["Consumption(Wh)"]
@@ -72,6 +74,10 @@ def get_features(filename):
 
 
 def one_week_test(filename, model, variables):
+    """
+    Take a filename, a model and some variables
+    Return the mean of accuracy measures over the last week of the dataset
+    """
     df = pd.read_csv(filename)
     x = np.transpose([df[var].to_numpy() for var in variables])
     y = df["Consumption(Wh)"]
@@ -90,9 +96,51 @@ def one_week_test(filename, model, variables):
         for k in acc.keys():
             results[k].append(acc[k])
     for k in results.keys():
-        print(np.mean(results[k]))
+        results[k] = np.mean(results[k])
+        print(results[k])
+    return results
+
+
+def aggregate(y, y_predict):
+    aggregated_y = []
+    aggregated_y_pred = []
+    index = 0
+    while index <= len(y) - 4:
+        aggregated_y.append(sum(y[index:index + 4]) / 4)
+        aggregated_y_pred.append(sum(y_predict[index:index + 4]) / 4)
+        index += 4
+    return [aggregated_y, aggregated_y_pred]
+
+
+def select_best_features(filename, model, variables, selected=[], accuracy=[]):
+    min_MAPE = 10000
+    best_acc = {}
+    best_var = ''
+
+    # If no more variables then return
+    if len(variables) == 0:
+        return selected, accuracy
+
+    for v in variables:
+        current = selected.copy()
+        current.append(v)
+        measures = one_week_test(filename, model, current)
+        if measures['MAPE'] < min_MAPE:
+            min_MAPE = measures['MAPE']
+            best_var = v
+            best_acc = measures
+
+    # If no improvement then return
+    if len(accuracy) != 0 and min_MAPE > accuracy[-1]['MAPE']:
+        return selected, accuracy
+
+    variables.remove(best_var)
+    selected.append(best_var)
+    accuracy.append(best_acc)
+    select_best_features(filename, model, variables,
+                         selected=selected, accuracy=accuracy)
 
 
 if __name__ == '__main__':
-
-    #one_week_test('one_year_10.csv', RandomForest.random_forest_model,  )
+    one_week_test('test.csv', RandomForest.random_forest_model, ['Minutes', 'Day', 'Week', 'Weekend',
+                                                                 'Temperature', 'Humidity', 'Irradiation'])
