@@ -8,21 +8,33 @@ import helper
 from sklearn import metrics
 
 
-def mlp_model(filename, variables):
-    df = pd.read_csv(filename)
-    #x = np.transpose([df[var].to_numpy() for var in variables])
-    x = df[["Minutes", "Day", "Weekend", "Week", "Month", "Temperature"]]
-    y = df["Consumption(Wh)"]
-    size = len(df)-96
-    x_train = x[:size]
-    y_train = y[:size]
-    x_test = x[size:]
-    y_test = y[size:]
+def mlp_model(filename=None, set=[], scale=False):
+    """
+    train a random multi layer perceptron model with the dataset 'filename'
+    - set (optional) : provide train and test sets
+    - scale (boolean) : scale data if true
+    """
+    if len(set) != 0:
+        x_train = set[0]
+        y_train = set[1]
+        x_test = set[2]
+        y_test = set[3]
 
-    sc = StandardScaler()
-    scaled_x = sc.fit(x_train)
-    x_train_scaled = sc.fit(x_train)
-    x_test_scaled = sc.fit(x_test)
+    else:
+        df = pd.read_csv(filename)
+        x = df[["Minutes", "Day", "Weekend", "Week", "Month", "Temperature"]]
+        y = df["Consumption(Wh)"]
+        size = len(df) - 96
+        x_train = x[:size]
+        y_train = y[:size]
+        x_test = x[size:]
+        y_test = y[size:]
+
+    if scale:
+        sc = StandardScaler()
+        scaler = sc.fit(x_train)
+        x_train = scaler.transform(x_train)
+        x_test = scaler.transform(x_test)
 
     model = MLPRegressor(
         hidden_layer_sizes=(250, 500,),
@@ -37,7 +49,7 @@ def mlp_model(filename, variables):
         shuffle=True,
         random_state=None,
         tol=0.00005,
-        verbose=1,
+        verbose=0,
         warm_start=False,
         momentum=0.9,
         nesterovs_momentum=True,
@@ -50,11 +62,12 @@ def mlp_model(filename, variables):
         max_fun=15000)
 
     model.fit(x_train, y_train)
-
     y_predict = model.predict(x_test)
-
-    helper.evaluate_model(y_test.values, y_predict)
-    helper.plot_model(y_test.values, y_predict)
+    aggregated = helper.aggregate(y_test.values, y_predict)
+    # helper.plot_model(y_test.values, y_predict)
+    # helper.plot_model(aggregated[0], aggregated[1], 'R_F')
+    # return helper.evaluate_model(y_test.values, y_predict)
+    return helper.evaluate_model(aggregated[0], aggregated[1])
 
 if __name__ == '__main__':
     #best10 = ['Minutes', 'Weekend', 'Temperature', 'Wind direction', 'Wind speed', 'Day of year', 'Day', 'Snowfall', 'Rainfall']

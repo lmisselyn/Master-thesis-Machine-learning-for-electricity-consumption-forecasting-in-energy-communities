@@ -135,8 +135,7 @@ def select_best_features(filename, model, variables, selected=[], accuracy=[]):
 
     # If no improvement then return
     if len(accuracy) != 0 and min_MAPE > accuracy[-1]['MAPE']:
-        if min_MAPE-accuracy[-1]['MAPE'] > 0.05:
-            return [selected, accuracy]
+        return [selected, accuracy]
 
     variables.remove(best_var)
     selected.append(best_var)
