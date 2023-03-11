@@ -90,10 +90,8 @@ def one_week_test(filename, model, variables):
         y_train = y[:index]
         x_test = x[index:index + 96]
         y_test = y[index:index + 96]
-        print(df['Datetime'][index])
-
         acc = model(set=[x_train, y_train, x_test, y_test])
-        print(acc)
+
         for k in acc.keys():
             results[k].append(acc[k])
     for k in results.keys():
@@ -126,7 +124,7 @@ def select_best_features(filename, model, variables, selected=[], accuracy=[]):
         current.append(v)
         print("OneWeek : " + str(current) + '\n')
         measures = one_week_test(filename, model, current)
-        print(measures)
+        print("Result for the week : " + str(measures))
         if len(current) == 1 and measures['MAPE'] > 0.6:
             variables.remove(v)
             continue

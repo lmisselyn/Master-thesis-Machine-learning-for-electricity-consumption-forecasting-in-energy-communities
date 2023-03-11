@@ -77,7 +77,7 @@ def random_forest_model(filename=None, set=[], scale=False):
     # helper.plot_model(y_test.values, y_predict)
     # helper.plot_model(aggregated[0], aggregated[1], 'R_F')
     # return helper.evaluate_model(y_test.values, y_predict)
-    return helper.evaluate_model(aggregated[0], aggregated[1], print=False)
+    return helper.evaluate_model(aggregated[0], aggregated[1])
 
 
 if __name__ == '__main__':
