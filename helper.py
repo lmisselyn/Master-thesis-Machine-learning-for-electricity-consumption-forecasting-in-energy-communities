@@ -40,15 +40,16 @@ def plot_model(y, y_predict, model_name):
     plt.show()
 
 
-def evaluate_model(y, y_pred):
+def evaluate_model(y, y_pred, show=False):
     MAE = metrics.mean_absolute_error(y, y_pred)
     MSE = metrics.mean_squared_error(y, y_pred)
     RMSE = metrics.mean_squared_error(y, y_pred, squared=False)
     MAPE = metrics.mean_absolute_percentage_error(y, y_pred)
-    print("Mean absolute error : " + str(MAE))
-    print("Mean squared error : " + str(MSE))
-    print("Root Mean square error : " + str(RMSE))
-    print("Mean absolute percentage error : " + str(MAPE))
+    if show:
+        print("Mean absolute error : " + str(MAE))
+        print("Mean squared error : " + str(MSE))
+        print("Root Mean square error : " + str(RMSE))
+        print("Mean absolute percentage error : " + str(MAPE))
     return {"MAE": MAE, "MSE": MSE, "RMSE": RMSE, "MAPE": MAPE}
 
 
@@ -97,7 +98,6 @@ def one_week_test(filename, model, variables):
             results[k].append(acc[k])
     for k in results.keys():
         results[k] = np.mean(results[k])
-        print(results[k])
     return results
 
 
@@ -124,7 +124,9 @@ def select_best_features(filename, model, variables, selected=[], accuracy=[]):
     for v in variables:
         current = selected.copy()
         current.append(v)
+        print("OneWeek : " + str(current) + '\n')
         measures = one_week_test(filename, model, current)
+        print(measures)
         if len(current) == 1 and measures['MAPE'] > 0.6:
             variables.remove(v)
             continue
@@ -140,6 +142,8 @@ def select_best_features(filename, model, variables, selected=[], accuracy=[]):
     variables.remove(best_var)
     selected.append(best_var)
     accuracy.append(best_acc)
+    print("Selected variables : " + str(selected))
+    print(accuracy)
     select_best_features(filename, model, variables,
                          selected=selected, accuracy=accuracy)
 
