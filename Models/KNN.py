@@ -45,5 +45,5 @@ if __name__ == '__main__':
 
     best10 = ['Minutes', 'Weekend', 'Temperature', 'Wind direction', 'Wind speed', 'Day of year', 'Day', 'Snowfall', 'Rainfall']
     best09 = ['Minutes', 'Week', 'Temperature', 'Irradiation', 'Pressure', 'Snow depth', 'Month', 'Wind direction', 'Weekend', 'Day', 'Humidity', 'Wind speed']
-    random_forest_model('one_year_10.csv')
-    random_forest_model('one_year_09.csv')
+    random_forest_model('../Datasets/one_year_10.csv')
+    random_forest_model('../Datasets/one_year_09.csv')

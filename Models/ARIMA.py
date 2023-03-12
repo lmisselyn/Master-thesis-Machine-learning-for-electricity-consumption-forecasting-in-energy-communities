@@ -50,7 +50,7 @@ def auto_correlation_function(filename):
     plt.show()
 
 if __name__ == '__main__':
-    df = pd.read_csv('one_year_10.csv')
+    df = pd.read_csv('../Datasets/one_year_10.csv')
     model = ARIMA(df.values, order=(1, 1, 2))
     model_fit = model.fit(disp=0)
     print(model_fit.summary())

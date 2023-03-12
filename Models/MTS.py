@@ -2,7 +2,7 @@ import pandas as pd
 from statsmodels.tsa.vector_ar.var_model import VAR
 
 def mts_model(filename, variables):
-    df = pd.read_csv('test.csv', parse_dates=['Datetime'], index_col=['Datetime'])
+    df = pd.read_csv('../test.csv', parse_dates=['Datetime'], index_col=['Datetime'])
     train_set = df[:0.8*(len(df))]
     test_set = df[0.8*(len(df)):]
     x_train = train_set.drop(columns=["Date", "Hour", "Consumption(Wh)"])
@@ -17,5 +17,5 @@ def mts_model(filename, variables):
 if __name__ == '__main__':
     best10 = ['Minutes', 'Weekend', 'Temperature', 'Wind direction',
               'Wind speed', 'Day of year', 'Day', 'Snowfall', 'Rainfall']
-    mts_model('test.csv', best10)
+    mts_model('../test.csv', best10)
 

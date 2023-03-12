@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def time_plot():
-    df = pd.read_csv("one_year_10.csv")
+    df = pd.read_csv("Datasets/one_year_10.csv")
     tot_cons_hour = {}
     nb_hour = {}
     hours = df["Heure"][:96]
@@ -27,7 +27,7 @@ def time_plot():
 
 
 def month_plot():
-    df = pd.read_csv("one_year_10.csv")
+    df = pd.read_csv("Datasets/one_year_10.csv")
     nb_month = [0 for i in range(12)]
     tot_cons_month = [0 for i in range(12)]
     months = ['Ja', 'Fe', 'Ma', 'Ap', 'May', 'Ju', 'Jul', 'Au', 'Se', 'Oc', 'No', 'De']
@@ -46,7 +46,7 @@ def month_plot():
     plt.show()
 
 def irradiation_plot():
-    df = pd.read_csv("one_year_10.csv")
+    df = pd.read_csv("Datasets/one_year_10.csv")
     new_x = np.arange(0, 2300, 10)
     print(new_x)
     irrad = df["Irradiation"]
@@ -71,7 +71,7 @@ def irradiation_plot():
     plt.show()
 
 def temp_plot():
-    df = pd.read_csv("one_year_10.csv")
+    df = pd.read_csv("Datasets/one_year_10.csv")
     tot_cons_temp = {}
     nb_temp = {}
     cons_per_temp = []

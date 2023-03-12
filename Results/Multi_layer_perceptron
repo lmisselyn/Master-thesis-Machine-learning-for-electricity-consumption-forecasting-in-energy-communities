@@ -1,0 +1,11 @@
+
+Variable selection results :
+----------------------------
+
+Dataset09 :
+best variables : ['Minutes', 'Snow depth', 'Day', 'Weekend']
+Accuracy :
+        'MAE': 38.5569
+        'MSE': 7599.7778
+        'RMSE': 73.3348
+        'MAPE': 0.3498

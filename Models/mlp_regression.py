@@ -71,5 +71,5 @@ def mlp_model(filename=None, set=[], scale=False):
 
 if __name__ == '__main__':
     #best10 = ['Minutes', 'Weekend', 'Temperature', 'Wind direction', 'Wind speed', 'Day of year', 'Day', 'Snowfall', 'Rainfall']
-    mlp_model('one_year_10.csv', helper.get_features('one_year_10.csv'))
-    mlp_model('one_year_09.csv', helper.get_features('one_year_09.csv'))
+    mlp_model('../Datasets/one_year_10.csv', helper.get_features('one_year_10.csv'))
+    mlp_model('../Datasets/one_year_09.csv', helper.get_features('one_year_09.csv'))

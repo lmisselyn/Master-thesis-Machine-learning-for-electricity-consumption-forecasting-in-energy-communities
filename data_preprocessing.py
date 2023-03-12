@@ -70,7 +70,7 @@ def get_data_csv_10():
 
 
 def get_data_csv_09():
-    df = pd.read_csv('one_year_09.csv')
+    df = pd.read_csv('Datasets/one_year_09.csv')
     """
     weather_df = pd.read_csv('../weather_data.csv')
     one_year_w = weather_df.loc[70175:105214]
@@ -153,7 +153,7 @@ def day_of_year(date):
         return (0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365)[m - 1] + d
 
 def datetime_format(filename):
-    df = pd.read_csv('one_year_10.csv')
+    df = pd.read_csv('Datasets/one_year_10.csv')
     new_datetime = []
     for i in range(len(df)):
         date = df.at[i, "Date"] + ' ' + df.at[i, "Hour"]
@@ -162,4 +162,4 @@ def datetime_format(filename):
     df.to_csv("test.csv")
 
 if __name__ == '__main__':
-    datetime_format('one_year_10.csv')
+    datetime_format('Datasets/one_year_10.csv')

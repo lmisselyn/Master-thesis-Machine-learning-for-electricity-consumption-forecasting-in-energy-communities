@@ -3,9 +3,8 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn import metrics
 from sklearn.feature_selection import SelectKBest, f_regression
-from datetime import datetime
 
-import RandomForest
+from Models import RandomForest
 
 
 def make_sets(filename):
@@ -65,14 +64,17 @@ def select_k_best(filename):
     print(selection.get_feature_names_out())
 
 
-def get_features(filename):
-    if filename == "one_year_10.csv":
-        return ['Minutes', 'Day', 'Week', 'Weekend', 'Temperature', 'Humidity',
-                'Pressure', 'Wind speed', 'Wind direction', 'Irradiation']
-    else:
-        return ['Minutes', 'Week', 'Month', 'Day of year', 'Temperature',
-                'Humidity', 'Wind speed', 'Snowfall', 'Snow depth', 'Irradiation']
-
+def get_features(filename, model):
+    if model == "Random_forest":
+        if filename == "Datasets/one_year_09.csv":
+            return ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
+        elif filename == "Datasets/one_year_10.csv":
+            return ['Month', 'Minutes']
+    elif model == "MLP":
+        if filename == "Datasets/one_year_09.csv":
+            return []
+        elif filename == "Datasets/one_year_10.csv":
+            return []
 
 def one_week_test(filename, model, variables):
     """

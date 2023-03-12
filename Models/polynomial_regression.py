@@ -111,5 +111,5 @@ if __name__ == '__main__':
     best10 = ['Minutes', 'Weekend', 'Temperature', 'Irradiation', 'Month', 'Wind direction', 'Wind speed', 'Pressure', 'Day', 'Week', 'Humidity']
     best09 = ['Minutes', 'Week', 'Temperature', 'Irradiation', 'Pressure', 'Snow depth', 'Month', 'Wind direction', 'Weekend', 'Day', 'Humidity', 'Wind speed']
 
-    final_model('one_year_10.csv', helper.get_features('one_year_10.csv'))
-    final_model('one_year_09.csv', helper.get_features('one_year_09.csv'))
+    final_model('../Datasets/one_year_10.csv', helper.get_features('one_year_10.csv'))
+    final_model('../Datasets/one_year_09.csv', helper.get_features('one_year_09.csv'))
