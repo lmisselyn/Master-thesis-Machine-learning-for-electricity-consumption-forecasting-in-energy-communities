@@ -32,7 +32,7 @@ if __name__ == '__main__':
     elif args[0] == "select_best_features":
         test_file(args[1])
         test_model_name(args[2])
-        select_best_features(args[1], args[2], variables=variables)
+        select_best_features(args[1], models[args[2]], variables=variables)
 
     else:
         print("First argument must be either \'one_week_test\' or \'select_best_features\'")
