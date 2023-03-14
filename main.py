@@ -17,7 +17,7 @@ def test_file(filename):
         sys.exit("second argument must be path to a .csv file")
 
 def test_model_name(model):
-    if args[2] not in models.keys():
+    if model not in models.keys():
         sys.exit("Wrong model name, available models are : " + str(models.keys()))
 
 

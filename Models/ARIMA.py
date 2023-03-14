@@ -1,3 +1,4 @@
+from helper import evaluate_model
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -6,7 +7,6 @@ from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.arima.model import ARIMA
 from pandas.plotting import register_matplotlib_converters
 
-import helper
 
 register_matplotlib_converters()
 from statsmodels.graphics.tsaplots import plot_pacf, plot_acf
@@ -113,7 +113,7 @@ def arima_model(filename):
     model.summary()
     prediction = model.predict(288)
     #arima_plot(train_set, test_set, prediction)
-    return helper.evaluate_model(test_set["Consumption(Wh)"].values, prediction, show=True)
+    return evaluate_model(test_set["Consumption(Wh)"].values, prediction, show=True)
 
 
 def arima_plot(train_set, test_set, prediction):

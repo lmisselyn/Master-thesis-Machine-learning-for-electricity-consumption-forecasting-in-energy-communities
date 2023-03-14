@@ -1,0 +1,21 @@
+
+Variable selection results for XGB model :
+------------------------------------------
+
+Dataset09:
+Best variables : ['Minutes', 'Humidity', 'Day', 'Snow depth', 'Snowfall', 'Weekend']
+Accuracy :
+        'MAE': 39.7509
+        'MSE': 7601.6972
+        'RMSE': 74.1249
+        'MAPE': 0.3613056
+
+
+Dataset 10:
+Best variables : ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
+Accuracy :
+        'MAE': 69.2668
+        'MSE': 12324.5919
+        'RMSE': 105.1662
+        'MAPE': 0.31699
+
