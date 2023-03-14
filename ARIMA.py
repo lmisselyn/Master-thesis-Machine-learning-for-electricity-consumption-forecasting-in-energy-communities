@@ -131,4 +131,4 @@ if __name__ == '__main__':
     #auto_correlation_function('../test.csv')
     #get_stationarity('../test.csv')
     #adv_test("../test.csv")
-    arima_model("../test.csv")
+    arima_model("test.csv")
