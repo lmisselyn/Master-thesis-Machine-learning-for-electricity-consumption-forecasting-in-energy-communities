@@ -3,9 +3,6 @@ import xgboost
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
 
-import helper
-
-
 def XGB_regressor_model(filename=None, set=[], scale=False):
     """
     train a random forest model with the dataset 'filename'
