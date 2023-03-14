@@ -33,8 +33,7 @@ def XGB_regressor_model(filename=None, set=[], scale=False):
         x_test = scaler.transform(x_test)
 
     model = xgboost.XGBRegressor(
-        eval_metric='rmse',
-        tree_method='gpu_hist')
+        eval_metric='rmse')
 
     param_grid = {"max_depth": [4, 5, 7],
                   "n_estimators": [100, 500, 700, 1000],
