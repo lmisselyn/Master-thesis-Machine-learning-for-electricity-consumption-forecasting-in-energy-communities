@@ -2,9 +2,10 @@ import helper
 from helper import select_best_features, one_week_test
 from Models.mlp_regression import mlp_model
 from Models.RandomForest import random_forest_model
+from Models.XGB import XGB_regressor_model
 import sys
 
-models = {'Random_forest' : random_forest_model, "MLP" : mlp_model}
+models = {'Random_forest' : random_forest_model, "MLP" : mlp_model, "XGB" : XGB_regressor_model}
 variables = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
              "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall"]
 
