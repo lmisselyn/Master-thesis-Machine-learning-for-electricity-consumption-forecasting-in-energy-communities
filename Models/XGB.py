@@ -35,9 +35,9 @@ def XGB_regressor_model(filename=None, set=[], scale=False):
     model = xgboost.XGBRegressor(
         eval_metric='rmse')
 
-    param_grid = {"max_depth": [4, 5, 7],
-                  "n_estimators": [100, 500, 700, 1000],
-                  "learning_rate": [0.01, 0.015, 0.02, 0.025]}
+    param_grid = {"max_depth": [5, 6],
+                  "n_estimators": [100, 200, 300],
+                  "learning_rate": [0.01, 0.013, 0.015, 0.017]}
 
     search = GridSearchCV(model, param_grid, cv=5).fit(x_train, y_train)
 

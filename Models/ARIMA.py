@@ -53,16 +53,20 @@ def get_stationarity(filename):
 def auto_correlation_function(filename):
     timeseries = pd.read_csv(filename, index_col=["Datetime"], usecols=['Consumption(Wh)', 'Datetime'],
                              parse_dates=["Datetime"])
-
     plot_acf(timeseries)
     plt.show()
 
 def partial_auto_correlation(filename):
     timeseries = pd.read_csv(filename, index_col=["Datetime"], usecols=['Consumption(Wh)', 'Datetime'],
                              parse_dates=["Datetime"])
-
     plot_pacf(timeseries)
     plt.show()
+
+def adv_test(filename):
+    series = pd.read_csv(filename, index_col=["Datetime"], usecols=['Consumption(Wh)', 'Datetime'],
+                             parse_dates=["Datetime"])
+    adf = pm.arima.ADFTest(alpha=0.05)
+    print(adf.should_diff(series))
 
 
 def arima_model(filename):
@@ -84,4 +88,5 @@ def arima_model(filename):
 if __name__ == '__main__':
     #auto_correlation_function('../test.csv')
     #get_stationarity('../test.csv')
-    arima_model("../test.csv")
+    #arima_model("../test.csv")
+    adv_test("../test.csv")
