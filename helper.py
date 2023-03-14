@@ -75,6 +75,7 @@ def get_features(filename, model):
             return ['Minutes', 'Humidity', 'Snowfall', 'Wind speed']
         elif filename == "Datasets/one_year_10.csv":
             return ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
+
 def one_week_test(filename, model, variables):
     """
     Take a filename, a model and some variables
