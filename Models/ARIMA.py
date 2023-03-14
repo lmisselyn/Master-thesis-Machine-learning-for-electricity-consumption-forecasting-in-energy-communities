@@ -5,6 +5,9 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.arima.model import ARIMA
 from pandas.plotting import register_matplotlib_converters
+
+import helper
+
 register_matplotlib_converters()
 from statsmodels.graphics.tsaplots import plot_pacf, plot_acf
 import pmdarima as pm
@@ -72,21 +75,60 @@ def adv_test(filename):
 def arima_model(filename):
     timeseries = pd.read_csv(filename, index_col=["Datetime"], usecols=['Consumption(Wh)', 'Datetime'],
                              parse_dates=["Datetime"])
-    train_set = timeseries[:len(timeseries)-672]
-    test_set = timeseries[len(timeseries)-672:]
+    train_set = timeseries['2021-01-06 00:00:00':'2021-02-06 23:45:00']
+    test_set = timeseries['2021-02-06 23:45:00':]
+
+    model = pm.arima.auto_arima(
+            y=train_set,
+            start_p=0,
+            d=1,
+            start_q=0,
+            max_p=5,
+            max_d=2,
+            max_q=5,
+            start_P=1,
+            D=1,
+            start_Q=0,
+            max_P=5,
+            max_D=5,
+            max_Q=5,
+            max_order=5,
+            m=365,
+            seasonal=True,
+            stationary=False,
+            information_criterion='aic',
+            alpha=0.05,
+            test='kpss',
+            seasonal_test='ocsb',
+            stepwise=True,
+            n_jobs=1,
+            method='lbfgs',
+            maxiter=50,
+            suppress_warnings=True,
+            random_state=None,
+            n_fits=10,
+            scoring='mse',
+            error_action='trace')
+
+    model.summary()
+    prediction = model.predict(288)
+    #arima_plot(train_set, test_set, prediction)
+    return helper.evaluate_model(test_set["Consumption(Wh)"].values, prediction, show=True)
 
 
+def arima_plot(train_set, test_set, prediction):
     # Plot
     plt.figure(figsize=(12,5), dpi=100)
     plt.plot(train_set, label='training')
     plt.plot(test_set, label='actual')
-    plt.plot(fc_series, label='forecast')
+    plt.plot(prediction, label='forecast')
 
     plt.title('Forecast vs Actuals')
     plt.legend(loc='upper left', fontsize=8)
     plt.show()
+
 if __name__ == '__main__':
     #auto_correlation_function('../test.csv')
     #get_stationarity('../test.csv')
-    #arima_model("../test.csv")
-    adv_test("../test.csv")
+    #adv_test("../test.csv")
+    arima_model("../test.csv")
