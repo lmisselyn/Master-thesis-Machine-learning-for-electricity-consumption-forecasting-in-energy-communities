@@ -1,11 +1,19 @@
 
-Variable selection results :
-----------------------------
+Variable selection results for MLP model :
+------------------------------------------
 
 Dataset09 :
-best variables : ['Minutes', 'Snow depth', 'Day', 'Weekend']
+best variables : ['Minutes', 'Humidity', 'Snowfall', 'Wind speed']
 Accuracy :
-        'MAE': 38.5569
-        'MSE': 7599.7778
-        'RMSE': 73.3348
-        'MAPE': 0.3498
+        'MAE': 40.1155
+        'MSE': 6769.1499
+        'RMSE': 70.6411
+        'MAPE': 0.4340
+
+Dataset10 :
+best variables : ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
+Accuracy :
+        'MAE': 38.6173
+        'MSE': 7645.4964
+        'RMSE': 73.5789
+        'MAPE': 0.3486

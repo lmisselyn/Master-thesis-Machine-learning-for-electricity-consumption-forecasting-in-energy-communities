@@ -53,7 +53,7 @@ def random_forest_model(filename=None, set=[], scale=False):
         x_test = scaler.transform(x_test)
 
     model = RandomForestRegressor(
-        n_estimators=30,
+        n_estimators=100,
         criterion='absolute_error',
         max_depth=150,
         min_samples_split=2,
@@ -71,14 +71,14 @@ def random_forest_model(filename=None, set=[], scale=False):
         ccp_alpha=0.0,
         max_samples=None)
 
+    model.fit(x_train, y_train)
+    y_predict = model.predict(x_test)
+    aggregated = helper.aggregate(y_test.values, y_predict)
+    # helper.plot_model(y_test.values, y_predict)
+    # helper.plot_model(aggregated[0], aggregated[1], 'R_F')
+    # return helper.evaluate_model(y_test.values, y_predict)
+    return helper.evaluate_model(aggregated[0], aggregated[1])
 
 
 
-if __name__ == '__main__':
-    best10 = ['Minutes', 'Weekend', 'Temperature', 'Wind direction', 'Wind speed', 'Day of year', 'Day', 'Snowfall',
-              'Rainfall']
-    best09 = ['Minutes', 'Week', 'Temperature', 'Irradiation', 'Pressure', 'Snow depth', 'Month', 'Wind direction',
-              'Weekend', 'Day', 'Humidity', 'Wind speed']
-    res = (random_forest_model('../Datasets/one_year_10.csv'))
-    # random_forest_model('one_year_09.csv')
 

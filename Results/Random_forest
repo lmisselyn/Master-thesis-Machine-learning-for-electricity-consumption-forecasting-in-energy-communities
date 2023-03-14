@@ -1,0 +1,20 @@
+
+
+Variable selection results for Random forest model :
+----------------------------------------------------
+
+Dataset09
+Best variables : ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
+Accuracy :
+        'MAE': 38.6173
+        'MSE': 7645.4964
+        'RMSE': 73.5789
+        'MAPE': 0.3486
+
+Dataset10
+Best variables : ['Month', 'Minutes']
+Accuracy :
+        'MAE': 76.0209
+        'MSE': 15047.6707
+        'RMSE': 110.5350
+        'MAPE': 0.3342

@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from sklearn import metrics
 from sklearn.feature_selection import SelectKBest, f_regression
 
-from Models import RandomForest
+from Models import RandomForest, XGB
 
 
 def make_sets(filename):
@@ -72,10 +72,9 @@ def get_features(filename, model):
             return ['Month', 'Minutes']
     elif model == "MLP":
         if filename == "Datasets/one_year_09.csv":
-            return []
+            return ['Minutes', 'Humidity', 'Snowfall', 'Wind speed']
         elif filename == "Datasets/one_year_10.csv":
-            return []
-
+            return ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
 def one_week_test(filename, model, variables):
     """
     Take a filename, a model and some variables
@@ -149,7 +148,5 @@ def select_best_features(filename, model, variables, selected=[], accuracy=[]):
 
 
 if __name__ == '__main__':
-    res = one_week_test('test.csv', RandomForest.random_forest_model, ['Minutes', 'Day', 'Week', 'Weekend',
-                                                                 'Temperature', 'Humidity', 'Irradiation'])
-    with open('one_week_10_RF.txt', 'w') as f:
-        f.write(res)
+    print(one_week_test('test.csv', XGB.XGB_regressor_model, ['Month', 'Minutes']))
+    #print(one_week_test('test.csv', RandomForest.random_forest_model, ['Month', 'Minutes']))
