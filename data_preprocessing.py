@@ -130,7 +130,7 @@ def at_home_feature(filename):
         else:
             at_home.append(0)
     df["AtHome"] = at_home
-    df.to_csv("test.csv")
+    df.to_csv("one_year_10_datetime.csv")
 
 
 def day_of_year_feature(filename):
@@ -153,13 +153,13 @@ def day_of_year(date):
         return (0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365)[m - 1] + d
 
 def datetime_format(filename):
-    df = pd.read_csv('Datasets/one_year_10.csv')
+    df = pd.read_csv(filename)
     new_datetime = []
     for i in range(len(df)):
         date = df.at[i, "Date"] + ' ' + df.at[i, "Hour"]
         new_datetime.append(datetime.strptime(date, "%d/%m/%Y %H:%M"))
     df["Datetime"] = new_datetime
-    df.to_csv("test.csv")
+    df.to_csv(filename[:-4]+"_datetime.csv")
 
 if __name__ == '__main__':
-    datetime_format('Datasets/one_year_10.csv')
+    datetime_format('Datasets/one_year_09.csv')

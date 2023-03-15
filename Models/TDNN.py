@@ -10,7 +10,7 @@ import helper
 
 # Load data from CSV file
 variables = helper.get_features('../Datasets/one_year_10.csv')
-df = pd.read_csv('../test.csv', index_col=0, parse_dates=["Datetime"])
+df = pd.read_csv('../Datasets/one_year_10_datetime.csv', index_col=0, parse_dates=["Datetime"])
 x = np.transpose([df[var].to_numpy() for var in variables])
 y = df["Consumption(Wh)"]
 

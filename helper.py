@@ -150,5 +150,5 @@ def select_best_features(filename, model, variables, selected=[], accuracy=[]):
 
 
 if __name__ == '__main__':
-    print(one_week_test('test.csv', XGB.XGB_regressor_model, ['Month', 'Minutes']))
-    #print(one_week_test('test.csv', RandomForest.random_forest_model, ['Month', 'Minutes']))
+    print(one_week_test('Datasets/one_year_10_datetime.csv', XGB.XGB_regressor_model, ['Month', 'Minutes']))
+    #print(one_week_test('one_year_10_datetime.csv', RandomForest.random_forest_model, ['Month', 'Minutes']))
