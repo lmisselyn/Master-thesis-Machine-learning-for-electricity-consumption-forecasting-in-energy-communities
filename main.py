@@ -30,7 +30,7 @@ if __name__ == '__main__':
     if args[0] == "one_week_test":
         test_file(args[1])
         test_model_name(args[2])
-        print(one_week_test(args[1], models[args[2]], helper.get_features(args[1], args[2])))
+        one_week_test(args[1], models[args[2]], helper.get_features(args[1], args[2]))
 
     elif args[0] == "select_best_features":
         test_file(args[1])

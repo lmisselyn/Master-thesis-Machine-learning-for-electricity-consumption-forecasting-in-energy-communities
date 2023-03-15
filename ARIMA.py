@@ -1,4 +1,4 @@
-from helper import evaluate_model
+from helper import evaluate_model, aggregate
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -112,9 +112,11 @@ def arima_model(filename):
 
     model.summary()
     prediction = model.predict(288)
+    aggregated = aggregate(test_set["Consumption(Wh)"].values, prediction)
     #arima_plot(train_set, test_set, prediction)
-    return evaluate_model(test_set["Consumption(Wh)"].values, prediction, show=True)
-
+    result = evaluate_model(aggregated[0], aggregated[1], show=True)
+    print(result)
+    return result
 
 def arima_plot(train_set, test_set, prediction):
     # Plot
@@ -131,4 +133,4 @@ if __name__ == '__main__':
     #auto_correlation_function('../test.csv')
     #get_stationarity('../test.csv')
     #adv_test("../test.csv")
-    arima_model("test.csv")
+    print(arima_model("test.csv"))

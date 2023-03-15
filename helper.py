@@ -98,6 +98,7 @@ def one_week_test(filename, model, variables):
             results[k].append(acc[k])
     for k in results.keys():
         results[k] = np.mean(results[k])
+    print(results)
     return results
 
 
