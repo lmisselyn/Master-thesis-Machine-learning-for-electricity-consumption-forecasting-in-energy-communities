@@ -28,14 +28,14 @@ def make_sets(filename):
     return train_df, validation_df, test_df
 
 
-def plot_model(y, y_predict, model_name):
+def plot_model(dates, y, y_predict, model_name):
     fig, ax = plt.subplots()
     ax.plot(y, label='True values')
     ax.plot(y_predict, label='Predicted values')
     ax.set_ylabel("Consumption(Wh)")
     ax.legend(facecolor='white')
     fig1 = plt.gcf()
-    fig1.savefig('plots/' + model_name)
+    fig1.savefig('../plots/' + model_name)
     plt.show()
 
 

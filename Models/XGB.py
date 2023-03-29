@@ -2,6 +2,7 @@ import pandas as pd
 import xgboost
 from sklearn.preprocessing import StandardScaler
 import helper
+import numpy as np
 
 #from sklearn.model_selection import GridSearchCV
 
@@ -35,21 +36,51 @@ def XGB_regressor_model(filename=None, set=[], scale=False):
         x_test = scaler.transform(x_test)
 
     model = xgboost.XGBRegressor(
+        booster='gbtree',
         eval_metric='rmse',
+        early_stopping_rounds=100,
+        objective='reg:linear',
         learning_rate=0.015,
-        max_depth=5,
-        n_estimators=100
+        max_depth=6,
+        n_estimators=1500
     )
 
-    model.fit(x_train, y_train)
+    model.fit(x_train, y_train, eval_set=[(x_train, y_train), (x_test, y_test)], verbose=100)
     y_predict = model.predict(x_test)
     aggregated = helper.aggregate(y_test.values, y_predict)
-    # helper.plot_model(y_test.values, y_predict)
-    # helper.plot_model(aggregated[0], aggregated[1], 'R_F')
-    # return helper.evaluate_model(y_test.values, y_predict)
+    helper.plot_model(test_set.index, y_test.values, y_predict, 'R_F')
+    helper.plot_model(test_set.index, aggregated[0], aggregated[1], 'R_F_aggregated')
+    print("Accuracy : ")
+    print(helper.evaluate_model(y_test.values, y_predict))
     return helper.evaluate_model(aggregated[0], aggregated[1])
 
 
 if __name__ == '__main__':
-    XGB_regressor_model(filename='../Datasets/one_year_09.csv')
+    variables09 = ['Minutes', 'Humidity', 'Day', 'Snow depth', 'Snowfall', 'Weekend', 'Temperature']
+    df = pd.read_csv('../Datasets/one_year_09_datetime.csv', index_col=["Datetime"],
+                             parse_dates=["Datetime"])
+
+    train_set = df[:'2021-05-28 00:00:00']
+    test_set = df['2021-05-28 00:00:00':]
+
+    x_train = np.transpose([train_set[var].to_numpy() for var in variables09])
+    y_train = train_set["Consumption(Wh)"]
+    x_test = np.transpose([test_set[var].to_numpy() for var in variables09])
+    y_test = test_set["Consumption(Wh)"]
+    print("Agrregated accuracy")
+    print(XGB_regressor_model(set=[x_train, y_train, x_test, y_test]))
+
+    variables10 = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
+    df = pd.read_csv('../Datasets/one_year_10_datetime.csv', index_col=["Datetime"],
+                             parse_dates=["Datetime"])
+
+    train_set = df[:'2021-02-05 00:00:00']
+    test_set = df['2021-02-05 00:00:00':]
+
+    x_train = np.transpose([train_set[var].to_numpy() for var in variables09])
+    y_train = train_set["Consumption(Wh)"]
+    x_test = np.transpose([test_set[var].to_numpy() for var in variables09])
+    y_test = test_set["Consumption(Wh)"]
+    print("Agrregated accuracy")
+    print(XGB_regressor_model(set=[x_train, y_train, x_test, y_test]))
 
