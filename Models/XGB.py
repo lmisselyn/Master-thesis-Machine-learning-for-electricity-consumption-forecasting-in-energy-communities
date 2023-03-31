@@ -60,7 +60,7 @@ if __name__ == '__main__':
     df = pd.read_csv('../Datasets/one_year_09_datetime.csv', index_col=["Datetime"],
                              parse_dates=["Datetime"])
 
-    train_set = df[:'2021-05-28 00:00:00']
+    train_set = df['2021-04-28 00:00:00':'2021-05-28 00:00:00']
     test_set = df['2021-05-28 00:00:00':]
 
     x_train = np.transpose([train_set[var].to_numpy() for var in variables09])
@@ -68,13 +68,13 @@ if __name__ == '__main__':
     x_test = np.transpose([test_set[var].to_numpy() for var in variables09])
     y_test = test_set["Consumption(Wh)"]
     print("Agrregated accuracy")
-    print(XGB_regressor_model(set=[x_train, y_train, x_test, y_test]))
+    print(XGB_regressor_model(set=[x_train, y_train, x_test, y_test], scale=True))
 
     variables10 = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
     df = pd.read_csv('../Datasets/one_year_10_datetime.csv', index_col=["Datetime"],
                              parse_dates=["Datetime"])
 
-    train_set = df[:'2021-02-05 00:00:00']
+    train_set = df['2021-1-05 00:00:00':'2021-02-05 00:00:00']
     test_set = df['2021-02-05 00:00:00':]
 
     x_train = np.transpose([train_set[var].to_numpy() for var in variables09])
@@ -82,5 +82,5 @@ if __name__ == '__main__':
     x_test = np.transpose([test_set[var].to_numpy() for var in variables09])
     y_test = test_set["Consumption(Wh)"]
     print("Agrregated accuracy")
-    print(XGB_regressor_model(set=[x_train, y_train, x_test, y_test]))
+    print(XGB_regressor_model(set=[x_train, y_train, x_test, y_test], scale=True))
 

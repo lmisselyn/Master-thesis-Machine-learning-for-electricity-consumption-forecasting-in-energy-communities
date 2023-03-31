@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def get_data_csv_10():
@@ -161,5 +161,15 @@ def datetime_format(filename):
     df["Datetime"] = new_datetime
     df.to_csv(filename[:-4]+"_datetime.csv")
 
+
+def mean_cons_by_hour(filename):
+    df = pd.read_csv(filename)
+    dates = [datetime.fromisoformat(d) for d in df['Datetime']]
+    first_date = dates[0]
+    print(first_date)
+    print(first_date - timedelta(weeks=1))
+
+
+
 if __name__ == '__main__':
-    datetime_format('Datasets/one_year_09.csv')
+    mean_cons_by_hour('Datasets/one_year_10_datetime.csv')
