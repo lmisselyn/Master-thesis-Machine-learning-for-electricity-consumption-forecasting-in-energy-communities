@@ -7,22 +7,17 @@ import numpy as np
 import pandas as pd
 
 
-def random_forest_model(filename):
-    df = pd.read_csv(filename)
-    #x = np.transpose([df[var].to_numpy() for var in variables])
-    x = df[["Minutes", "Day", "Weekend", "Week", "Month"]]
-    y = df["Consumption(Wh)"]
-    #x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
-    size = len(df)-96
-    x_train = x[:size]
-    y_train = y[:size]
-    x_test = x[size:]
-    y_test = y[size:]
+def knn_regressor(set, scale=False, show=False):
+    x_train = set[0]
+    y_train = set[1]
+    x_test = set[2]
+    y_test = set[3]
 
-    sc = StandardScaler()
-    scaler = sc.fit(x_train)
-    x_train_scaled = scaler.transform(x_train)
-    x_test_scaled = scaler.transform(x_test)
+    if scale:
+        sc = StandardScaler()
+        scaler = sc.fit(x_train)
+        x_train = scaler.transform(x_train)
+        x_test = scaler.transform(x_test)
 
     model = KNeighborsRegressor(
         n_neighbors=50,
@@ -33,17 +28,31 @@ def random_forest_model(filename):
         metric_params=None,
         n_jobs=None)
 
-    model.fit(x_train_scaled, y_train)
-
-    y_predict = model.predict(x_test_scaled)
-
-    helper.evaluate_model(y_test.values, y_predict)
-    helper.plot_model(y_test.values, y_predict)
+    model.fit(x_train, y_train)
+    if show:
+        y_predict = model.predict(x_test)
+        aggregated = helper.aggregate(y_test.values, y_predict)
+        helper.plot_model(y_test.values, y_predict, 'KNN')
+        helper.plot_model(aggregated[0], aggregated[1], 'KNN_aggregated')
+        print("Accuracy : ")
+        print(helper.evaluate_model(y_test.values, y_predict))
+        print("Accuracy for aggregated values :")
+        print(helper.evaluate_model(aggregated[0], aggregated[1]))
+    return model
 
 
 if __name__ == '__main__':
 
-    best10 = ['Minutes', 'Weekend', 'Temperature', 'Wind direction', 'Wind speed', 'Day of year', 'Day', 'Snowfall', 'Rainfall']
-    best09 = ['Minutes', 'Week', 'Temperature', 'Irradiation', 'Pressure', 'Snow depth', 'Month', 'Wind direction', 'Weekend', 'Day', 'Humidity', 'Wind speed']
-    random_forest_model('../Datasets/one_year_10.csv')
-    random_forest_model('../Datasets/one_year_09.csv')
+    variables10 = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
+    df = pd.read_csv('../Datasets/10_test.csv', index_col=["Datetime"],
+                             parse_dates=["Datetime"])
+
+    train_set = df[:'2021-02-05 00:00:00']
+    test_set = df['2021-02-05 00:00:00':'2021-02-06 00:00:00']
+
+    x_train = np.transpose([train_set[var].to_numpy() for var in variables10])
+    y_train = train_set["Consumption(Wh)"]
+    x_test = np.transpose([test_set[var].to_numpy() for var in variables10])
+    y_test = test_set["Consumption(Wh)"]
+    print("Agrregated accuracy")
+    print(knn_regressor(set=[x_train, y_train, x_test, y_test], scale=True))

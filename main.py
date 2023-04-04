@@ -3,11 +3,15 @@ from helper import select_best_features, one_week_test
 from Models.mlp_regression import mlp_model
 from Models.RandomForest import random_forest_model
 from Models.XGB import XGB_regressor_model
+from Models.SVM import SVM_regressor_model
+from Models.KNN import knn_regressor
+
 import sys
 
-models = {'Random_forest': random_forest_model, "MLP": mlp_model, "XGB": XGB_regressor_model}
+models = {'R_F': random_forest_model, "MLP": mlp_model, "XGB": XGB_regressor_model,
+          'KNN': knn_regressor, 'SVM': SVM_regressor_model}
 variables = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
-             "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall"]
+             "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
 
 def test_file(filename):

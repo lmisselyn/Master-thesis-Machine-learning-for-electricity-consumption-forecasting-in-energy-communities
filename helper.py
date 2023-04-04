@@ -1,10 +1,12 @@
+from datetime import datetime, timedelta
+
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn import metrics
 from sklearn.feature_selection import SelectKBest, f_regression
-
-from Models import RandomForest, XGB
+import helper
+from Models import RandomForest, XGB, SVM
 
 
 def make_sets(filename):
@@ -28,7 +30,7 @@ def make_sets(filename):
     return train_df, validation_df, test_df
 
 
-def plot_model(dates, y, y_predict, model_name):
+def plot_model(y, y_predict, model_name):
     fig, ax = plt.subplots()
     ax.plot(y, label='True values')
     ax.plot(y_predict, label='Predicted values')
@@ -36,6 +38,7 @@ def plot_model(dates, y, y_predict, model_name):
     ax.legend(facecolor='white')
     fig1 = plt.gcf()
     fig1.savefig('../plots/' + model_name)
+    plt.title(model_name)
     plt.show()
 
 
@@ -76,14 +79,17 @@ def get_features(filename, model):
         elif filename == "Datasets/one_year_10.csv":
             return ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
 
+
 def one_week_test(filename, model, variables):
     """
     Take a filename, a model and some variables
     Return the mean of accuracy measures over the last week of the dataset
     """
     df = pd.read_csv(filename)
+
     x = np.transpose([df[var].to_numpy() for var in variables])
     y = df["Consumption(Wh)"]
+
 
     results = {"MAE": [], "MSE": [], "RMSE": [], "MAPE": []}
     for i in range(1, 8):
@@ -92,7 +98,52 @@ def one_week_test(filename, model, variables):
         y_train = y[:index]
         x_test = x[index:index + 96]
         y_test = y[index:index + 96]
-        acc = model(set=[x_train, y_train, x_test, y_test])
+        trained_model = model(set=[x_train, y_train, x_test, y_test])
+        y_predict = trained_model.predict(x_test)
+        aggregated = aggregate(y_test, y_predict)
+        acc = evaluate_model(aggregated[0], aggregated[1])
+
+        for k in acc.keys():
+            results[k].append(acc[k])
+    for k in results.keys():
+        results[k] = np.mean(results[k])
+    print(results)
+    return results
+
+
+def one_week_test2(filename, model, variables):
+    """
+    Take a filename, a model and some variables
+    Return the mean of accuracy measures over the last week of the dataset
+    """
+    df = pd.read_csv(filename, index_col='Datetime')
+    x = df[variables]
+    y = df["Consumption(Wh)"]
+
+
+    dates = [datetime.fromisoformat(d) for d in df.index]
+    results = {"MAE": [], "MSE": [], "RMSE": [], "MAPE": []}
+
+    first_date = dates[0] + timedelta(weeks=1)
+    last_date = dates[-1]+timedelta(minutes=30)
+    train_last_date = last_date-timedelta(weeks=1)
+    print(train_last_date)
+    x_train = x[str(first_date):str(train_last_date)]
+    y_train = y[str(first_date):str(train_last_date)]
+    xtest = x[str(train_last_date):]
+    ytest = y[str(train_last_date):]
+    trained_model = model(set=[x_train, y_train, xtest, ytest])
+
+    test_last_date = dates[-1]
+    test_first_date = test_last_date+timedelta(minutes=15)
+    for i in range(1, 8):
+        test_first_date = test_first_date-timedelta(days=1)
+        x_test = x[str(test_first_date):str(test_last_date)]
+        y_test = y[str(test_first_date):str(test_last_date)]
+        test_last_date = test_first_date
+
+        y_predict = trained_model.predict(x_test)
+        acc = evaluate_model(y_test, y_predict)
 
         for k in acc.keys():
             results[k].append(acc[k])
@@ -128,9 +179,11 @@ def select_best_features(filename, model, variables, selected=[], accuracy=[]):
         print("OneWeek : " + str(current) + '\n')
         measures = one_week_test(filename, model, current)
         print("Result for the week : " + str(measures))
+        '''
         if len(current) == 1 and measures['MAPE'] > 0.6:
             variables.remove(v)
             continue
+        '''
         if measures['MAPE'] < min_MAPE:
             min_MAPE = measures['MAPE']
             best_var = v
@@ -150,5 +203,7 @@ def select_best_features(filename, model, variables, selected=[], accuracy=[]):
 
 
 if __name__ == '__main__':
-    print(one_week_test('Datasets/one_year_10_datetime.csv', XGB.XGB_regressor_model, ['Month', 'Minutes']))
-    #print(one_week_test('one_year_10_datetime.csv', RandomForest.random_forest_model, ['Month', 'Minutes']))
+    variables = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
+             "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
+
+    select_best_features('Datasets/10_test.csv', SVM.SVM_regressor_model, variables)

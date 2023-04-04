@@ -80,5 +80,18 @@ def random_forest_model(filename=None, set=[], scale=False):
     return helper.evaluate_model(aggregated[0], aggregated[1])
 
 
+if __name__ == '__main__':
 
+    variables10 = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
+    df = pd.read_csv('../Datasets/10_test.csv', index_col=["Datetime"],
+                             parse_dates=["Datetime"])
+    train_set = df[:'2021-02-05 00:00:00']
+    test_set = df['2021-02-05 00:00:00':'2021-02-06 00:00:00']
+
+    x_train = np.transpose([train_set[var].to_numpy() for var in variables10])
+    y_train = train_set["Consumption(Wh)"]
+    x_test = np.transpose([test_set[var].to_numpy() for var in variables10])
+    y_test = test_set["Consumption(Wh)"]
+    print("Agrregated accuracy")
+    print(random_forest_model(set=[x_train, y_train, x_test, y_test], scale=True))
 

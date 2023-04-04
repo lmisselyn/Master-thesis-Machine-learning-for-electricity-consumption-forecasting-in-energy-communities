@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime, timedelta
-
+import numpy as np
 
 def get_data_csv_10():
     df = pd.read_csv("../donneeconso10.csv")[["Date", "Heure", "Index(Wh)"]]
@@ -85,6 +85,12 @@ def get_data_csv_09():
     df.to_csv('one_year_09.csv')
 
 
+def remove_dupplicates(filename):
+    df = pd.read_csv(filename)
+    df.drop_duplicates(subset=['Datetime'], inplace=True)
+    df.to_csv(filename)
+
+
 def change_hour(filename):
     df = pd.read_csv(filename, index_col=0)
     new_hour = []
@@ -163,13 +169,62 @@ def datetime_format(filename):
 
 
 def mean_cons_by_hour(filename):
-    df = pd.read_csv(filename)
-    dates = [datetime.fromisoformat(d) for d in df['Datetime']]
+    mean_cons = []
+    df = pd.read_csv(filename, index_col=["Datetime"])
+    dates = [datetime.fromisoformat(d) for d in df.index]
     first_date = dates[0]
-    print(first_date)
-    print(first_date - timedelta(weeks=1))
+    dates.reverse()
+
+    for date in dates:
+        tmp = []
+        for j in range(1, 5):
+            prev_week = date-timedelta(weeks=j)
+            if prev_week > first_date and prev_week in dates:
+                tmp.append(df.at[str(prev_week), 'Consumption(Wh)'])
+        mean_cons.append(np.mean(tmp))
+    mean_cons.reverse()
+    df['Previous_4d_mean_cons'] = mean_cons
+    df.to_csv('Datasets/10_test.csv')
+
+
+def mean_array(arr):
+    sum = 0
+    for item in arr:
+        sum = sum+item
+    if len(arr) > 0:
+        sum = round(sum/len(arr), 4)
+    return sum
+
+
+def mean_cons_by_hour2(filename):
+    mean_cons = []
+    df = pd.read_csv(filename, index_col=["Datetime"])
+    dates = [datetime.fromisoformat(d) for d in df.index]
+    first_date = dates[0]
+    dates.reverse()
+
+    for date in dates:
+        tmp = []
+        for i in range(1, 5):
+            prev_week = date-timedelta(weeks=i)
+            if prev_week > first_date and prev_week in dates:
+                tmp2 = [df.at[str(prev_week), 'Consumption(Wh)']]
+                before = prev_week-timedelta(minutes=15)
+                after = prev_week+timedelta(minutes=15)
+                for around in [before, after]:
+                    if around in dates:
+                        tmp2.append(df.at[str(around), 'Consumption(Wh)'])
+                tmp.append(mean_array(tmp2))
+        try:
+            m = mean_array(tmp)
+            mean_cons.append(float(m))
+        except:
+            print(mean_array(tmp))
+    mean_cons.reverse()
+    df['Previous_4d_mean_cons'] = mean_cons
+    df.to_csv('Datasets/10_test.csv')
 
 
 
 if __name__ == '__main__':
-    mean_cons_by_hour('Datasets/one_year_10_datetime.csv')
+    mean_cons_by_hour2("Datasets/one_year_10_datetime.csv")
