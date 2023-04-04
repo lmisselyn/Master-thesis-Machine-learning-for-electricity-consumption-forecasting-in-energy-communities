@@ -28,8 +28,8 @@ def SVM_regressor_model(set, scale=False, show=False):
     if show:
         y_predict = model.predict(x_test)
         aggregated = helper.aggregate(y_test.values, y_predict)
-        helper.plot_model(y_test.values, y_predict, 'R_F')
-        helper.plot_model(aggregated[0], aggregated[1], 'R_F_aggregated')
+        helper.plot_model(y_test.values, y_predict, 'SVM')
+        helper.plot_model(aggregated[0], aggregated[1], 'SVM_aggregated')
         print("Accuracy : ")
         print(helper.evaluate_model(y_test.values, y_predict))
         print("Accuracy for aggregated values :")
