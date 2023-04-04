@@ -27,7 +27,7 @@ def XGB_regressor_model(set, scale=False, show=False):
         booster='gbtree',
         eval_metric='rmse',
         early_stopping_rounds=100,
-        objective='reg:linear',
+        objective='reg:squarederror',
         learning_rate=0.015, #best 0.015
         max_depth=None, #best None
         n_estimators=100 #best 100

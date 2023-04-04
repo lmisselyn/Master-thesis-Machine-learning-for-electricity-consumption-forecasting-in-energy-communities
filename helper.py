@@ -100,7 +100,7 @@ def one_week_test(filename, model, variables):
         y_test = y[index:index + 96]
         trained_model = model(set=[x_train, y_train, x_test, y_test])
         y_predict = trained_model.predict(x_test)
-        aggregated = aggregate(y_test, y_predict)
+        aggregated = aggregate(y_test.values, y_predict)
         acc = evaluate_model(aggregated[0], aggregated[1])
 
         for k in acc.keys():
@@ -206,4 +206,4 @@ if __name__ == '__main__':
     variables = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
              "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
-    select_best_features('Datasets/10_test.csv', SVM.SVM_regressor_model, variables)
+    select_best_features('Datasets/10_test.csv', XGB.XGB_regressor_model, variables)
