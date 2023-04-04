@@ -59,6 +59,8 @@ def random_forest_model(set, scale=False, show=False):
         ccp_alpha=0.0,
         max_samples=None)
 
+    model.fit(x_train, y_train)
+
     if show:
         y_predict = model.predict(x_test)
         aggregated = helper.aggregate(y_test.values, y_predict)
