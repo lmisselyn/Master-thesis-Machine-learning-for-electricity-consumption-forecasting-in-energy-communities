@@ -35,7 +35,6 @@ def mlp_model(set, scale=False, show=False):
         learning_rate_init=0.007,
         power_t=0.5,
         max_iter=500,
-        shuffle=True,
         random_state=None,
         tol=0.00005,
         verbose=0,

@@ -1,7 +1,16 @@
 from datetime import datetime, timedelta
 import numpy as np
+import pandas as pd
 from sklearn import metrics
 from Models import XGB, RandomForest, MTS
+from Models.KNN import knn_regressor
+from Models.RandomForest import random_forest_model
+from Models.SVM import SVM_regressor_model
+from Models.XGB import XGB_regressor_model
+from Models.mlp_regression import mlp_model
+
+models = {'R_F': random_forest_model, "MLP": mlp_model, "XGB": XGB_regressor_model,
+          'KNN': knn_regressor, 'SVM': SVM_regressor_model}
 
 
 def select_best_model(df, features):
@@ -11,6 +20,14 @@ def select_best_model(df, features):
     for model in models:
         select_best_features(df, model, features)
 
+
+def find_models_features(df, features, dataset):
+    for model in models.keys():
+        selected, accuracy = select_best_features(df, models[model], features)
+        f_name = 'Features/'+model+dataset+'.txt'
+        f = open(f_name, 'w')
+        f.write(str(selected)+'\n'+str(accuracy))
+        f.close()
 
 
 def select_best_features(df, model, features, selected=[], accuracy=[]):
@@ -29,8 +46,7 @@ def select_best_features(df, model, features, selected=[], accuracy=[]):
     if len(features) == 0:
         print(accuracy[-1])
         print(selected)
-        ret = [var for var in selected]
-        return ret
+        return [selected, accuracy[-1]]
 
     for v in features:
         current = selected.copy()
@@ -45,8 +61,7 @@ def select_best_features(df, model, features, selected=[], accuracy=[]):
     if len(accuracy) != 0 and min_MAPE > accuracy[-1]['MAPE']:
         print(accuracy[-1])
         print(selected)
-        ret = [var for var in selected]
-        return ret
+        return [selected, accuracy[-1]]
 
     features.remove(best_var)
     selected.append(best_var)
@@ -130,3 +145,13 @@ def aggregate(y, y_predict):
         aggregated_y_pred.append(sum(y_predict[index:index + 4]) / 4)
         index += 4
     return [aggregated_y, aggregated_y_pred]
+
+
+if __name__ == '__main__':
+    features = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature",
+                "Humidity", "Pressure", "Wind speed", "Wind direction", "Snowfall",
+                "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
+    df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
+    last_date = datetime.fromisoformat(df.index[-1])-timedelta(weeks=8)
+    df = df['2020-02-15 00:15:00':str(last_date)]
+    find_models_features(df, features, '10_test')

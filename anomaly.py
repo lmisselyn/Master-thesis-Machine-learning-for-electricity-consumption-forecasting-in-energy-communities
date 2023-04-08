@@ -36,8 +36,8 @@ def one_month_anomaly(filename):
     df = pd.read_csv(filename, index_col='Datetime')
     dates = [datetime.fromisoformat(d) for d in df.index]
 
-    begin_date = dates[-1]-timedelta(weeks=4)+timedelta(minutes=15)
-    variables = helperv2.select_best_features(df[:str(begin_date)], XGB_regressor_model, features)
+    begin_date = dates[-1]-timedelta(weeks=8)+timedelta(minutes=15)
+    variables = helperv2.select_best_features(df[:str(begin_date)], XGB_regressor_model, features)[0]
     #variables = ['Minutes', 'Humidity', 'Temperature', 'Weekend', 'Week']
     x = df[variables]
     y = df['Consumption(Wh)']
