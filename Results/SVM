@@ -1,0 +1,12 @@
+
+
+
+
+Dataset10
+
+Best variables : ['Previous_4d_mean_cons', 'Humidity', 'Week', 'Month']
+Accuracy :
+        'MAE': 75.295
+        'MSE': 14364.147
+        'RMSE': 113.132
+        'MAPE': 0.352

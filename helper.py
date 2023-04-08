@@ -37,7 +37,7 @@ def plot_model(y, y_predict, model_name):
     ax.set_ylabel("Consumption(Wh)")
     ax.legend(facecolor='white')
     fig1 = plt.gcf()
-    fig1.savefig('../plots/' + model_name)
+    #fig1.savefig('../plots/' + model_name)
     plt.title(model_name)
     plt.show()
 
@@ -98,7 +98,7 @@ def one_week_test(filename, model, variables):
         y_train = y[:index]
         x_test = x[index:index + 96]
         y_test = y[index:index + 96]
-        trained_model = model(set=[x_train, y_train, x_test, y_test])
+        trained_model = model(set=[x_train, y_train, x_test, y_test], scale=True)
         y_predict = trained_model.predict(x_test)
         aggregated = aggregate(y_test.values, y_predict)
         acc = evaluate_model(aggregated[0], aggregated[1])

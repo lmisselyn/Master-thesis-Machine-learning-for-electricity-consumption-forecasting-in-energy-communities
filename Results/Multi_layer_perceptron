@@ -17,3 +17,10 @@ Accuracy :
         'MSE': 7645.4964
         'RMSE': 73.5789
         'MAPE': 0.3486
+
+Or  : ['Previous_4d_mean_cons', 'Week', 'Snowfall', 'Day', 'Weekend']
+Accuracy :
+        'MAE': 74.420
+        'MSE': 12888.489
+        'RMSE': 108.7180
+        'MAPE': 0.405
