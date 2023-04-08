@@ -24,7 +24,7 @@ def select_best_model(df, features):
 def find_models_features(df, features, dataset):
     for model in models.keys():
         selected, accuracy = select_best_features(df, models[model], features)
-        f_name = 'Features/'+model+dataset+'.txt'
+        f_name = 'Features/'+model+'_'+dataset+'.txt'
         f = open(f_name, 'w')
         f.write(str(selected)+'\n'+str(accuracy))
         f.close()
@@ -148,6 +148,7 @@ def aggregate(y, y_predict):
 
 
 if __name__ == '__main__':
+
     features = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature",
                 "Humidity", "Pressure", "Wind speed", "Wind direction", "Snowfall",
                 "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
