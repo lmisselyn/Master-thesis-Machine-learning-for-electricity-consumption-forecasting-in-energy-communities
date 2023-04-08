@@ -46,7 +46,7 @@ def select_best_features(df, model, features, selected=[], accuracy=[]):
     if len(features) == 0:
         print(accuracy[-1])
         print(selected)
-        return [selected, accuracy[-1]]
+        return selected, accuracy[-1]
 
     for v in features:
         current = selected.copy()
@@ -61,7 +61,7 @@ def select_best_features(df, model, features, selected=[], accuracy=[]):
     if len(accuracy) != 0 and min_MAPE > accuracy[-1]['MAPE']:
         print(accuracy[-1])
         print(selected)
-        return [selected, accuracy[-1]]
+        return selected, accuracy[-1]
 
     features.remove(best_var)
     selected.append(best_var)
@@ -149,10 +149,14 @@ def aggregate(y, y_predict):
 
 if __name__ == '__main__':
 
+
     features = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature",
                 "Humidity", "Pressure", "Wind speed", "Wind direction", "Snowfall",
                 "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
+
     df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
     last_date = datetime.fromisoformat(df.index[-1])-timedelta(weeks=8)
     df = df['2020-02-15 00:15:00':str(last_date)]
+    one_week_test(df, XGB_regressor_model, features)
+
     find_models_features(df, features, '10_test')
