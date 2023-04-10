@@ -12,6 +12,8 @@ from Models.mlp_regression import mlp_model
 models = {'R_F': random_forest_model, "MLP": mlp_model, "XGB": XGB_regressor_model,
           'KNN': knn_regressor, 'SVM': SVM_regressor_model}
 
+#models = {"XGB": XGB_regressor_model, 'KNN': knn_regressor}
+
 
 def select_best_model(df, features):
     models = [XGB.XGB_regressor_model,
@@ -24,10 +26,21 @@ def select_best_model(df, features):
 def find_models_features(df, features, dataset):
     for model in models.keys():
         selected, accuracy = select_best_features(df, models[model], features)
-        f_name = 'Features/'+model+'_'+dataset+'.txt'
-        f = open(f_name, 'w')
-        f.write(str(selected)+'\n'+str(accuracy))
-        f.close()
+        with open('Features/'+model+'_'+dataset+'.txt', 'w') as file:
+            file.write(str(selected)+'\n'+str(accuracy))
+
+
+def find_models_features2(df, features, dataset):
+    for model in models.keys():
+        print(models[model])
+    selected, accuracy = select_best_features(df, XGB_regressor_model, features)
+    with open('Features/' + 'XGB' + '_' + dataset + '.txt', 'w') as file:
+        file.write(str(selected) + '\n' + str(accuracy))
+
+    selected, accuracy = select_best_features(df, knn_regressor, features)
+    with open('Features/' + 'KNN' + '_' + dataset + '.txt', 'w') as file:
+        file.write(str(selected) + '\n' + str(accuracy))
+
 
 
 def select_best_features(df, model, features, selected=[], accuracy=[]):
@@ -156,7 +169,18 @@ if __name__ == '__main__':
 
     df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
     last_date = datetime.fromisoformat(df.index[-1])-timedelta(weeks=8)
-    df = df['2020-02-15 00:15:00':str(last_date)]
-    one_week_test(df, XGB_regressor_model, features)
+    df = df['2020-02-15 00:15:00':'2020-04-15 00:15:00']
+    #one_week_test(df, XGB_regressor_model, features)
 
-    find_models_features(df, features, '10_test')
+    #find_models_features2(df, features, '10_test')
+    for model in models.keys():
+        print(models[model])
+    sel, acc = select_best_features(df, XGB_regressor_model, features)
+    with open('Features/' + 'XGB' + '_' + '10' + '.txt', 'w') as file:
+        file.write(str(sel) + '\n' + str(acc))
+
+    sel, acc= select_best_features(df, knn_regressor, features)
+    with open('Features/' + 'KNN' + '_' + '10' + '.txt', 'w') as file:
+        file.write(str(sel) + '\n' + str(acc))
+
+
