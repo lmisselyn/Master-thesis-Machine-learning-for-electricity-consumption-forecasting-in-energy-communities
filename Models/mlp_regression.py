@@ -6,7 +6,6 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import train_test_split
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-import helper
 from sklearn import metrics
 from sklearn.model_selection import TimeSeriesSplit, GridSearchCV
 
@@ -53,6 +52,7 @@ def mlp_model(set, scale=False, show=False):
         max_fun=1500)
 
     model.fit(x_train, y_train)
+    """
     if show:
         y_predict = model.predict(x_test)
         aggregated = helper.aggregate(y_test.values, y_predict)
@@ -62,6 +62,7 @@ def mlp_model(set, scale=False, show=False):
         print(helper.evaluate_model(y_test.values, y_predict))
         print("Aggregated accuracy :")
         print(helper.evaluate_model(aggregated[0], aggregated[1]))
+    """
     return model
 
 def parameter_search():
