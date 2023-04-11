@@ -9,37 +9,29 @@ from Models.SVM import SVM_regressor_model
 from Models.XGB import XGB_regressor_model
 from Models.mlp_regression import mlp_model
 
+
+
 models = {'R_F': random_forest_model, "MLP": mlp_model, "XGB": XGB_regressor_model,
           'KNN': knn_regressor, 'SVM': SVM_regressor_model}
 
-#models = {"XGB": XGB_regressor_model, 'KNN': knn_regressor}
+def select_best_model(df, features, dataset):
+    """
+    Select the best model for the specific dataset
+    """
+    find_models_features(df, features, dataset)
 
-
-def select_best_model(df, features):
-    models = [XGB.XGB_regressor_model,
-                  RandomForest.random_forest_model,
-                  MTS.mts_model]
-    for model in models:
-        select_best_features(df, model, features)
 
 
 def find_models_features(df, features, dataset):
+    """
+    Find the best features for each model and store results in a text file
+    """
     for model in models.keys():
-        selected, accuracy = select_best_features(df, models[model], features)
+        selected = []
+        accuracy = []
+        select_best_features(df, models[model], features, selected, accuracy)
         with open('Features/'+model+'_'+dataset+'.txt', 'w') as file:
             file.write(str(selected)+'\n'+str(accuracy))
-
-
-def find_models_features2(df, features, dataset):
-    for model in models.keys():
-        print(models[model])
-    selected, accuracy = select_best_features(df, XGB_regressor_model, features)
-    with open('Features/' + 'XGB' + '_' + dataset + '.txt', 'w') as file:
-        file.write(str(selected) + '\n' + str(accuracy))
-
-    selected, accuracy = select_best_features(df, knn_regressor, features)
-    with open('Features/' + 'KNN' + '_' + dataset + '.txt', 'w') as file:
-        file.write(str(selected) + '\n' + str(accuracy))
 
 
 
@@ -104,16 +96,16 @@ def one_week_test(df, model, features):
     y_train = y[:str(train_last_date)]
     x_test = x[str(train_last_date):]
     y_test = y[str(train_last_date):]
+
     trained_model = model(set=[x_train, y_train, x_test, y_test])
 
     test_first_date = train_last_date
-
+    '''
     for i in range(1, 8):
         end_of_day = test_first_date+timedelta(days=1)
         x_test = x[str(test_first_date):str(end_of_day)]
         y_test = y[str(test_first_date):str(end_of_day)]
         test_first_date = end_of_day
-
         y_predict = trained_model.predict(x_test)
         aggregated = aggregate(y_test.values, y_predict)
         acc = evaluate_model(aggregated[0], aggregated[1])
@@ -123,6 +115,7 @@ def one_week_test(df, model, features):
     for k in results.keys():
         results[k] = np.mean(results[k])
     return results
+    '''
 
 
 def evaluate_model(y, y_pred, show=False):
@@ -169,18 +162,13 @@ if __name__ == '__main__':
 
     df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
     last_date = datetime.fromisoformat(df.index[-1])-timedelta(weeks=8)
-    df = df['2020-02-15 00:15:00':'2020-04-15 00:15:00']
-    #one_week_test(df, XGB_regressor_model, features)
+    df = df['2020-02-15 00:15:00':'2020-05-15 00:15:00']
+    #find_models_features(df, features.copy(), '10_test')
+    one_week_test(df, mlp_model, features)
 
-    #find_models_features2(df, features, '10_test')
-    for model in models.keys():
-        print(models[model])
-    sel, acc = select_best_features(df, XGB_regressor_model, features)
-    with open('Features/' + 'XGB' + '_' + '10' + '.txt', 'w') as file:
-        file.write(str(sel) + '\n' + str(acc))
 
-    sel, acc= select_best_features(df, knn_regressor, features)
-    with open('Features/' + 'KNN' + '_' + '10' + '.txt', 'w') as file:
-        file.write(str(sel) + '\n' + str(acc))
+
+
+
 
 

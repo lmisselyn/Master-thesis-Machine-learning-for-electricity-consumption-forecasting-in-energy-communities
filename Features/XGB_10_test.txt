@@ -1,2 +1,2 @@
-['Minutes', 'Wind speed', 'Snow depth', 'Wind direction', 'Temperature', 'Snowfall']
-{'MAE': 105.58408037821451, 'MSE': 24424.379478859424, 'RMSE': 143.70761175591983, 'MAPE': 0.40257781941916526}
+['Irradiation', 'Weekend', 'Month']
+{'MAE': 94.2323675042107, 'MSE': 21803.992675398742, 'RMSE': 134.09406316066944, 'MAPE': 0.4709508780665152}

@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 import pandas as pd
 from sklearn.metrics import mean_squared_error
 from sklearn.neural_network import MLPRegressor
@@ -6,6 +8,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 import helper
 from sklearn import metrics
+from sklearn.model_selection import TimeSeriesSplit, GridSearchCV
 
 
 def mlp_model(set, scale=False, show=False):
@@ -22,8 +25,8 @@ def mlp_model(set, scale=False, show=False):
     if scale:
         sc = StandardScaler()
         scaler = sc.fit(x_train)
-        x_train = scaler.transform(x_train)
-        x_test = scaler.transform(x_test)
+        x_train = pd.DataFrame(scaler.transform(x_train), x_train.index, x_train.columns)
+        x_test = pd.DataFrame(scaler.transform(x_test), x_test.index, x_train.columns)
 
     model = MLPRegressor(
         hidden_layer_sizes=(250, 500,),
@@ -41,7 +44,7 @@ def mlp_model(set, scale=False, show=False):
         warm_start=False,
         momentum=0.9,
         nesterovs_momentum=True,
-        early_stopping=True,
+        early_stopping=False,
         validation_fraction=0.1,
         beta_1=0.9,
         beta_2=0.999,
@@ -61,21 +64,43 @@ def mlp_model(set, scale=False, show=False):
         print(helper.evaluate_model(aggregated[0], aggregated[1]))
     return model
 
+def parameter_search():
+    parameters = {'hidden_layer_sizes': [(100, 200), (100, 100, 100), (100, 200, 500), (250, 500), (250, 500, 1000), (64, 128, 64)],
+                  'activation': ['relu', 'tahn', 'logistic'],
+                  'solver': ['sgd', 'adam'],
+                  'batch_size': [200, 300, 400, 500],
+                  'learning_rate': ['constant', 'adaptive'],
+                  'learning_rate_init': [0.001, 0.002, 0.003, 0.005],
+                  'max_iter': [200, 300, 500, 1000],
+                  'shuffle': [False, True],
+                  'warm_start': [False, True],
+                  'early_stopping': [False, True]}
 
-if __name__ == '__main__':
-
-    variables10 = ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
     var10 = ['Previous_4d_mean_cons', 'Snow depth', 'Weekend', 'Irradiation', 'Minutes', 'Week',
              'Wind direction', 'Month', 'Snowfall', 'Temperature', 'Rainfall']
-    df = pd.read_csv('../Datasets/10_test.csv', index_col=["Datetime"],
-                             parse_dates=["Datetime"])
 
-    train_set = df['2020-02-16 00:00:00':'2021-02-05 00:00:00']
-    test_set = df['2021-02-05 00:00:00':'2021-02-06 00:00:00']
+    df = pd.read_csv('../Datasets/10_test.csv', index_col='Datetime')
+    df = df['2020-02-16 00:00:00':'2020-08-16 00:00:00']
 
-    x_train = np.transpose([train_set[var].to_numpy() for var in var10])
-    y_train = train_set["Consumption(Wh)"]
-    x_test = np.transpose([test_set[var].to_numpy() for var in var10])
-    y_test = test_set["Consumption(Wh)"]
+    df.reset_index(inplace=True)
+    x_train = df[var10]
+    y_train = df["Consumption(Wh)"]
 
-    mlp_model(set=[x_train, y_train, x_test, y_test], scale=True, show=True)
+    sc = StandardScaler()
+    scaler = sc.fit(x_train)
+    x_train = scaler.transform(x_train)
+
+    tscv = TimeSeriesSplit(n_splits=5, test_size=672)
+
+    mlp_gs = GridSearchCV(MLPRegressor(), param_grid=parameters, cv=tscv,
+                          scoring='neg_root_mean_squared_error')
+    mlp_gs.fit(x_train, y_train)
+    best_params = mlp_gs.best_params_
+    best_score = mlp_gs.best_score_
+
+    with open('mlp_gridsearch', 'w') as f:
+        f.write(str(best_params) + '\n' + str(best_score))
+
+
+if __name__ == '__main__':
+    parameter_search()
