@@ -67,12 +67,12 @@ def mlp_model(set, scale=False, show=False):
 
 def parameter_search():
     parameters = {'hidden_layer_sizes': [(100, 200), (100, 100, 100), (100, 200, 500), (250, 500), (250, 500, 1000), (64, 128, 64)],
-                  'activation': ['relu', 'tahn', 'logistic'],
-                  'solver': ['sgd', 'adam'],
+                  'activation': ['relu'],
+                  'solver': ['adam'],
                   'batch_size': [200, 300, 400, 500],
-                  'learning_rate': ['constant', 'adaptive'],
+                  'learning_rate': ['adaptive', 'constant'],
                   'learning_rate_init': [0.001, 0.002, 0.003, 0.005],
-                  'max_iter': [200, 300, 500, 1000],
+                  'max_iter': [500, 700, 1000],
                   'shuffle': [False, True],
                   'warm_start': [False, True],
                   'early_stopping': [False, True]}
