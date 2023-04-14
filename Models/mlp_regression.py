@@ -69,13 +69,12 @@ def parameter_search():
     parameters = {'hidden_layer_sizes': [(100, 200), (100, 100, 100), (100, 200, 500), (250, 500), (250, 500, 1000), (64, 128, 64)],
                   'activation': ['relu'],
                   'solver': ['adam'],
-                  'batch_size': [200, 300, 400, 500],
-                  'learning_rate': ['adaptive', 'constant'],
-                  'learning_rate_init': [0.001, 0.002, 0.003, 0.005],
-                  'max_iter': [500, 700, 1000],
-                  'shuffle': [False, True],
-                  'warm_start': [False, True],
-                  'early_stopping': [False, True]}
+                  'learning_rate': ['adaptive'],
+                  'learning_rate_init': [0.005],
+                  'max_iter': [1500],
+                  'shuffle': [False],
+                  'warm_start': [False],
+                  'early_stopping': [True]}
 
     var10 = ['Previous_4d_mean_cons', 'Snow depth', 'Weekend', 'Irradiation', 'Minutes', 'Week',
              'Wind direction', 'Month', 'Snowfall', 'Temperature', 'Rainfall']
