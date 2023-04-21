@@ -3,6 +3,7 @@ import xgboost
 from sklearn.preprocessing import StandardScaler
 import helper
 import numpy as np
+from pandas import DataFrame
 
 #from sklearn.model_selection import GridSearchCV
 
@@ -20,8 +21,8 @@ def XGB_regressor_model(set, scale=False, show=False):
     if scale:
         sc = StandardScaler()
         scaler = sc.fit(x_train)
-        x_train = scaler.transform(x_train)
-        x_test = scaler.transform(x_test)
+        x_train = DataFrame(scaler.transform(x_train), x_train.index, x_train.columns)
+        x_test = DataFrame(scaler.transform(x_test), x_test.index, x_train.columns)
 
     model = xgboost.XGBRegressor(
         booster='gbtree',
@@ -61,7 +62,7 @@ if __name__ == '__main__':
 
     #date = datetime.fromisoformat()
     train_set = df['2020-02-16 00:00:00':'2021-01-07 00:00:00']
-    test_set = df['2021-01-15 00:00:00':'2021-01-16 00:00:00']
+    test_set = df['2021-01-07 00:00:00':'2021-01-08 00:00:00']
 
     x_train = np.transpose([train_set[var].to_numpy() for var in variables10])
     y_train = train_set["Consumption(Wh)"]

@@ -64,8 +64,6 @@ def select_best_features(df, model, features, selected=[], accuracy=[]):
 
     # If no improvement then return
     if len(accuracy) != 0 and min_MAPE > accuracy[-1]['MAPE']:
-        print(accuracy[-1])
-        print(selected)
         return selected, accuracy[-1]
 
     features.remove(best_var)
@@ -100,7 +98,7 @@ def one_week_test(df, model, features):
     trained_model = model(set=[x_train, y_train, x_test, y_test])
 
     test_first_date = train_last_date
-    '''
+
     for i in range(1, 8):
         end_of_day = test_first_date+timedelta(days=1)
         x_test = x[str(test_first_date):str(end_of_day)]
@@ -115,7 +113,7 @@ def one_week_test(df, model, features):
     for k in results.keys():
         results[k] = np.mean(results[k])
     return results
-    '''
+
 
 
 def evaluate_model(y, y_pred, show=False):
@@ -154,7 +152,7 @@ def aggregate(y, y_predict):
 
 
 if __name__ == '__main__':
-
+    var10 = ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
 
     features = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature",
                 "Humidity", "Pressure", "Wind speed", "Wind direction", "Snowfall",
@@ -162,9 +160,9 @@ if __name__ == '__main__':
 
     df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
     last_date = datetime.fromisoformat(df.index[-1])-timedelta(weeks=8)
-    df = df['2020-02-15 00:15:00':'2020-05-15 00:15:00']
+    df = df['2020-02-15 00:15:00':'2020-08-15 00:15:00']
     #find_models_features(df, features.copy(), '10_test')
-    one_week_test(df, mlp_model, features)
+    print(one_week_test(df, mlp_model, var10))
 
 
 

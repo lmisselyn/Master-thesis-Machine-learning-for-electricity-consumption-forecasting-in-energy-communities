@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-
 import pandas as pd
 from sklearn.metrics import mean_squared_error
 from sklearn.neural_network import MLPRegressor
@@ -8,7 +7,9 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn import metrics
 from sklearn.model_selection import TimeSeriesSplit, GridSearchCV
-
+from helperv2 import *
+from helper import plot_model
+import warnings
 
 def mlp_model(set, scale=False, show=False):
     """
@@ -31,41 +32,28 @@ def mlp_model(set, scale=False, show=False):
         hidden_layer_sizes=(250, 500,),
         activation='relu',
         solver='adam',
-        alpha=0.0005,
-        batch_size='auto',
         learning_rate='adaptive',
-        learning_rate_init=0.007,
-        power_t=0.5,
-        max_iter=500,
-        random_state=None,
-        tol=0.00005,
-        verbose=0,
-        warm_start=False,
-        momentum=0.9,
-        nesterovs_momentum=True,
+        learning_rate_init=0.005,
+        max_iter=1000,
         early_stopping=False,
-        validation_fraction=0.1,
-        beta_1=0.9,
-        beta_2=0.999,
-        epsilon=1e-08,
-        n_iter_no_change=10,
-        max_fun=1500)
+        validation_fraction=0.1)
 
     model.fit(x_train, y_train)
-    """
+
     if show:
         y_predict = model.predict(x_test)
-        aggregated = helper.aggregate(y_test.values, y_predict)
-        helper.plot_model(y_test.values, y_predict, 'mlp')
-        helper.plot_model(aggregated[0], aggregated[1], 'mlp_aggregated')
+        aggregated = aggregate(y_test.values, y_predict)
+        plot_model(y_test.values, y_predict, 'mlp')
+        plot_model(aggregated[0], aggregated[1], 'mlp_aggregated')
         print('Accuracy :')
-        print(helper.evaluate_model(y_test.values, y_predict))
+        print(evaluate_model(y_test.values, y_predict))
         print("Aggregated accuracy :")
-        print(helper.evaluate_model(aggregated[0], aggregated[1]))
-    """
+        print(evaluate_model(aggregated[0], aggregated[1]))
+
     return model
 
 def parameter_search():
+    warnings.filterwarnings('ignore')
     parameters = {'hidden_layer_sizes': [(100, 200), (100, 100, 100), (100, 200, 500), (250, 500), (250, 500, 1000), (64, 128, 64)],
                   'activation': ['relu'],
                   'solver': ['adam'],
@@ -76,8 +64,7 @@ def parameter_search():
                   'warm_start': [False],
                   'early_stopping': [True]}
 
-    var10 = ['Previous_4d_mean_cons', 'Snow depth', 'Weekend', 'Irradiation', 'Minutes', 'Week',
-             'Wind direction', 'Month', 'Snowfall', 'Temperature', 'Rainfall']
+    var10 = ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
 
     df = pd.read_csv('../Datasets/10_test.csv', index_col='Datetime')
     df = df['2020-02-16 00:00:00':'2020-08-16 00:00:00']
@@ -85,10 +72,6 @@ def parameter_search():
     df.reset_index(inplace=True)
     x_train = df[var10]
     y_train = df["Consumption(Wh)"]
-
-    sc = StandardScaler()
-    scaler = sc.fit(x_train)
-    x_train = scaler.transform(x_train)
 
     tscv = TimeSeriesSplit(n_splits=5, test_size=672)
 
@@ -103,4 +86,19 @@ def parameter_search():
 
 
 if __name__ == '__main__':
+    '''
+    variables10 = ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
+    df = pd.read_csv('../Datasets/10_test.csv', index_col=["Datetime"],
+                             parse_dates=["Datetime"])
+
+    #date = datetime.fromisoformat()
+    x = df[variables10]
+    y = df["Consumption(Wh)"]
+    x_train = x['2020-02-16 00:00:00':'2021-01-07 00:00:00']
+    y_train = y['2020-02-16 00:00:00':'2021-01-07 00:00:00']
+    x_test = x['2021-01-07 00:00:00':'2021-01-08 00:00:00']
+    y_test = y['2021-01-07 00:00:00':'2021-01-08 00:00:00']
+
+    mlp_model(set=[x_train, y_train, x_test, y_test], show=True, scale=True)
+    '''
     parameter_search()
