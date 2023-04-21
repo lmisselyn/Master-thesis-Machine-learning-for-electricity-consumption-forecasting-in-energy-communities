@@ -10,7 +10,6 @@ from Models.XGB import XGB_regressor_model
 from Models.mlp_regression import mlp_model
 
 
-
 models = {'R_F': random_forest_model, "MLP": mlp_model, "XGB": XGB_regressor_model,
           'KNN': knn_regressor, 'SVM': SVM_regressor_model}
 
@@ -19,7 +18,6 @@ def select_best_model(df, features, dataset):
     Select the best model for the specific dataset
     """
     find_models_features(df, features, dataset)
-
 
 
 def find_models_features(df, features, dataset):
@@ -69,6 +67,8 @@ def select_best_features(df, model, features, selected=[], accuracy=[]):
     features.remove(best_var)
     selected.append(best_var)
     accuracy.append(best_acc)
+    print(selected)
+    print(best_acc)
     return select_best_features(df, model, features,
                                 selected=selected, accuracy=accuracy)
 
@@ -90,12 +90,13 @@ def one_week_test(df, model, features):
     last_date = dates[-1]
     train_last_date = last_date-timedelta(weeks=1)
 
+
     x_train = x[:str(train_last_date)]
     y_train = y[:str(train_last_date)]
     x_test = x[str(train_last_date):]
     y_test = y[str(train_last_date):]
 
-    trained_model = model(set=[x_train, y_train, x_test, y_test])
+    trained_model = model(set=[x_train, y_train, x_test, y_test] )
 
     test_first_date = train_last_date
 
@@ -159,10 +160,15 @@ if __name__ == '__main__':
                 "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
     df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
-    last_date = datetime.fromisoformat(df.index[-1])-timedelta(weeks=8)
-    df = df['2020-02-15 00:15:00':'2020-08-15 00:15:00']
-    #find_models_features(df, features.copy(), '10_test')
-    print(one_week_test(df, mlp_model, var10))
+    dates = [datetime.fromisoformat(d) for d in df.index]
+
+    begin_date = dates[-1]-timedelta(weeks=4)+timedelta(minutes=15)
+    select = []
+    acc = []
+    select_best_features(df, XGB_regressor_model, features, select, acc)
+    print(select)
+    print(acc[-1])
+
 
 
 

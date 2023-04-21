@@ -1,12 +1,9 @@
 from datetime import datetime, timedelta
-
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn import metrics
 from sklearn.feature_selection import SelectKBest, f_regression
-import helper
-from Models import RandomForest, XGB, SVM
 
 
 def make_sets(filename):
@@ -203,7 +200,13 @@ def select_best_features(filename, model, variables, selected=[], accuracy=[]):
 
 
 if __name__ == '__main__':
-    variables = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
-             "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
+    features = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature",
+                "Humidity", "Pressure", "Wind speed", "Wind direction", "Snowfall",
+                "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
-    select_best_features('Datasets/10_test.csv', XGB.XGB_regressor_model, variables)
+
+    select = []
+    acc = []
+    select_best_features('Datasets/10_test.csv', XGB_regressor_model, features, select, acc)
+    print(select)
+    print(acc)

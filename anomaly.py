@@ -38,8 +38,8 @@ def one_month_anomaly(filename):
 
     begin_date = dates[-1]-timedelta(weeks=4)+timedelta(minutes=15)
     #best_model = helperv2.select_best_model()
-    #variables = helperv2.select_best_features(df[:str(begin_date)], XGB_regressor_model, features)[0]
-    variables = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
+    variables = helperv2.select_best_features(df[:str(begin_date)], XGB_regressor_model, features)[0]
+    #variables = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
     x = df[variables]
     y = df['Consumption(Wh)']
 

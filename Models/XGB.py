@@ -1,8 +1,8 @@
 import pandas as pd
 import xgboost
 from sklearn.preprocessing import StandardScaler
-import helper
 import numpy as np
+import helper
 from pandas import DataFrame
 
 #from sklearn.model_selection import GridSearchCV
@@ -21,8 +21,8 @@ def XGB_regressor_model(set, scale=False, show=False):
     if scale:
         sc = StandardScaler()
         scaler = sc.fit(x_train)
-        x_train = DataFrame(scaler.transform(x_train), x_train.index, x_train.columns)
-        x_test = DataFrame(scaler.transform(x_test), x_test.index, x_train.columns)
+        x_train = scaler.transform(x_train)
+        x_test = scaler.transform(x_test)
 
     model = xgboost.XGBRegressor(
         booster='gbtree',

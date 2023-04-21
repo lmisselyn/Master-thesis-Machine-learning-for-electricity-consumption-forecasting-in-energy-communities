@@ -7,11 +7,11 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn import metrics
 from sklearn.model_selection import TimeSeriesSplit, GridSearchCV
-from helperv2 import *
 from helper import plot_model
 import warnings
 
 def mlp_model(set, scale=False, show=False):
+    warnings.filterwarnings('ignore')
     """
     train a random multi layer perceptron model with the dataset 'filename'
     - set (optional) : provide train and test sets
@@ -29,13 +29,13 @@ def mlp_model(set, scale=False, show=False):
         x_test = pd.DataFrame(scaler.transform(x_test), x_test.index, x_train.columns)
 
     model = MLPRegressor(
-        hidden_layer_sizes=(250, 500,),
+        hidden_layer_sizes=(100, 100, 100),
         activation='relu',
         solver='adam',
         learning_rate='adaptive',
         learning_rate_init=0.005,
-        max_iter=1000,
-        early_stopping=False,
+        max_iter=1500,
+        early_stopping=True,
         validation_fraction=0.1)
 
     model.fit(x_train, y_train)
@@ -53,7 +53,7 @@ def mlp_model(set, scale=False, show=False):
     return model
 
 def parameter_search():
-    warnings.filterwarnings('ignore')
+
     parameters = {'hidden_layer_sizes': [(100, 200), (100, 100, 100), (100, 200, 500), (250, 500), (250, 500, 1000), (64, 128, 64)],
                   'activation': ['relu'],
                   'solver': ['adam'],
@@ -86,13 +86,15 @@ def parameter_search():
 
 
 if __name__ == '__main__':
-    '''
+
     variables10 = ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
+    var10 = ['Previous_4d_mean_cons', 'Week', 'Snowfall', 'Day', 'Weekend']
+
     df = pd.read_csv('../Datasets/10_test.csv', index_col=["Datetime"],
                              parse_dates=["Datetime"])
 
     #date = datetime.fromisoformat()
-    x = df[variables10]
+    x = df[var10]
     y = df["Consumption(Wh)"]
     x_train = x['2020-02-16 00:00:00':'2021-01-07 00:00:00']
     y_train = y['2020-02-16 00:00:00':'2021-01-07 00:00:00']
@@ -100,5 +102,5 @@ if __name__ == '__main__':
     y_test = y['2021-01-07 00:00:00':'2021-01-08 00:00:00']
 
     mlp_model(set=[x_train, y_train, x_test, y_test], show=True, scale=True)
-    '''
-    parameter_search()
+
+    #parameter_search()
