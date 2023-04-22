@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn import metrics
 from sklearn.model_selection import TimeSeriesSplit, GridSearchCV
-from helper import plot_model
+from helper import *
 import warnings
 
 def mlp_model(set, scale=False, show=False):

@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 from sklearn import metrics
-from Models import XGB, RandomForest, MTS
 from Models.KNN import knn_regressor
 from Models.RandomForest import random_forest_model
 from Models.SVM import SVM_regressor_model
@@ -96,7 +95,7 @@ def one_week_test(df, model, features):
     x_test = x[str(train_last_date):]
     y_test = y[str(train_last_date):]
 
-    trained_model = model(set=[x_train, y_train, x_test, y_test] )
+    trained_model = model(set=[x_train, y_train, x_test, y_test])
 
     test_first_date = train_last_date
 
@@ -114,7 +113,6 @@ def one_week_test(df, model, features):
     for k in results.keys():
         results[k] = np.mean(results[k])
     return results
-
 
 
 def evaluate_model(y, y_pred, show=False):
@@ -160,14 +158,7 @@ if __name__ == '__main__':
                 "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
     df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
-    dates = [datetime.fromisoformat(d) for d in df.index]
-
-    begin_date = dates[-1]-timedelta(weeks=4)+timedelta(minutes=15)
-    select = []
-    acc = []
-    select_best_features(df, XGB_regressor_model, features, select, acc)
-    print(select)
-    print(acc[-1])
+    find_models_features(df['2020-02-16 00:00:00':], features, 'Datasets/10_test.csv')
 
 
 
