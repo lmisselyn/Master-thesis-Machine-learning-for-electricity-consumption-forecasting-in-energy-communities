@@ -1,16 +1,20 @@
 from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
+from sklearn.model_selection import TimeSeriesSplit, GridSearchCV
+from helper import aggregate, evaluate_model
 from sklearn import metrics
 from Models.KNN import knn_regressor
 from Models.RandomForest import random_forest_model
 from Models.SVM import SVM_regressor_model
 from Models.XGB import XGB_regressor_model
 from Models.mlp_regression import mlp_model
+from sklearn.ensemble import RandomForestRegressor
 
 
-models = {'KNN': knn_regressor, "XGB": XGB_regressor_model, 'R_F': random_forest_model,
-          "MLP": mlp_model, 'SVM': SVM_regressor_model}
+models = {'R_F': random_forest_model, "MLP": mlp_model} # "XGB": XGB_regressor_model,
+
+source_models = {"XGB": XGB_regressor_model, 'R_F': RandomForestRegressor(), "MLP": mlp_model}
 
 def select_best_model(dataset):
     best_acc = 100
@@ -37,10 +41,21 @@ def find_models_features(df, features, dataset):
         selected = []
         accuracy = []
         select_best_features(df, models[model], features, selected, accuracy)
+        result = ''
+        for s in selected:
+            result += s + " "
+
         with open('Features/'+model+'_'+dataset+'.txt', 'w') as file:
-            file.write(str(selected)+'\n'+str(accuracy))
+            file.write(result + '\n' + str(accuracy))
 
 
+def get_feature(model, dataset):
+    """
+    Retrieve the best features for a specific model and dataset
+    """
+    with open('Features/'+model+'_'+dataset+'.txt', 'r') as file:
+        features = file.readline().split(' ')[:-1]
+        return features
 
 def select_best_features(df, model, features, selected=[], accuracy=[]):
     """
@@ -125,39 +140,25 @@ def one_week_test(df, model, features):
     return results
 
 
-def evaluate_model(y, y_pred, show=False):
-    """
-    :param y: trues values
-    :param y_pred: predicted values
-    :param show: set True for plots and prints
-    :return: Accuracy measures
-    """
-    MAE = metrics.mean_absolute_error(y, y_pred)
-    MSE = metrics.mean_squared_error(y, y_pred)
-    RMSE = metrics.mean_squared_error(y, y_pred, squared=False)
-    MAPE = metrics.mean_absolute_percentage_error(y, y_pred)
-    if show:
-        print("Mean absolute error : " + str(MAE))
-        print("Mean squared error : " + str(MSE))
-        print("Root Mean square error : " + str(RMSE))
-        print("Mean absolute percentage error : " + str(MAPE))
-    return {"MAE": MAE, "MSE": MSE, "RMSE": RMSE, "MAPE": MAPE}
+def parameter_search(df, parameters, model, dataset):
 
+    df = df['2020-02-16 00:00:00':]
+    features = get_feature(model, dataset)
 
-def aggregate(y, y_predict):
-    """
-    :param y: true values
-    :param y_predict: predicted values
-    :return: aggregates values hour by hour
-    """
-    aggregated_y = []
-    aggregated_y_pred = []
-    index = 0
-    while index <= len(y) - 4:
-        aggregated_y.append(sum(y[index:index + 4]) / 4)
-        aggregated_y_pred.append(sum(y_predict[index:index + 4]) / 4)
-        index += 4
-    return [aggregated_y, aggregated_y_pred]
+    df.reset_index(inplace=True)
+    x_train = df[features]
+    y_train = df["Consumption(Wh)"]
+
+    tscv = TimeSeriesSplit(n_splits=5, test_size=672)
+
+    mlp_gs = GridSearchCV(source_models[model], param_grid=parameters, cv=tscv,
+                          scoring='neg_root_mean_squared_error')
+    mlp_gs.fit(x_train, y_train)
+    best_params = mlp_gs.best_params_
+    best_score = mlp_gs.best_score_
+
+    with open('Parameters/' + model + dataset + '.txt', 'w') as f:
+        f.write(str(best_params) + '\n' + str(best_score))
 
 
 if __name__ == '__main__':
@@ -166,12 +167,22 @@ if __name__ == '__main__':
                 "Humidity", "Pressure", "Wind speed", "Wind direction", "Snowfall",
                 "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
+
     df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
     find_models_features(df['2020-02-16 00:00:00':], features, '10_test')
 
+    '''
+    get_feature('KNN', '10_test')
 
 
 
+    param = {'n_estimators': [75, 100, 150, 200],
+             'criterion': ['squared_error', 'absolute_error'],
+             'max_depth': [None, 6, 20]
+             }
+    parameter_search(df, param, 'R_F', '10_test')
+
+    '''
 
 
 
