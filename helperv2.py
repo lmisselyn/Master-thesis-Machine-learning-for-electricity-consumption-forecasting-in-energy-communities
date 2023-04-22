@@ -9,14 +9,24 @@ from Models.XGB import XGB_regressor_model
 from Models.mlp_regression import mlp_model
 
 
-models = {'R_F': random_forest_model, "MLP": mlp_model, "XGB": XGB_regressor_model,
-          'KNN': knn_regressor, 'SVM': SVM_regressor_model}
+models = {'KNN': knn_regressor, "XGB": XGB_regressor_model, 'R_F': random_forest_model,
+          "MLP": mlp_model, 'SVM': SVM_regressor_model}
 
-def select_best_model(df, features, dataset):
+def select_best_model(dataset):
+    best_acc = 100
+    best_model = 0
     """
     Select the best model for the specific dataset
     """
-    find_models_features(df, features, dataset)
+    for model in models.keys():
+        with open('Features/'+model+'_'+dataset+'.txt', 'r') as file:
+            line = file.readlines()[1]
+            acc = line.split(':')
+            mape = float(acc[-1].strip()[:6])
+            if mape < best_acc:
+                best_acc = mape
+                best_model = model
+    return best_model
 
 
 def find_models_features(df, features, dataset):
@@ -151,15 +161,13 @@ def aggregate(y, y_predict):
 
 
 if __name__ == '__main__':
-    var10 = ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
 
     features = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature",
                 "Humidity", "Pressure", "Wind speed", "Wind direction", "Snowfall",
                 "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
     df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
-    find_models_features(df['2020-02-16 00:00:00':], features, 'Datasets/10_test.csv')
-
+    find_models_features(df['2020-02-16 00:00:00':], features, '10_test')
 
 
 
