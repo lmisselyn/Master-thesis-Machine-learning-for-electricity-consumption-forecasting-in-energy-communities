@@ -12,7 +12,7 @@ from Models.mlp_regression import mlp_model
 from sklearn.ensemble import RandomForestRegressor
 
 
-models = {'R_F': random_forest_model, "MLP": mlp_model} # "XGB": XGB_regressor_model,
+models = {"XGB": XGB_regressor_model, 'R_F': random_forest_model, "MLP": mlp_model}
 
 source_models = {"XGB": XGB_regressor_model, 'R_F': RandomForestRegressor(), "MLP": mlp_model}
 
@@ -167,11 +167,12 @@ if __name__ == '__main__':
                 "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
 
-    df = pd.read_csv('Datasets/09_test.csv', index_col='Datetime')
+    df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
 
-    find_models_features(df['2020-06-09 00:00:00':], features, '09_test')
+    #print(select_best_model('09_test'))
+    #find_models_features(df['2020-06-09 00:00:00':], features, '09_test')
 
-    """
+
 
     rf_param = {'n_estimators': [75, 100, 150, 200],
              'criterion': ['squared_error', 'absolute_error'],
@@ -199,10 +200,7 @@ if __name__ == '__main__':
 
     parameter_search(df['2020-02-16 00:00:00':], rf_param, 'R_F', '10_test')
 
-    parameter_search(df['2020-02-16 00:00:00':], mlp_param, 'R_F', '10_test')
+    parameter_search(df['2020-02-16 00:00:00':], mlp_param, 'MLP', '10_test')
 
-    parameter_search(df['2020-02-16 00:00:00':], xgb_param, 'R_F', '10_test')
-
-    """
-
+    parameter_search(df['2020-02-16 00:00:00':], xgb_param, 'XGB', '10_test')
 
