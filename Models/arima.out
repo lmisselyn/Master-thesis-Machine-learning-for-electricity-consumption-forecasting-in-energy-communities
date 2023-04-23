@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/etinfo/users/2020/lmisselyn/Documents/Master_thesis/Master-thesis/Models/ARIMA.py", line 9, in <module>
+    import helper
+ModuleNotFoundError: No module named 'helper'
