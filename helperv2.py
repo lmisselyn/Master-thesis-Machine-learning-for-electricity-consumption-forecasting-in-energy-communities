@@ -162,27 +162,45 @@ def parameter_search(df, parameters, model, dataset):
 
 
 if __name__ == '__main__':
-
     features = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature",
                 "Humidity", "Pressure", "Wind speed", "Wind direction", "Snowfall",
                 "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
 
     df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
-    find_models_features(df['2020-02-16 00:00:00':], features, '10_test')
 
-    '''
-    get_feature('KNN', '10_test')
+    #find_models_features(df['2020-02-16 00:00:00':], features, '10_test')
 
-
-
-    param = {'n_estimators': [75, 100, 150, 200],
+    rf_param = {'n_estimators': [75, 100, 150, 200],
              'criterion': ['squared_error', 'absolute_error'],
-             'max_depth': [None, 6, 20]
-             }
-    parameter_search(df, param, 'R_F', '10_test')
+             'max_depth': [None, 6, 20]}
 
-    '''
+    mlp_param = {'hidden_layer_sizes': [(150, 150, 150), (100, 100, 100), (500, 500, 500), (1000, 100)],
+                  'activation': ['relu'],
+                  'solver': ['adam'],
+                  'learning_rate': ['adaptive'],
+                  'learning_rate_init': [0.005],
+                  'max_iter': [1500],
+                  'shuffle': [False],
+                  'warm_start': [False],
+                  'early_stopping': [True]}
+
+    xgb_param = {'booster': ['gbtree'],
+                 'eta': [0.015, 0.05, 0.2, 0.3],
+                 'gamma': [0, 1, 2],
+                 'subsample': [0.7, 1],
+                 'eval_metric': ['rmse'],
+                 'early_stopping_rounds': [100],
+                 'objective': ['reg:squarederror'],
+                 'max_depth': [None, 5, 6],
+                 'n_estimators': [100]}
+
+    parameter_search(df['2020-02-16 00:00:00':], rf_param, 'R_F', '10_test')
+
+    parameter_search(df['2020-02-16 00:00:00':], mlp_param, 'R_F', '10_test')
+
+    parameter_search(df['2020-02-16 00:00:00':], xgb_param, 'R_F', '10_test')
+
 
 
 

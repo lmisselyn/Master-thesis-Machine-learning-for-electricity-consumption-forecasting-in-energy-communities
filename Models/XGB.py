@@ -48,37 +48,6 @@ def XGB_regressor_model(set, scale=False, show=False):
 
     return model
 
-def parameter_search():
-
-    parameters = {'hidden_layer_sizes': [(100, 200), (100, 100, 100), (100, 200, 500), (250, 500), (250, 500, 1000), (64, 128, 64)],
-                  'activation': ['relu'],
-                  'solver': ['adam'],
-                  'learning_rate': ['adaptive'],
-                  'learning_rate_init': [0.005],
-                  'max_iter': [1500],
-                  'shuffle': [False],
-                  'warm_start': [False],
-                  'early_stopping': [True]}
-
-    var10 = ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
-
-    df = pd.read_csv('../Datasets/10_test.csv', index_col='Datetime')
-    df = df['2020-02-16 00:00:00':'2020-08-16 00:00:00']
-
-    df.reset_index(inplace=True)
-    x_train = df[var10]
-    y_train = df["Consumption(Wh)"]
-
-    tscv = TimeSeriesSplit(n_splits=5, test_size=672)
-
-    mlp_gs = GridSearchCV(MLPRegressor(), param_grid=parameters, cv=tscv,
-                          scoring='neg_root_mean_squared_error')
-    mlp_gs.fit(x_train, y_train)
-    best_params = mlp_gs.best_params_
-    best_score = mlp_gs.best_score_
-
-    with open('mlp_gridsearch', 'w') as f:
-        f.write(str(best_params) + '\n' + str(best_score))
 
 
 if __name__ == '__main__':
