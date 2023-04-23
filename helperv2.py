@@ -167,9 +167,11 @@ if __name__ == '__main__':
                 "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
 
-    df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
+    df = pd.read_csv('Datasets/09_test.csv', index_col='Datetime')
 
-    #find_models_features(df['2020-02-16 00:00:00':], features, '10_test')
+    find_models_features(df['2020-06-09 00:00:00':], features, '09_test')
+
+    """
 
     rf_param = {'n_estimators': [75, 100, 150, 200],
              'criterion': ['squared_error', 'absolute_error'],
@@ -201,6 +203,6 @@ if __name__ == '__main__':
 
     parameter_search(df['2020-02-16 00:00:00':], xgb_param, 'R_F', '10_test')
 
-
+    """
 
 

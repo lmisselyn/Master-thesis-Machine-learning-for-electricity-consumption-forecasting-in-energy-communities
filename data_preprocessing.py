@@ -222,9 +222,9 @@ def mean_cons_by_hour2(filename):
             print(mean_array(tmp))
     mean_cons.reverse()
     df['Previous_4d_mean_cons'] = mean_cons
-    df.to_csv('Datasets/10_test.csv')
+    df.to_csv('Datasets/09_test.csv')
 
 
 
 if __name__ == '__main__':
-    mean_cons_by_hour2("Datasets/one_year_10_datetime.csv")
+    mean_cons_by_hour2("Datasets/one_year_09_datetime.csv")

@@ -70,6 +70,5 @@ def one_month_anomaly(filename):
         begin_date = end_date
 
 
-
 if __name__ == '__main__':
     one_month_anomaly('Datasets/10_test.csv')
