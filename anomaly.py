@@ -40,10 +40,11 @@ def anomaly_simulator(df, n_week, n_days, dataset):
     dates = [datetime.fromisoformat(d) for d in df.index]
     begin_date = dates[-1]-timedelta(weeks=n_week)+timedelta(minutes=15)
 
-    find_models_features(df[:str(begin_date)], features, dataset)
+    find_models_features(df[:str(begin_date)], features.copy(), dataset)
     best_model = select_best_model(dataset)
     variables = get_feature(best_model, dataset)
-    print(best_model)
+    print('\n' + best_model + '\n' + str(features) + '\n')
+
 
     x = df[variables]
     y = df['Consumption(Wh)']
@@ -68,9 +69,10 @@ def anomaly_simulator(df, n_week, n_days, dataset):
         if anomaly:
             anomaly_cnt += 1
             if anomaly_cnt == 3:
-                find_models_features(df[:str(begin_date)], features, dataset)
+                find_models_features(df[:str(begin_date)], features.copy(), dataset)
                 best_model = select_best_model(dataset)
                 variables = get_feature(best_model, dataset)
+                print('\n' + best_model + '\n' + str(features) + '\n')
                 x = df[variables]
             x_train = x[:str(begin_date)]
             y_train = y[:str(begin_date)]
@@ -84,7 +86,7 @@ def anomaly_simulator(df, n_week, n_days, dataset):
 
 if __name__ == '__main__':
     df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
-    anomaly_simulator(df['2020-02-16 00:00:00':], 8, 3, '10_test')
+    anomaly_simulator(df['2020-02-16 00:00:00':], 8, 2, '10_test')
 
     #df = pd.read_csv('Datasets/09_test.csv', index_col='Datetime')
     #anomaly_simulator(df['2020-06-09 00:00:00':], 8, 3, '09_test')
