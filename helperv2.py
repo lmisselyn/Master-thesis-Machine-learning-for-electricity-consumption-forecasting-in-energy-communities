@@ -12,7 +12,7 @@ from Models.mlp_regression import mlp_model
 from sklearn.ensemble import RandomForestRegressor
 
 
-models = {"XGB": XGB_regressor_model, 'R_F': random_forest_model, "MLP": mlp_model}
+models = {"XGB": XGB_regressor_model, 'R_F': random_forest_model} #, "MLP": mlp_model}
 
 source_models = {"XGB": XGB_regressor_model, 'R_F': RandomForestRegressor(), "MLP": mlp_model}
 
@@ -163,8 +163,8 @@ def parameter_search(df, parameters, model, dataset):
 
 if __name__ == '__main__':
     features = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature",
-                "Humidity", "Pressure", "Wind speed", "Wind direction", "Snowfall",
-                "Snow depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
+                "Humidity", "Pressure", "Wind_speed", "Wind_direction", "Snowfall",
+                "Snow_depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
 
     df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
