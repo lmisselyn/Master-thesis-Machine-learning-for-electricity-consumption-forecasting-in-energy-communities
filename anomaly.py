@@ -42,7 +42,7 @@ def anomaly_simulator(df, train_n_weeks, n_week, n_days, dataset):
     test_start_date = dates[-1]-timedelta(weeks=n_week)
     train_start_date = test_start_date-timedelta(weeks=train_n_weeks)
 
-    #find_models_features(df[:str(test_start_date)], features.copy(), dataset, train_n_weeks)
+    find_models_features(df[:str(test_start_date)], features.copy(), dataset, train_n_weeks)
     best_model = select_best_model(dataset)
     #best_model = "XGB"
     variables = get_feature(best_model, dataset)
@@ -71,7 +71,7 @@ def anomaly_simulator(df, train_n_weeks, n_week, n_days, dataset):
         if anomaly:
             anomaly_cnt += 1
             if anomaly_cnt == 3:
-                #find_models_features(df[:str(test_start_date)], features.copy(), dataset, train_n_weeks)
+                find_models_features(df[:str(test_start_date)], features.copy(), dataset, train_n_weeks)
                 best_model = select_best_model(dataset)
                 variables = get_feature(best_model, dataset)
                 print('\n' + best_model + '\n' + str(variables) + '\n')
