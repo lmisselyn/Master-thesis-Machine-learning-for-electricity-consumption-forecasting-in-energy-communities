@@ -74,7 +74,7 @@ def anomaly_simulator(df, train_n_weeks, n_week, n_days, dataset):
                 #find_models_features(df[:str(test_start_date)], features.copy(), dataset, train_n_weeks)
                 best_model = select_best_model(dataset)
                 variables = get_feature(best_model, dataset)
-                print('\n' + best_model + '\n' + str(features) + '\n')
+                print('\n' + best_model + '\n' + str(variables) + '\n')
                 x = df[variables]
             x_train = x[str(train_start_date):str(test_start_date)]
             y_train = y[str(train_start_date):str(test_start_date)]
@@ -88,8 +88,8 @@ def anomaly_simulator(df, train_n_weeks, n_week, n_days, dataset):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('Datasets/11/11.csv', index_col='Datetime')
-    anomaly_simulator(df['2020-06-09 00:00:00':], 16, 4, 1, '11')
+    df = pd.read_csv('Datasets/12/12.csv', index_col='Datetime')
+    anomaly_simulator(df['2020-09-08 00:00:00':], 16, 4, 1, '12')
 
     #df = pd.read_csv('Datasets/09.csv', index_col='Datetime')
     #anomaly_simulator(df['2020-06-09 00:00:00':], 8, 3, '09_test')
