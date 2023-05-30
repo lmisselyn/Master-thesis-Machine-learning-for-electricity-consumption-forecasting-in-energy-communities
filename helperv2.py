@@ -13,7 +13,7 @@ from Models.mlp_regression import mlp_model
 from sklearn.ensemble import RandomForestRegressor
 
 
-models = {"XGB": XGB_regressor_model, 'R_F': random_forest_model} #, "MLP": mlp_model}
+models = {"XGB": XGB_regressor_model, 'R_F': random_forest_model, "MLP": mlp_model, "SVM": SVM_regressor_model}
 #models = {'R_F': random_forest_model}
 #models = {"KNN": knn_regressor, "SVM": SVM_regressor_model, "MLP": mlp_model, "POLY": polynomial_regressor}
 
