@@ -6,23 +6,6 @@ import numpy as np
 from sklearn.metrics import mean_squared_error, r2_score
 import pandas as pd
 
-
-def random_forest_model_2(filename, variables):
-    train_df, validation_df, test_df = helper.make_sets(filename)
-    x = np.transpose([train_df[var].to_numpy() for var in variables])
-    y = train_df["Consumption(Wh)"]
-    model = RandomForestRegressor(max_features='auto', bootstrap=True, criterion='absolute_error')
-    model.fit(x, y)
-    x_test = np.transpose([test_df[var].to_numpy() for var in variables])
-    y_test = test_df["Consumption(Wh)"]
-    y_predict = model.predict(x_test)
-    MAE = np.mean(np.abs(y_predict - y_test.values))
-    RMSE = np.sqrt(mean_squared_error(y_test.values, y_predict))
-    print("Mean absolute error : " + str(MAE))
-    print("Root Mean square error : " + str(RMSE))
-    helper.plot_model(y_test.values, y_predict)
-
-
 def random_forest_model(set, scale=False, show=False):
     """
     train a random forest model with the dataset 'filename'
@@ -76,15 +59,15 @@ def random_forest_model(set, scale=False, show=False):
 if __name__ == '__main__':
 
     variables10 = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
-    df = pd.read_csv('../Datasets/10/10.csv', index_col=["Datetime"],
+    df = pd.read_csv('../Datasets/09/09.csv', index_col=["Datetime"],
                      parse_dates=["Datetime"])
-    train_set = df[:'2021-02-05 00:00:00']
-    test_set = df['2021-02-05 00:00:00':'2021-02-06 00:00:00']
+    train_set = df['2020-06-09 00:00:00':'2020-12-09 00:00:00']
+    test_set = df['2020-12-09 00:00:00':'2020-12-10 00:00:00']
 
     x_train = np.transpose([train_set[var].to_numpy() for var in variables10])
     y_train = train_set["Consumption(Wh)"]
     x_test = np.transpose([test_set[var].to_numpy() for var in variables10])
     y_test = test_set["Consumption(Wh)"]
     print("Agrregated accuracy")
-    print(random_forest_model(set=[x_train, y_train, x_test, y_test], scale=True))
+    print(random_forest_model(set=[x_train, y_train, x_test, y_test], show=True))
 

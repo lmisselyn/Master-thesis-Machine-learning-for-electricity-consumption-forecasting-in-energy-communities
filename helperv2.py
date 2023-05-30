@@ -14,6 +14,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 
 models = {"XGB": XGB_regressor_model, 'R_F': random_forest_model} #, "MLP": mlp_model}
+#models = {'R_F': random_forest_model}
 #models = {"KNN": knn_regressor, "SVM": SVM_regressor_model, "MLP": mlp_model, "POLY": polynomial_regressor}
 
 source_models = {"XGB": XGB_regressor_model, 'R_F': RandomForestRegressor, "MLP": mlp_model,
@@ -96,7 +97,7 @@ def select_best_features(df, model, features, train_n_weeks, selected=[], accura
     selected.append(best_var)
     accuracy.append(best_acc)
     print(selected)
-    print(best_acc)
+    print(accuracy[-1])
     return select_best_features(df, model, features, train_n_weeks,
                                 selected=selected, accuracy=accuracy)
 
