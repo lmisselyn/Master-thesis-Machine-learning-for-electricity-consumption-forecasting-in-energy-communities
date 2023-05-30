@@ -201,5 +201,5 @@ def variable_selection(filename, variables):
 
 if __name__ == '__main__':
 
-    final_model('../Datasets/one_year_10.csv', helper.get_features('one_year_10.csv'))
-    final_model('../Datasets/one_year_09.csv', helper.get_features('one_year_09.csv'))
+    final_model('../Datasets/10/one_year_10.csv', helper.get_features('one_year_10.csv'))
+    final_model('../Datasets/09/one_year_09.csv', helper.get_features('one_year_09.csv'))

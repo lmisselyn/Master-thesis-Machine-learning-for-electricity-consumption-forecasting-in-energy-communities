@@ -70,7 +70,7 @@ def get_data_csv_10():
 
 
 def get_data_csv_09():
-    df = pd.read_csv('Datasets/one_year_09.csv')
+    df = pd.read_csv('Datasets/09/one_year_09.csv')
     """
     weather_df = pd.read_csv('../weather_data.csv')
     one_year_w = weather_df.loc[70175:105214]
@@ -184,7 +184,7 @@ def mean_cons_by_hour(filename):
         mean_cons.append(np.mean(tmp))
     mean_cons.reverse()
     df['Previous_4d_mean_cons'] = mean_cons
-    df.to_csv('Datasets/10_test.csv')
+    df.to_csv('Datasets/10.csv')
 
 
 def mean_array(arr):
@@ -222,9 +222,42 @@ def mean_cons_by_hour2(filename):
             print(mean_array(tmp))
     mean_cons.reverse()
     df['Previous_4d_mean_cons'] = mean_cons
-    df.to_csv('Datasets/09_test.csv')
+    df.to_csv('Datasets/12/12.csv')
 
 
 
 if __name__ == '__main__':
-    mean_cons_by_hour2("Datasets/one_year_09_datetime.csv")
+
+    mean_cons_by_hour2('Datasets/12/12 .csv')
+    #datetime_format('Datasets/12/12.csv')
+    """
+    df = pd.read_csv('Datasets/12/12_datetime.csv', index_col=["Datetime"])
+    dates = [datetime.fromisoformat(d) for d in df.index]
+
+    week = []
+    month = []
+    doy = []
+    dow = []
+    weekend = []
+    minute = []
+    for d in dates:
+        week.append(d.isocalendar().week)
+        month.append(d.month)
+        doy.append(d.timetuple().tm_yday)
+        dow.append(d.isocalendar().weekday)
+        is_weekend = 0
+        if d.weekday() > 4:
+            is_weekend = 1
+        weekend.append(is_weekend)
+        minute.append((d.hour*60) + d.minute)
+
+    df['Week'] = week
+    df['Month'] = month
+    df['Day_of_year'] = doy
+    df['Day'] = dow
+    df['Minutes'] = minute
+    df['Weekend'] = weekend
+
+    df.to_csv('Datasets/12/12.csv')
+
+    """

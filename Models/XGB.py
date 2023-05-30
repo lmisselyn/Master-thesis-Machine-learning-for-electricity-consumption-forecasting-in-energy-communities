@@ -54,20 +54,19 @@ if __name__ == '__main__':
 
     variables10 = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
 
-    var10 = ['Previous_4d_mean_cons', 'Snow depth', 'Weekend', 'Irradiation', 'Minutes', 'Week',
-             'Wind direction', 'Month', 'Snowfall', 'Temperature', 'Rainfall']
+    var10 = ['Previous_4d_mean_cons', 'Minutes', 'Day', 'Weekend', 'Irradiation', 'Temperature']
 
-    df = pd.read_csv('../Datasets/10_test.csv', index_col=["Datetime"],
-                             parse_dates=["Datetime"])
+    df = pd.read_csv('../Datasets/11/11.csv', index_col=["Datetime"],
+                     parse_dates=["Datetime"])
 
 
     #date = datetime.fromisoformat()
-    train_set = df['2020-02-16 00:00:00':'2021-01-07 00:00:00']
-    test_set = df['2021-01-07 00:00:00':'2021-01-08 00:00:00']
+    train_set = df['2020-06-17 00:00:00':'2020-07 -24 00:00:00']
+    test_set = df['2020-07-24 00:00:00':'2020-07-25 00:00:00']
 
-    x_train = np.transpose([train_set[var].to_numpy() for var in variables10])
+    x_train = np.transpose([train_set[var].to_numpy() for var in var10])
     y_train = train_set["Consumption(Wh)"]
-    x_test = np.transpose([test_set[var].to_numpy() for var in variables10])
+    x_test = np.transpose([test_set[var].to_numpy() for var in var10])
     y_test = test_set["Consumption(Wh)"]
 
     XGB_regressor_model(set=[x_train, y_train, x_test, y_test], show=True, scale=True)

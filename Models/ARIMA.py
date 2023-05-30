@@ -133,4 +133,4 @@ if __name__ == '__main__':
     #auto_correlation_function('../one_year_10_datetime.csv')
     #get_stationarity('../one_year_10_datetime.csv')
     #adv_test("../one_year_10_datetime.csv")
-    print(arima_model("../Datasets/one_year_10_datetime.csv"))
+    print(arima_model("../Datasets/10/one_year_10_datetime.csv"))

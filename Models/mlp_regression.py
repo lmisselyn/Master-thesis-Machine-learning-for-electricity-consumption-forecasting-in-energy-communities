@@ -60,8 +60,8 @@ if __name__ == '__main__':
     variables10 = ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
     var10 = ['Previous_4d_mean_cons', 'Week', 'Snowfall', 'Day', 'Weekend']
 
-    df = pd.read_csv('../Datasets/10_test.csv', index_col=["Datetime"],
-                             parse_dates=["Datetime"])
+    df = pd.read_csv('../Datasets/10/10.csv', index_col=["Datetime"],
+                     parse_dates=["Datetime"])
 
     #date = datetime.fromisoformat()
     x = df[var10]

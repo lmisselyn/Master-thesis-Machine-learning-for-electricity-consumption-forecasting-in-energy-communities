@@ -76,8 +76,8 @@ def random_forest_model(set, scale=False, show=False):
 if __name__ == '__main__':
 
     variables10 = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
-    df = pd.read_csv('../Datasets/10_test.csv', index_col=["Datetime"],
-                             parse_dates=["Datetime"])
+    df = pd.read_csv('../Datasets/10/10.csv', index_col=["Datetime"],
+                     parse_dates=["Datetime"])
     train_set = df[:'2021-02-05 00:00:00']
     test_set = df['2021-02-05 00:00:00':'2021-02-06 00:00:00']
 

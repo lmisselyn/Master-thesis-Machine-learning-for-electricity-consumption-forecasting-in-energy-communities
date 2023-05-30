@@ -6,6 +6,7 @@ from helper import aggregate, evaluate_model
 from sklearn import metrics
 from Models.KNN import knn_regressor
 from Models.RandomForest import random_forest_model
+from Models.polynomial_regression import polynomial_regressor
 from Models.SVM import SVM_regressor_model
 from Models.XGB import XGB_regressor_model
 from Models.mlp_regression import mlp_model
@@ -13,8 +14,10 @@ from sklearn.ensemble import RandomForestRegressor
 
 
 models = {"XGB": XGB_regressor_model, 'R_F': random_forest_model} #, "MLP": mlp_model}
+#models = {"KNN": knn_regressor, "SVM": SVM_regressor_model, "MLP": mlp_model, "POLY": polynomial_regressor}
 
-source_models = {"XGB": XGB_regressor_model, 'R_F': RandomForestRegressor(), "MLP": mlp_model}
+source_models = {"XGB": XGB_regressor_model, 'R_F': RandomForestRegressor, "MLP": mlp_model,
+                 "POLY": polynomial_regressor, "KNN": knn_regressor, "SVM": SVM_regressor_model}
 
 def select_best_model(dataset):
     best_acc = 100
@@ -33,14 +36,14 @@ def select_best_model(dataset):
     return best_model
 
 
-def find_models_features(df, features, dataset):
+def find_models_features(df, features, dataset, train_n_weeks):
     """
     Find the best features for each model and store results in a text file
     """
     for model in models.keys():
         selected = []
         accuracy = []
-        select_best_features(df, models[model], features, selected, accuracy)
+        select_best_features(df, models[model], features, train_n_weeks, selected, accuracy)
         result = ''
         for s in selected:
             result += s + " "
@@ -57,7 +60,7 @@ def get_feature(model, dataset):
         features = file.readline().split(' ')[:-1]
         return features
 
-def select_best_features(df, model, features, selected=[], accuracy=[]):
+def select_best_features(df, model, features, train_n_weeks, selected=[], accuracy=[]):
     """
     :param df: Dataframe with datetime as index
     :param model: Regression model
@@ -79,6 +82,7 @@ def select_best_features(df, model, features, selected=[], accuracy=[]):
         current = selected.copy()
         current.append(v)
         measures = one_week_test(df, model, current)
+        #measures = multi_month_test(df, model, current, train_n_weeks)
         if measures['MAPE'] < min_MAPE:
             min_MAPE = measures['MAPE']
             best_var = v
@@ -93,7 +97,7 @@ def select_best_features(df, model, features, selected=[], accuracy=[]):
     accuracy.append(best_acc)
     print(selected)
     print(best_acc)
-    return select_best_features(df, model, features,
+    return select_best_features(df, model, features, train_n_weeks,
                                 selected=selected, accuracy=accuracy)
 
 
@@ -140,6 +144,44 @@ def one_week_test(df, model, features):
     return results
 
 
+def multi_month_test(df, model, features, train_n_weeks):
+    """
+    :param df: Dataframe with datetime as index
+    :param model: Regression model
+    :param features: features to use
+    :return: The mean accuracy measures for the last
+            week of the dataset
+    """
+    x = df[features]
+    y = df["Consumption(Wh)"]
+    dates = [datetime.fromisoformat(d) for d in df.index]
+
+    results = {"MAE": [], "MSE": [], "RMSE": [], "MAPE": []}
+    last_date = dates[-1]
+    train_first_date = dates[0]
+
+    while train_first_date + timedelta(weeks=train_n_weeks) < last_date:
+
+        train_last_date = train_first_date+timedelta(weeks=train_n_weeks)
+        test_last_date = train_last_date+timedelta(days=1)
+        x_train = x[str(train_first_date):str(train_last_date)]
+        y_train = y[str(train_first_date):str(train_last_date)]
+        x_test = x[str(train_last_date):str(test_last_date)]
+        y_test = y[str(train_last_date):str(test_last_date)]
+
+        trained_model = model(set=[x_train, y_train, x_test, y_test])
+        y_predict = trained_model.predict(x_test)
+        aggregated = aggregate(y_test.values, y_predict)
+        acc = evaluate_model(aggregated[0], aggregated[1])
+
+        for k in acc.keys():
+            results[k].append(acc[k])
+        train_first_date = train_last_date
+
+    for k in results.keys():
+        results[k] = np.mean(results[k])
+    return results
+
 def parameter_search(df, parameters, model, dataset):
 
     df = df['2020-02-16 00:00:00':]
@@ -167,7 +209,7 @@ if __name__ == '__main__':
                 "Snow_depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
 
-    df = pd.read_csv('Datasets/10_test.csv', index_col='Datetime')
+    df = pd.read_csv('Datasets/10/10.csv', index_col='Datetime')
 
     #print(select_best_model('09_test'))
     #find_models_features(df['2020-06-09 00:00:00':], features, '09_test')
