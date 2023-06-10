@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
 from sklearn.model_selection import TimeSeriesSplit, GridSearchCV
+import helper
 from helper import aggregate, evaluate_model
 from sklearn import metrics
 from Models.KNN import knn_regressor
@@ -41,6 +43,7 @@ def find_models_features(df, features, dataset, train_n_weeks):
     """
     Find the best features for each model and store results in a text file
     """
+
     for model in models.keys():
         selected = []
         accuracy = []
@@ -70,7 +73,7 @@ def select_best_features(df, model, features, train_n_weeks, selected=[], accura
     :param accuracy: current accuracy
     :return: Best features for the model
     """
-    min_MAPE = 10000
+    min_MAPE = float('inf')
     best_acc = {}
     best_var = ''
     # If no more variables then return

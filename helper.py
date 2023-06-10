@@ -22,7 +22,7 @@ def evaluate_model(y, y_pred, show=False):
     MAE = metrics.mean_absolute_error(y, y_pred)
     MSE = metrics.mean_squared_error(y, y_pred)
     RMSE = metrics.mean_squared_error(y, y_pred, squared=False)
-    MAPE = metrics.mean_absolute_percentage_error(y, y_pred)
+    MAPE = round(metrics.mean_absolute_percentage_error(y, y_pred),6)
     if show:
         print("Mean absolute error : " + str(MAE))
         print("Mean squared error : " + str(MSE))

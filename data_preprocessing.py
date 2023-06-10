@@ -165,7 +165,7 @@ def datetime_format(filename):
         date = df.at[i, "Date"] + ' ' + df.at[i, "Hour"]
         new_datetime.append(datetime.strptime(date, "%d/%m/%Y %H:%M"))
     df["Datetime"] = new_datetime
-    df.to_csv(filename[:-4]+"_datetime.csv")
+    df.to_csv(filename)
 
 
 def mean_cons_by_hour(filename):
@@ -222,17 +222,52 @@ def mean_cons_by_hour2(filename):
             print(mean_array(tmp))
     mean_cons.reverse()
     df['Previous_4d_mean_cons'] = mean_cons
-    df.to_csv('Datasets/12/12.csv')
+    df.to_csv("Datasets/09/09final.csv")
 
 
 
 if __name__ == '__main__':
 
-    mean_cons_by_hour2('Datasets/12/12 .csv')
-    #datetime_format('Datasets/12/12.csv')
+
+    df = pd.read_csv("Datasets/09/09final.csv")
+    dt = df["Datetime"]
+    new_datetime = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in dt]
+    df["Datetime"] = new_datetime
+    df.to_csv("Datasets/09/09final.csv")
+    #mean_cons_by_hour2("Datasets/09/09final.csv")
     """
-    df = pd.read_csv('Datasets/12/12_datetime.csv', index_col=["Datetime"])
-    dates = [datetime.fromisoformat(d) for d in df.index]
+    df = pd.read_csv("Datasets/09/09final.csv")
+    new_datetime = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in df['Datetime']]
+    df['Datetime'] = new_datetime
+    df.to_csv("Datasets/09/09final.csv")
+
+    #datetime_format("Datasets/09/donneeconso09.csv")
+
+    df = pd.read_csv("Datasets/09/donneeconso09_datetime.csv")
+    datetime2 = df['Datetime2']
+    dates2 = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in datetime2]
+
+    datetime1 = df['Datetime']
+    dates1 = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in datetime1]
+
+    for i in range(len(dates2)):
+        if dates1[i] != dates2[i]:
+            print(i)
+            break
+
+    consumption = []
+    consumption.append(0)
+    df = pd.read_csv("Datasets/09/donneeconso09_datetime.csv")
+    index = df['Index(Wh)']
+    for i in range(1, len(index)):
+        consumption.append(index[i]-index[i-1])
+    df['Consumption(Wh)'] = consumption
+    df.to_csv("Datasets/09/donneeconso09BIS.csv")
+
+
+
+    df = pd.read_csv('Datasets/09/donneeconso09BIS.csv', index_col=["Datetime"])
+    dates = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in df.index]
 
     week = []
     month = []
@@ -258,6 +293,5 @@ if __name__ == '__main__':
     df['Minutes'] = minute
     df['Weekend'] = weekend
 
-    df.to_csv('Datasets/12/12.csv')
-
+    df.to_csv('Datasets/09/09final.csv')
     """

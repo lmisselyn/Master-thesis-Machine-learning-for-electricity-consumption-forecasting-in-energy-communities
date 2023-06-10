@@ -7,10 +7,10 @@ from Models.XGB import XGB_regressor_model
 import pandas as pd
 
 from Models.mlp_regression import mlp_model
-
-features = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature",
-            "Humidity", "Pressure", "Wind_speed", "Wind_direction", "Snowfall",
-            "Snow_depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
+# 'dewpoint_2m','pressure_msl', 'surface_pressure', 'cloudcover_low', 'cloudcover_mid', 'cloudcover_high', 'diffuse_radiation', 'winddirection_10m','direct_radiation', 'direct_normal_irradiance',
+features = ['Week', 'Month', 'Day_of_year', 'Day', 'Minutes', 'Weekend', 'temperature_2m', 'relativehumidity_2m',
+             'apparent_temperature', 'snowfall', 'weathercode', 'precipitation',
+            'cloudcover',  'shortwave_radiation', 'windspeed_10m', 'Previous_4d_mean_cons']
 
 models = {"XGB": XGB_regressor_model, 'R_F': random_forest_model, "MLP": mlp_model,
                  "POLY": polynomial_regressor, "KNN": knn_regressor, "SVM": SVM_regressor_model}
@@ -44,7 +44,7 @@ def anomaly_simulator(df, train_n_weeks, n_week, n_days, dataset):
 
     find_models_features(df[:str(test_start_date)], features.copy(), dataset, train_n_weeks)
     best_model = select_best_model(dataset)
-    #best_model = "XGB"
+    #best_model = "R_F"
     variables = get_feature(best_model, dataset)
     print('\n' + best_model + '\n' + str(variables) + '\n')
 
@@ -66,7 +66,7 @@ def anomaly_simulator(df, train_n_weeks, n_week, n_days, dataset):
         y_test = y[str(test_start_date):str(end_date)]
         y_predict = trained_model.predict(x_test)
         aggregated = aggregate(y_test.values, y_predict)
-        #plot_model(aggregated[0], aggregated[1], best_model)
+        plot_model(aggregated[0], aggregated[1], best_model)
         anomaly = anomaly_detection(aggregated[0], aggregated[1])
         if anomaly:
             anomaly_cnt += 1
@@ -88,8 +88,10 @@ def anomaly_simulator(df, train_n_weeks, n_week, n_days, dataset):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('Datasets/12/12.csv', index_col='Datetime')
-    anomaly_simulator(df['2020-09-08 00:00:00':], 16, 4, 1, '12')
+    df = pd.read_csv('Datasets/09/09final.csv', index_col='Datetime')
+    df2 = pd.read_csv('Datasets/09/09.csv', index_col='Datetime')
+
+    anomaly_simulator(df['2020-12-09 00:00:00':], 16, 4, 1, '09')
 
     #df = pd.read_csv('Datasets/09.csv', index_col='Datetime')
     #anomaly_simulator(df['2020-06-09 00:00:00':], 8, 3, '09_test')
