@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import numpy as np
 
 def get_data_csv_10():
-    df = pd.read_csv("../donneeconso10.csv")[["Date", "Heure", "Index(Wh)"]]
+    df = pd.read_csv("../10final.csv")[["Date", "Heure", "Index(Wh)"]]
     one_year = df.loc[34:35199]
     one_year_df = pd.DataFrame(one_year, columns=df.columns)
     one_year_df.reset_index(drop=True, inplace=True)
@@ -280,6 +280,6 @@ def tmp_time_features(filename):
     df.to_csv(filename)
 
 if __name__ == '__main__':
-    filename = 'Datasets/10/donneeconso10.csv'
+    filename = 'Datasets/10/10final.csv'
     tmp_date(filename )
     mean_cons_by_hour2(filename)

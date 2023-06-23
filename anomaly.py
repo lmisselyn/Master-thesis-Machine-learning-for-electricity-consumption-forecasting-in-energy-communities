@@ -88,10 +88,9 @@ def anomaly_simulator(df, train_n_weeks, n_week, n_days, dataset):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('Datasets/09/09final.csv', index_col='Datetime')
-    df2 = pd.read_csv('Datasets/09/09.csv', index_col='Datetime')
+    df = pd.read_csv('Datasets/10/10final.csv', index_col='Datetime')
 
-    anomaly_simulator(df['2020-12-09 00:00:00':], 16, 4, 1, '09')
+    anomaly_simulator(df['2020-12-09 00:00:00':], 16, 4, 1, '10')
 
     #df = pd.read_csv('Datasets/09.csv', index_col='Datetime')
     #anomaly_simulator(df['2020-06-09 00:00:00':], 8, 3, '09_test')
