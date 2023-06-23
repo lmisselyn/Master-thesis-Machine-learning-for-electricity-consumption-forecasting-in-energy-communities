@@ -222,51 +222,35 @@ def mean_cons_by_hour2(filename):
             print(mean_array(tmp))
     mean_cons.reverse()
     df['Previous_4d_mean_cons'] = mean_cons
-    df.to_csv("Datasets/09/09final.csv")
+    df.to_csv(filename)
 
-
-
-if __name__ == '__main__':
-
-
-    df = pd.read_csv("Datasets/09/09final.csv")
+def tmp_date(filename):
+    df = pd.read_csv(filename)
     dt = df["Datetime"]
     new_datetime = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in dt]
     df["Datetime"] = new_datetime
-    df.to_csv("Datasets/09/09final.csv")
-    #mean_cons_by_hour2("Datasets/09/09final.csv")
-    """
-    df = pd.read_csv("Datasets/09/09final.csv")
-    new_datetime = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in df['Datetime']]
-    df['Datetime'] = new_datetime
-    df.to_csv("Datasets/09/09final.csv")
+    df.to_csv(filename)
 
-    #datetime_format("Datasets/09/donneeconso09.csv")
-
-    df = pd.read_csv("Datasets/09/donneeconso09_datetime.csv")
-    datetime2 = df['Datetime2']
-    dates2 = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in datetime2]
-
-    datetime1 = df['Datetime']
-    dates1 = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in datetime1]
-
-    for i in range(len(dates2)):
-        if dates1[i] != dates2[i]:
+def tmp_find_zero(filename):
+    df = pd.read_csv(filename)
+    index = df['Index(Wh)']
+    for i in range(len(index)-1):
+        if index[i] == index[i+1]:
             print(i)
             break
 
+def tmp_cons_calcu(filename):
     consumption = []
     consumption.append(0)
-    df = pd.read_csv("Datasets/09/donneeconso09_datetime.csv")
+    df = pd.read_csv(filename)
     index = df['Index(Wh)']
     for i in range(1, len(index)):
-        consumption.append(index[i]-index[i-1])
+        consumption.append(index[i] - index[i - 1])
     df['Consumption(Wh)'] = consumption
-    df.to_csv("Datasets/09/donneeconso09BIS.csv")
+    df.to_csv(filename)
 
-
-
-    df = pd.read_csv('Datasets/09/donneeconso09BIS.csv', index_col=["Datetime"])
+def tmp_time_features(filename):
+    df = pd.read_csv(filename, index_col=["Datetime"])
     dates = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in df.index]
 
     week = []
@@ -284,7 +268,7 @@ if __name__ == '__main__':
         if d.weekday() > 4:
             is_weekend = 1
         weekend.append(is_weekend)
-        minute.append((d.hour*60) + d.minute)
+        minute.append((d.hour * 60) + d.minute)
 
     df['Week'] = week
     df['Month'] = month
@@ -293,5 +277,9 @@ if __name__ == '__main__':
     df['Minutes'] = minute
     df['Weekend'] = weekend
 
-    df.to_csv('Datasets/09/09final.csv')
-    """
+    df.to_csv(filename)
+
+if __name__ == '__main__':
+    filename = 'Datasets/10/donneeconso10.csv'
+    tmp_date(filename )
+    mean_cons_by_hour2(filename)
