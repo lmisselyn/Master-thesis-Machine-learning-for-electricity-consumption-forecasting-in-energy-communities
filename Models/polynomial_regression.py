@@ -67,6 +67,12 @@ def polynomial_regressor(set, scale=False, show=False):
 
 
 if __name__ == '__main__':
+    df = pd.read_csv('../Datasets/11/donneeconso11.csv')
+    data = df['Index(Wh)']
+    data = data[50963:]
+    print(len(data))
+
+    '''
     variables = ["Day", "Week", "Weekend", "Month", "Temperature", "Humidity", "Pressure",
                  "Wind speed", "Wind direction", "Snowfall", "Snow depth", "Irradiation", "Rainfall", "Minutes"]
 
@@ -75,3 +81,4 @@ if __name__ == '__main__':
 
     final_model('../Datasets/10/one_year_10.csv', helper.get_features('one_year_10.csv'))
     final_model('../Datasets/09/one_year_09.csv', helper.get_features('one_year_09.csv'))
+    '''

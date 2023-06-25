@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import numpy as np
 
+
 def get_data_csv_10():
     df = pd.read_csv("../10final.csv")[["Date", "Heure", "Index(Wh)"]]
     one_year = df.loc[34:35199]
@@ -158,6 +159,7 @@ def day_of_year(date):
     else:
         return (0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365)[m - 1] + d
 
+
 def datetime_format(filename):
     df = pd.read_csv(filename)
     new_datetime = []
@@ -178,7 +180,7 @@ def mean_cons_by_hour(filename):
     for date in dates:
         tmp = []
         for j in range(1, 5):
-            prev_week = date-timedelta(weeks=j)
+            prev_week = date - timedelta(weeks=j)
             if prev_week > first_date and prev_week in dates:
                 tmp.append(df.at[str(prev_week), 'Consumption(Wh)'])
         mean_cons.append(np.mean(tmp))
@@ -190,15 +192,17 @@ def mean_cons_by_hour(filename):
 def mean_array(arr):
     sum = 0
     for item in arr:
-        sum = sum+item
+        if not isinstance(item, float):
+            print(item)
+        sum = sum + item
     if len(arr) > 0:
-        sum = round(sum/len(arr), 4)
+        sum = round(sum / len(arr), 4)
     return sum
 
 
 def mean_cons_by_hour2(filename):
     mean_cons = []
-    df = pd.read_csv(filename, index_col=["Datetime"])
+    df = pd.read_csv(filename, index_col=['Datetime'])
     dates = [datetime.fromisoformat(d) for d in df.index]
     first_date = dates[0]
     dates.reverse()
@@ -206,14 +210,19 @@ def mean_cons_by_hour2(filename):
     for date in dates:
         tmp = []
         for i in range(1, 5):
-            prev_week = date-timedelta(weeks=i)
+            prev_week = date - timedelta(weeks=i)
             if prev_week > first_date and prev_week in dates:
                 tmp2 = [df.at[str(prev_week), 'Consumption(Wh)']]
-                before = prev_week-timedelta(minutes=15)
-                after = prev_week+timedelta(minutes=15)
+                if len(tmp2) > 1:
+                    print(prev_week)
+                before = prev_week - timedelta(minutes=15)
+                after = prev_week + timedelta(minutes=15)
                 for around in [before, after]:
                     if around in dates:
                         tmp2.append(df.at[str(around), 'Consumption(Wh)'])
+                    else:
+                        print(around)
+                        break
                 tmp.append(mean_array(tmp2))
         try:
             m = mean_array(tmp)
@@ -224,6 +233,7 @@ def mean_cons_by_hour2(filename):
     df['Previous_4d_mean_cons'] = mean_cons
     df.to_csv(filename)
 
+
 def tmp_date(filename):
     df = pd.read_csv(filename)
     dt = df["Datetime"]
@@ -231,13 +241,15 @@ def tmp_date(filename):
     df["Datetime"] = new_datetime
     df.to_csv(filename)
 
+
 def tmp_find_zero(filename):
     df = pd.read_csv(filename)
     index = df['Index(Wh)']
-    for i in range(len(index)-1):
-        if index[i] == index[i+1]:
+    for i in range(len(index) - 1):
+        if index[i] == index[i + 1]:
             print(i)
             break
+
 
 def tmp_cons_calcu(filename):
     consumption = []
@@ -249,9 +261,11 @@ def tmp_cons_calcu(filename):
     df['Consumption(Wh)'] = consumption
     df.to_csv(filename)
 
+
 def tmp_time_features(filename):
-    df = pd.read_csv(filename, index_col=["Datetime"])
-    dates = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in df.index]
+    df = pd.read_csv(filename)
+    dt = df["Datetime"]
+    dates = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in dt]
 
     week = []
     month = []
@@ -279,7 +293,21 @@ def tmp_time_features(filename):
 
     df.to_csv(filename)
 
+
 if __name__ == '__main__':
-    filename = 'Datasets/10/10final.csv'
-    tmp_date(filename )
+    filename = 'Datasets/11/donneeconso11.csv'
+    tmp_date(filename)
     mean_cons_by_hour2(filename)
+
+    '''
+    df = pd.read_csv(filename)
+    hour = df['Hour']
+    for i in range(len(hour)):
+        try:
+            if hour[i][3:6] not in (['00', '15', '30', '45']):
+                print(hour[i][3:6])
+                print(i)
+        except:
+            print(i)
+    #print(np.mean(df['Consumption(Wh)']))
+    '''
