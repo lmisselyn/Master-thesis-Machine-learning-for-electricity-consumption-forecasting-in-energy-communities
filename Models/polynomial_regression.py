@@ -67,7 +67,7 @@ def polynomial_regressor(set, scale=False, show=False):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('../Datasets/11/donneeconso11.csv')
+    df = pd.read_csv('../Datasets/11/11final.csv')
     data = df['Index(Wh)']
     data = data[50963:]
     print(len(data))

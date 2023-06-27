@@ -223,7 +223,7 @@ def mean_cons_by_hour2(filename):
                     else:
                         print(around)
                         break
-                tmp.append(mean_array(tmp2))
+                tmp.append(np.mean(tmp2))
         try:
             m = mean_array(tmp)
             mean_cons.append(float(m))
@@ -295,11 +295,22 @@ def tmp_time_features(filename):
 
 
 if __name__ == '__main__':
-    filename = 'Datasets/11/donneeconso11.csv'
+    filename = 'Datasets/16/16final.csv'
+    #tmp_cons_calcu(filename)
+    #tmp_time_features(filename)
     tmp_date(filename)
     mean_cons_by_hour2(filename)
 
-    '''
+    """
+    df = pd.read_csv(filename)
+    dt = df['Datetime']
+    dupp = dt.duplicated()
+    for i in range(len(dupp)):
+        if dupp[i]:
+            print(i)
+
+ 
+  
     df = pd.read_csv(filename)
     hour = df['Hour']
     for i in range(len(hour)):
@@ -310,4 +321,4 @@ if __name__ == '__main__':
         except:
             print(i)
     #print(np.mean(df['Consumption(Wh)']))
-    '''
+    """
