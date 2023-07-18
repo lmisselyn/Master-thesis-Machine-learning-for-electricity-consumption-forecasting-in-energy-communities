@@ -13,6 +13,7 @@ from Models.SVM import SVM_regressor_model
 from Models.XGB import XGB_regressor_model
 from Models.mlp_regression import mlp_model
 from sklearn.ensemble import RandomForestRegressor
+from xgboost import XGBRegressor
 
 
 models = {"XGB": XGB_regressor_model, 'R_F': random_forest_model, "MLP": mlp_model, "SVM": SVM_regressor_model, "KNN": knn_regressor}
@@ -188,7 +189,7 @@ def multi_month_test(df, model, features, train_n_weeks):
 
 def parameter_search(df, parameters, model, dataset):
 
-    df = df['2020-02-16 00:00:00':]
+    df = df['2020-02-08 00:00:00':]
     features = get_feature(model, dataset)
 
     df.reset_index(inplace=True)
@@ -208,15 +209,25 @@ def parameter_search(df, parameters, model, dataset):
 
 
 if __name__ == '__main__':
+    var = ['Day', 'Minutes',
+           'Weekend', 'temperature_2m', 'relativehumidity_2m',
+           'dewpoint_2m', 'apparent_temperature',
+           'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
+           'direct_normal_irradiance', 'windspeed_10m', 'winddirection_10m',
+           'Prev_4d_mean_cons', 'Prev_4w_mean_cons', 'precipitation'] #'pressure_msl', 'surface_pressure', 'snowfall', 'weathercode', 'cloudcover', 'cloudcover_low', 'cloudcover_mid', 'cloudcover_high', 'Consumption(Wh)', 'Week', 'Month', 'Day_of_year',
+    df = pd.read_csv('Datasets/01/01final.csv')
+    sequential_feature_selection(df, XGBRegressor(), var)
+
+    """
     features = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature",
                 "Humidity", "Pressure", "Wind_speed", "Wind_direction", "Snowfall",
                 "Snow_depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
 
 
-    df = pd.read_csv('Datasets/10/10.csv', index_col='Datetime')
+    df = pd.read_csv('Datasets/02/10.csv', index_col='Datetime')
 
     #print(select_best_model('09_test'))
-    #find_models_features(df['2020-06-09 00:00:00':], features, '09_test')
+    #find_models_features(df['2020-06-01 00:00:00':], features, '09_test')
 
 
 
@@ -244,9 +255,9 @@ if __name__ == '__main__':
                  'max_depth': [None, 5, 6],
                  'n_estimators': [100]}
 
-    parameter_search(df['2020-02-16 00:00:00':], rf_param, 'R_F', '10_test')
+    parameter_search(df['2020-02-08 00:00:00':], rf_param, 'R_F', '10_test')
 
-    parameter_search(df['2020-02-16 00:00:00':], mlp_param, 'MLP', '10_test')
+    parameter_search(df['2020-02-08 00:00:00':], mlp_param, 'MLP', '10_test')
 
-    parameter_search(df['2020-02-16 00:00:00':], xgb_param, 'XGB', '10_test')
-
+    parameter_search(df['2020-02-08 00:00:00':], xgb_param, 'XGB', '10_test')
+    """

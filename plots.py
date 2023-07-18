@@ -1,9 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn
 
 def time_plot():
-    df = pd.read_csv("Datasets/10/one_year_10.csv")
+    df = pd.read_csv("Datasets/02/one_year_10.csv")
     tot_cons_hour = {}
     nb_hour = {}
     hours = df["Heure"][:96]
@@ -27,7 +28,7 @@ def time_plot():
 
 
 def month_plot():
-    df = pd.read_csv("Datasets/10/one_year_10.csv")
+    df = pd.read_csv("Datasets/02/one_year_10.csv")
     nb_month = [0 for i in range(12)]
     tot_cons_month = [0 for i in range(12)]
     months = ['Ja', 'Fe', 'Ma', 'Ap', 'May', 'Ju', 'Jul', 'Au', 'Se', 'Oc', 'No', 'De']
@@ -46,7 +47,7 @@ def month_plot():
     plt.show()
 
 def irradiation_plot():
-    df = pd.read_csv("Datasets/10/one_year_10.csv")
+    df = pd.read_csv("Datasets/02/one_year_10.csv")
     new_x = np.arange(0, 2300, 10)
     print(new_x)
     irrad = df["Irradiation"]
@@ -71,7 +72,7 @@ def irradiation_plot():
     plt.show()
 
 def temp_plot():
-    df = pd.read_csv("Datasets/10/one_year_10.csv")
+    df = pd.read_csv("Datasets/02/one_year_10.csv")
     tot_cons_temp = {}
     nb_temp = {}
     cons_per_temp = []
@@ -90,8 +91,29 @@ def temp_plot():
     cons_per_temp_df.plot(x="Temperature", y="Consumption", grid=True)
     plt.show()
 
+def correlation_plot(filename):
+    var = ['Consumption(Wh)', 'Week', 'Month', 'Day_of_year', 'Day', 'Minutes',
+           'Weekend', 'temperature_2m', 'relativehumidity_2m',
+           'dewpoint_2m', 'apparent_temperature', 'pressure_msl',
+           'surface_pressure', 'snowfall', 'weathercode', 'cloudcover',
+           'cloudcover_low', 'cloudcover_mid', 'cloudcover_high',
+           'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
+           'direct_normal_irradiance', 'windspeed_10m', 'winddirection_10m',
+           'Prev_4d_mean_cons', 'Prev_4w_mean_cons', 'precipitation']
+    df = pd.read_csv(filename)
+    df = df[var]
+    m = df.corr(method='spearman')
+    m = m['Consumption(Wh)'].copy()
+    m.sort_values(inplace=True, key=abs)
+    print(m)
+    #plt.figure(figsize=(10, 6))
+    #seaborn.heatmap(m)
+    #plt.show()
+
+
 if __name__ == '__main__':
-    time_plot()
-    month_plot()
-    irradiation_plot()
-    temp_plot()
+    for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
+        filename = 'Datasets/' + i + '/' + i + 'final.csv'
+        print(i)
+        correlation_plot(filename)
+

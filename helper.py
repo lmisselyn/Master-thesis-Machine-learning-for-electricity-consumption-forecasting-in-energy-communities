@@ -77,6 +77,6 @@ if __name__ == '__main__':
 
     select = []
     acc = []
-    select_best_features('Datasets/10.csv', XGB_regressor_model, features, select, acc)
+    select_best_features('Datasets/02.csv', XGB_regressor_model, features, select, acc)
     print(select)
     print(acc)

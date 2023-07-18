@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
     var10 = ['Previous_4d_mean_cons', 'Minutes', 'Day', 'Weekend', 'Irradiation', 'Temperature']
 
-    df = pd.read_csv('../Datasets/11/11.csv', index_col=["Datetime"],
+    df = pd.read_csv('../Datasets/03/11.csv', index_col=["Datetime"],
                      parse_dates=["Datetime"])
 
 

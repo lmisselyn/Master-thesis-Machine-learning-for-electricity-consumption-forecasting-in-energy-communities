@@ -48,8 +48,8 @@ def parameter_search():
 
     var10 = ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
 
-    df = pd.read_csv('../Datasets/10/10.csv', index_col='Datetime')
-    df = df['2020-02-16 00:00:00':'2020-10-16 00:00:00']
+    df = pd.read_csv('../Datasets/02/10.csv', index_col='Datetime')
+    df = df['2020-02-08 00:00:00':'2020-02-08 00:00:00']
 
     df.reset_index(inplace=True)
     x_train = df[var10]
@@ -70,10 +70,10 @@ def parameter_search():
 if __name__ == '__main__':
 
     variables10 = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
-    df = pd.read_csv('../Datasets/10/10.csv', index_col=["Datetime"],
+    df = pd.read_csv('../Datasets/02/10.csv', index_col=["Datetime"],
                      parse_dates=["Datetime"])
 
-    train_set = df['2020-02-16 00:00:00':'2021-01-07 00:00:00']
+    train_set = df['2020-02-08 00:00:00':'2021-01-07 00:00:00']
     test_set = df['2021-01-07 00:00:00':'2021-01-08 00:00:00']
 
     x_train = np.transpose([train_set[var].to_numpy() for var in variables10])

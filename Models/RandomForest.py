@@ -59,10 +59,10 @@ def random_forest_model(set, scale=False, show=False):
 if __name__ == '__main__':
 
     variables10 = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
-    df = pd.read_csv('../Datasets/09/09.csv', index_col=["Datetime"],
+    df = pd.read_csv('../Datasets/01/09.csv', index_col=["Datetime"],
                      parse_dates=["Datetime"])
-    train_set = df['2020-06-09 00:00:00':'2020-12-09 00:00:00']
-    test_set = df['2020-12-09 00:00:00':'2020-12-10 00:00:00']
+    train_set = df['2020-06-01 00:00:00':'2020-04-01 00:00:00']
+    test_set = df['2020-04-01 00:00:00':'2020-04-02 00:00:00']
 
     x_train = np.transpose([train_set[var].to_numpy() for var in variables10])
     y_train = train_set["Consumption(Wh)"]

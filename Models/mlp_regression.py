@@ -60,14 +60,14 @@ if __name__ == '__main__':
     variables10 = ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
     var10 = ['Previous_4d_mean_cons', 'Week', 'Snowfall', 'Day', 'Weekend']
 
-    df = pd.read_csv('../Datasets/10/10.csv', index_col=["Datetime"],
+    df = pd.read_csv('../Datasets/02/10.csv', index_col=["Datetime"],
                      parse_dates=["Datetime"])
 
     #date = datetime.fromisoformat()
     x = df[var10]
     y = df["Consumption(Wh)"]
-    x_train = x['2020-02-16 00:00:00':'2021-01-07 00:00:00']
-    y_train = y['2020-02-16 00:00:00':'2021-01-07 00:00:00']
+    x_train = x['2020-02-08 00:00:00':'2021-01-07 00:00:00']
+    y_train = y['2020-02-08 00:00:00':'2021-01-07 00:00:00']
     x_test = x['2021-01-07 00:00:00':'2021-01-08 00:00:00']
     y_test = y['2021-01-07 00:00:00':'2021-01-08 00:00:00']
 

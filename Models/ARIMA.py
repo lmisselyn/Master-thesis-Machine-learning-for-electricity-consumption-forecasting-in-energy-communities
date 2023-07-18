@@ -18,7 +18,7 @@ La série temporelle est stationnaire si elle reste constante dans le temps
 (à l’œil nu, regardez si les lignes sont droites et parallèles à l’axe des x)
 Test de Dickey-Fuller augmenté (ADF) : La série temporelle est considérée 
 comme stationnaire si la valeur p est faible (selon l’hypothèse nulle) 
-et si les valeurs critiques à des intervalles de confiance de 1%, 5%, 10%
+et si les valeurs critiques à des intervalles de confiance de 1%, 5%, 02%
  sont aussi proches que possible des statistiques de l’ADF (Augmented Dickey-Fuller)
  
  https://www.kaggle.com/code/chandra03/how-to-use-sarimax-and-arimax/notebook
@@ -133,4 +133,4 @@ if __name__ == '__main__':
     #auto_correlation_function('../one_year_10_datetime.csv')
     #get_stationarity('../one_year_10_datetime.csv')
     #adv_test("../one_year_10_datetime.csv")
-    print(arima_model("../Datasets/10/one_year_10_datetime.csv"))
+    print(arima_model("../Datasets/02/one_year_10_datetime.csv"))

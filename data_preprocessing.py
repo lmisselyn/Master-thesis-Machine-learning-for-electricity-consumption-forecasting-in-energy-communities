@@ -1,3 +1,5 @@
+import random
+
 import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime, timedelta
@@ -5,7 +7,7 @@ import numpy as np
 
 
 def get_data_csv_10():
-    df = pd.read_csv("../10final.csv")[["Date", "Heure", "Index(Wh)"]]
+    df = pd.read_csv("../02final.csv")[["Date", "Heure", "Index(Wh)"]]
     one_year = df.loc[34:35199]
     one_year_df = pd.DataFrame(one_year, columns=df.columns)
     one_year_df.reset_index(drop=True, inplace=True)
@@ -71,7 +73,7 @@ def get_data_csv_10():
 
 
 def get_data_csv_09():
-    df = pd.read_csv('Datasets/09/one_year_09.csv')
+    df = pd.read_csv('Datasets/01/one_year_09.csv')
     """
     weather_df = pd.read_csv('../weather_data.csv')
     one_year_w = weather_df.loc[70175:105214]
@@ -170,25 +172,6 @@ def datetime_format(filename):
     df.to_csv(filename)
 
 
-def mean_cons_by_hour(filename):
-    mean_cons = []
-    df = pd.read_csv(filename, index_col=["Datetime"])
-    dates = [datetime.fromisoformat(d) for d in df.index]
-    first_date = dates[0]
-    dates.reverse()
-
-    for date in dates:
-        tmp = []
-        for j in range(1, 5):
-            prev_week = date - timedelta(weeks=j)
-            if prev_week > first_date and prev_week in dates:
-                tmp.append(df.at[str(prev_week), 'Consumption(Wh)'])
-        mean_cons.append(np.mean(tmp))
-    mean_cons.reverse()
-    df['Previous_4d_mean_cons'] = mean_cons
-    df.to_csv('Datasets/10.csv')
-
-
 def mean_array(arr):
     sum = 0
     for item in arr:
@@ -200,7 +183,7 @@ def mean_array(arr):
     return sum
 
 
-def mean_cons_by_hour2(filename):
+def mean_cons_by_week(filename):
     mean_cons = []
     df = pd.read_csv(filename, index_col=['Datetime'])
     dates = [datetime.fromisoformat(d) for d in df.index]
@@ -230,7 +213,65 @@ def mean_cons_by_hour2(filename):
         except:
             print(mean_array(tmp))
     mean_cons.reverse()
-    df['Previous_4d_mean_cons'] = mean_cons
+    df['Prev_4w_mean_cons'] = mean_cons
+    df.to_csv(filename)
+
+
+def past_consumption_feature(filename, timestep):
+    new_feature = []
+    df = pd.read_csv(filename, index_col=['Datetime'])
+    dates = [datetime.fromisoformat(d) for d in df.index]
+    first_date = dates[0]
+    dates.reverse()
+
+    for date in dates:
+        past_cons = []
+        for t in timestep:
+            prev_step = date - timedelta(days=t)
+            if prev_step > first_date:
+                before = str(prev_step - timedelta(minutes=15))
+                after = str(prev_step + timedelta(minutes=15))
+                tmp = [df.at[before, 'Consumption(Wh)'],
+                       df.at[str(prev_step), 'Consumption(Wh)'],
+                       df.at[after, 'Consumption(Wh)']]
+                past_cons.append(np.mean(tmp))
+        new_feature.append(np.mean(past_cons))
+    new_feature.reverse()
+    df['new_feature'] = new_feature
+    df.to_csv(filename)
+
+
+def mean_cons_by_hour(filename):
+    mean_cons = []
+    df = pd.read_csv(filename, index_col=['Datetime'])
+    dates = [datetime.fromisoformat(d) for d in df.index]
+    first_date = dates[0]
+    dates.reverse()
+
+    for date in dates:
+        tmp = []
+        for i in range(3, 7):
+            prev_week = date - timedelta(days=i)
+            if prev_week > first_date and prev_week in dates:
+                tmp2 = [df.at[str(prev_week), 'Consumption(Wh)']]
+                if len(tmp2) > 1:
+                    print(prev_week)
+                before = prev_week - timedelta(minutes=15)
+                after = prev_week + timedelta(minutes=15)
+                for around in [before, after]:
+                    if around in dates:
+                        tmp2.append(df.at[str(around), 'Consumption(Wh)'])
+                    else:
+                        print(around)
+                        break
+                tmp.append(np.mean(tmp2))
+        try:
+            m = mean_array(tmp)
+            mean_cons.append(float(m))
+        except:
+            print(mean_array(tmp))
+    mean_cons.reverse()
+    df['Prev_4d_mean_cons'] = mean_cons
     df.to_csv(filename)
 
 
@@ -295,13 +336,19 @@ def tmp_time_features(filename):
 
 
 if __name__ == '__main__':
-    filename = 'Datasets/16/16final.csv'
-    #tmp_cons_calcu(filename)
-    #tmp_time_features(filename)
-    tmp_date(filename)
-    mean_cons_by_hour2(filename)
+
+    for i in ['03', '04', '05', '06', '07', '08']:  #'01', '02',
+        filename = 'Datasets/' + i + '/' + i + 'final.csv'
+        tmp_date(filename)
+        print(i + 'done')
 
     """
+    #print(cons.var())
+    #tmp_cons_calcu(filename)
+    #tmp_time_features(filename)
+    #tmp_date(filename)
+    #mean_cons_by_hour2(filename)
+
     df = pd.read_csv(filename)
     dt = df['Datetime']
     dupp = dt.duplicated()
@@ -315,7 +362,7 @@ if __name__ == '__main__':
     hour = df['Hour']
     for i in range(len(hour)):
         try:
-            if hour[i][3:6] not in (['00', '15', '30', '45']):
+            if hour[i][3:6] not in (['00', '07', '30', '45']):
                 print(hour[i][3:6])
                 print(i)
         except:
