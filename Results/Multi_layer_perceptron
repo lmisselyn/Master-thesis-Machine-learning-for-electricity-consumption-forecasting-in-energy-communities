@@ -1,26 +1,19 @@
 
-Variable selection results for MLP model :
-------------------------------------------
 
-Dataset09 :
-best variables : ['Minutes', 'Humidity', 'Snowfall', 'Wind speed']
-Accuracy :
-        'MAE': 40.1155
-        'MSE': 6769.1499
-        'RMSE': 70.6411
-        'MAPE': 0.4340
-
-Dataset10 :
-best variables : ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
-Accuracy :
-        'MAE': 38.6173
-        'MSE': 7645.4964
-        'RMSE': 73.5789
-        'MAPE': 0.3486
-
-Or  : ['Previous_4d_mean_cons', 'Week', 'Snowfall', 'Day', 'Weekend']
-Accuracy :
-        'MAE': 74.420
-        'MSE': 12888.489
-        'RMSE': 108.7180
-        'MAPE': 0.405
+Average MAPE for model MLP with feature selection strategy spearman and dataset 01
+0.39070130000000003
+Averageb MAPE for model MLP with feature selection strategy spearman and dataset 02
+0.4396234
+Averageb MAPE for model MLP with feature selection strategy spearman and dataset 03
+0.9199639
+Averageb MAPE for model MLP with feature selection strategy spearman and dataset 04
+0.8513308
+Averageb MAPE for model MLP with feature selection strategy spearman and dataset 05
+0.3130252
+Averageb MAPE for model MLP with feature selection strategy spearman and dataset 06
+0.7450081999999998
+Averageb MAPE for model MLP with feature selection strategy spearman and dataset 07
+0.4994528
+Averageb MAPE for model MLP with feature selection strategy spearman and dataset 08
+0.7139730999999999
+total error :0.6091348374999999

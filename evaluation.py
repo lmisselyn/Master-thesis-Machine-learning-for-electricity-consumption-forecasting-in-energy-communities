@@ -1,4 +1,11 @@
+from datetime import datetime
+from datetime import timedelta
+from sklearn.metrics import mean_absolute_percentage_error
+import pandas as pd
+from Models.mlp_regression import *
 from Models.linear_regression import *
+from Models.KNN import *
+from helper import aggregate
 
 first_d = {'01': '2020-02-25 00:00:00', '02': '2020-02-15 00:00:00', '03': '2020-02-27 00:00:00',
            '04': '2020-07-24 00:00:00',
@@ -42,15 +49,43 @@ wrapp_mape = {}
 
 if __name__ == '__main__':
 
-    model = linear_regression
+    model = mlp_model
+    model_name = 'MLP'
+    feature_selection_strategy = 'mutual information'
 
-
+    total_error = []
     for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
-        first_date = first_d[i]
-        features = pearson[i]
+        df = pd.read_csv(filename, index_col='Datetime')
+        features = mutual_i[i]
+        errors = []
+        last_date = datetime.fromisoformat(df.index[-1])
+        train_first_date = datetime.fromisoformat(first_d[i])
 
-        for i in range(10):
-            n_train_month = 3
+        x = df[features]
+        y = df['Consumption(Wh)']
 
+        for j in range(10):
+            train_last_date = train_first_date + timedelta(weeks=16)
+            if train_last_date+timedelta(days=6) > last_date:
+                print("Date error" + i)
+                print(str(train_last_date+timedelta(days=6)))
+                print(str(last_date))
+                break
+
+            x_train = x[str(train_first_date):str(train_last_date)]
+            y_train = y[str(train_first_date):str(train_last_date)]
+            x_test = x[str(train_last_date+timedelta(days=3)):str(train_last_date+timedelta(days=10))]
+            y_test = y[str(train_last_date+timedelta(days=3)):str(train_last_date+timedelta(days=10))]
             trained_model = model(set=[x_train, y_train, x_test, y_test])
+            y_predict = trained_model.predict(x_test)
+            aggregated = aggregate(y_test.values, y_predict)
+            MAPE = round(mean_absolute_percentage_error(aggregated[0], aggregated[1]), 6)
+            errors.append(MAPE)
+            total_error.append((MAPE))
+
+            train_first_date = train_first_date+timedelta(weeks=3)
+        print("Average MAPE for model " + model_name + " with feature selection strategy " + feature_selection_strategy + " and dataset " + i)
+        print(np.mean(errors))
+    print("total error :" + str(np.mean(total_error)))
+

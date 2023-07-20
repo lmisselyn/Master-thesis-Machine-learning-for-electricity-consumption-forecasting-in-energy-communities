@@ -1,0 +1,21 @@
+
+
+Feature selection strategy : Spearman
+
+Averageb MAPE for model linear with feature selection strategy spearman and dataset 01
+0.4277675
+Averageb MAPE for model linear with feature selection strategy spearman and dataset 02
+0.4310827
+Averageb MAPE for model linear with feature selection strategy spearman and dataset 03
+0.9717671999999998
+Averageb MAPE for model linear with feature selection strategy spearman and dataset 04
+0.8811516000000001
+Averageb MAPE for model linear with feature selection strategy spearman and dataset 05
+0.29918729999999993
+Averageb MAPE for model linear with feature selection strategy spearman and dataset 06
+0.7678482
+Averageb MAPE for model linear with feature selection strategy spearman and dataset 07
+0.5079573999999999
+Averageb MAPE for model linear with feature selection strategy spearman and dataset 08
+0.7305747
+total error :0.627167075
