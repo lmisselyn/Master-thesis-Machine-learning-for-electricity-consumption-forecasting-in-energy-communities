@@ -6,6 +6,8 @@ import seaborn as sns
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from feature_selection import *
 import helper
 
 
@@ -97,107 +99,72 @@ def regress_visu(filename, variables):
         plt.show()
 
 
-def plot_model(y, y_predict):
-    fig, ax = plt.subplots()
-    ax.plot(y, label='True values')
-    ax.plot(y_predict, label='Predicted values')
-    ax.set_ylabel("Consumption(Wh)")
-    ax.legend(facecolor='white')
-    plt.show()
+def linear_regression(set, scale=False, show=False):
+    """
+    train a linear model with the training set provided in set[0]
+    and test it on the testing set provided in
+    - scale (boolean) : scale data if true
+    """
+    x_train = set[0]
+    y_train = set[1]
+    x_test = set[2]
+    y_test = set[3]
 
+    if scale:
+        sc = StandardScaler()
+        scaler = sc.fit(x_train)
+        x_train = scaler.transform(x_train)
+        x_test = scaler.transform(x_test)
 
-def linear_predict_model(filename, variables):
-    df = pd.read_csv(filename)
-    X_train, X_test, Y_train, Y_test = train_test_split(df[variables],
-                                                        df["Consumption(Wh)"],
-                                                        test_size=0.2,
-                                                        random_state=5)
     model = LinearRegression()
-    model.fit(X_train, Y_train)
-    y_train_predict = model.predict(X_train)
-    rmse = (np.sqrt(mean_squared_error(Y_train, y_train_predict)))
-    r2 = r2_score(Y_train, y_train_predict)
-    print('Training')
-    print('--------------------------------------')
-    print('Root Mean squre error : {}'.format(rmse))
-    print('R2 score : {}'.format(r2))
-    print('\n')
-    # model evaluation for testing set
-    y_test_predict = model.predict(X_test)
-    rmse = (np.sqrt(mean_squared_error(Y_test, y_test_predict)))
-    r2 = r2_score(Y_test, y_test_predict)
-    print('Testing')
-    print('--------------------------------------')
-    print('Root Mean squre error {}'.format(rmse))
-    print('R2 score {}'.format(r2))
+    model.fit(x_train, y_train)
 
-def final_model(filename, variables):
-    train_df, validation_df, test_df = helper.make_sets(filename)
-    x = np.transpose([train_df[var].to_numpy() for var in variables])
-    y = train_df["Consumption(Wh)"]
-    model = LinearRegression()
-    model.fit(x, y)
-    x_test = np.transpose([test_df[var].to_numpy() for var in variables])
-    y_test = test_df["Consumption(Wh)"]
-    y_predict = model.predict(x_test)
-    helper.evaluate_model(y_test.values, y_predict)
-    helper.plot_model(y_test.values, y_predict)
+    if show:
+        y_predict = model.predict(x_test)
+        aggregated = helper.aggregate(y_test.values, y_predict)
+        helper.plot_model(y_test.values, y_predict, 'linear regression')
+        helper.plot_model(aggregated[0], aggregated[1], 'Linear regression - dataset01 - 2021-02-27 ')
+        print("Accuracy : ")
+        print(helper.evaluate_model(y_test.values, y_predict))
+        print("Accuracy for aggregated values : ")
+        print(helper.evaluate_model(aggregated[0], aggregated[1]))
 
-
-
-def variable_selection(filename, variables):
-    train_df, validation_df, test_df = helper.make_sets(filename)
-    selected_var = []
-    best_accuracy = -10000
-    y = train_df["Consumption(Wh)"]
-    iter = 0
-    while len(variables) > 0:
-        max_accur = -10000
-        best_var = ""
-        for v in variables:
-            y_validation = validation_df["Consumption(Wh)"]
-            model = LinearRegression()
-            x = []
-            x_validation = []
-            if len(selected_var) == 0:
-                x = train_df[v].to_numpy().reshape(-1, 1)
-                x_validation = validation_df[v].to_numpy().reshape(-1, 1)
-            else:
-                x = [train_df[var].to_numpy() for var in selected_var]
-                x.append(train_df[v].to_numpy())
-                x_validation = [validation_df[var].to_numpy() for var in selected_var]
-                x_validation.append(validation_df[v].to_numpy())
-                x = np.array(x).transpose()
-                x_validation = np.array(x_validation).transpose()
-            model.fit(x, y)
-            y_predict = model.predict(x_validation)
-            #cvrmse = (np.sqrt(mean_squared_error(y_validation, y_predict))) / y_validation.mean()
-            #MBE = np.mean(y_predict - y_validation)
-            #MSE = mean_squared_error(y_validation, y_predict)
-            MAE = np.mean(np.abs(y_predict - y_validation))
-            R2 = model.score(x_validation, y_validation)
-            #accuracy = 0.6 * (1 - cvrmse) + 0.4 * (1 - MBE)
-            accuracy = -MAE
-            if accuracy > max_accur:
-                max_accur = accuracy
-                best_var = v
-
-        # return if no variable selected
-        if best_var != "":
-            selected_var.append(best_var)
-            variables.remove(best_var)
-        else:
-            return selected_var, best_accuracy
-        print("Iteration " + str(iter) + ":" + str(best_accuracy))
-        iter += 1
-        if max_accur > best_accuracy:
-            if best_accuracy != -10000 and max_accur-best_accuracy < 0.01:
-                best_accuracy = max_accur
-                return selected_var, best_accuracy
-            best_accuracy = max_accur
-
-    return selected_var, best_accuracy
+    return model
 
 
 if __name__ == '__main__':
-    print('ok')
+    var = ['Consumption(Wh)', 'Day', 'Minutes',
+           'Weekend', 'temperature_2m', 'relativehumidity_2m',
+           'dewpoint_2m', 'apparent_temperature',
+           'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
+           'direct_normal_irradiance', 'windspeed_10m', 'winddirection_10m',
+           'Prev_4d_mean_cons', 'Prev_4w_mean_cons', 'precipitation']
+
+    for i in ['01']: #, '02', '03', '04', '05', '06', '07', '08']:  #
+        filename = '../Datasets/' + i + '/' + i + 'final.csv'
+        features = correlation(filename, 'pearson', 5, var)
+        df = pd.read_csv(filename, index_col='Datetime')
+
+        train_set = df['2020-11-24 00:00:00':'2021-02-24 00:00:00']
+        test_set = df['2021-02-27 00:00:00':'2021-02-28 00:00:00']
+        train_visu = df['2021-02-21 00:00:00':'2021-02-24 00:00:00']
+
+        x_train = np.transpose([train_set[var].to_numpy() for var in features])
+        y_train = train_set["Consumption(Wh)"]
+        x_test = np.transpose([test_set[var].to_numpy() for var in features])
+        y_test = test_set["Consumption(Wh)"]
+        lr = linear_regression(set=[x_train, y_train, x_test, y_test], show=True)
+        print(features)
+        print(lr.intercept_)
+        print(lr.coef_)
+
+        x_train_visu = train_visu[features]
+        y_train_visu = train_visu['Consumption(Wh)']
+
+        plt.plot(y_train_visu,  label='Training data')
+        plt.plot(lr.predict(x_train_visu),  label='fitted model')
+        plt.title("Lr visualisation - Dataset01 - (2020-11-24, 2021-02-24)")
+        plt.xticks([''])
+        plt.legend()
+        plt.ylabel("Consumption(Wh)")
+        plt.show()

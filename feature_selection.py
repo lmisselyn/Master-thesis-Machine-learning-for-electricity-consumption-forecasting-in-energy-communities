@@ -1,19 +1,20 @@
 import pandas as pd
 from sklearn.feature_selection import mutual_info_regression, SelectKBest
-from mlxtend.feature_selection import SequentialFeatureSelector as SFS
+from sklearn.feature_selection import SequentialFeatureSelector as SFS
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
 from xgboost import XGBRegressor
 
 models = [KNeighborsRegressor(
-        n_neighbors=60,
-        weights='uniform',
-        algorithm='auto',
-        leaf_size=30,
-        metric='minkowski'),
-        MLPRegressor(
+    n_neighbors=60,
+    weights='uniform',
+    algorithm='auto',
+    leaf_size=30,
+    metric='minkowski'),
+    MLPRegressor(
         hidden_layer_sizes=(100, 100, 100),
         activation='relu',
         solver='adam',
@@ -22,8 +23,9 @@ models = [KNeighborsRegressor(
         max_iter=1500,
         early_stopping=True,
         validation_fraction=0.1),
-        SVR(),
-        RandomForestRegressor(
+    SVR(),
+    LinearRegression(),
+    RandomForestRegressor(
         n_estimators=100,
         criterion='absolute_error',
         max_depth=150,
@@ -40,46 +42,42 @@ models = [KNeighborsRegressor(
         verbose=0,
         warm_start=False,
         ccp_alpha=0.0,
-        max_samples=None),
-        XGBRegressor(
-        booster='gbtree',
-        eval_metric='rmse',
-        early_stopping_rounds=100,
-        objective='reg:squarederror',
-        learning_rate=0.015,
-        n_estimators=100)]
+        max_samples=None)]
+
 
 def mutual_info(filename, features):
     df = pd.read_csv(filename)
     y = df['Consumption(Wh)']
     x = df[features]
-    select = SelectKBest(mutual_info_regression, k=5)
+    select = SelectKBest(mutual_info_regression, k=7)
     select.fit(x, y)
     mask = select.get_support()
     print(x.columns[mask])
 
 
-def wrapping_feature_selection(filename, model, features):
+def wrapping_feature_selection(filename, model, features, score):
     df = pd.read_csv(filename)
     x = df[features]
     y = df['Consumption(Wh)']
     sfs = SFS(model,
-              k_features=7,
-              forward=True,
-              floating=False,
-              scoring='r2',
-              cv=0)
+              n_features_to_select='auto',
+              tol=0.001,
+              direction='forward',
+              scoring=score,
+              cv=5,
+              n_jobs=2)
     sfs.fit(x, y)
-    print(sfs.k_feature_names_)
+    print(sfs.get_feature_names_out())
 
 
-def correlation(filename, method, features):
+def correlation(filename, method, k, features):
     df = pd.read_csv(filename)
     df = df[features]
-    m = df.corr(method='spearman')
+    m = df.corr(method=method)
     m = m['Consumption(Wh)'].copy()
     m.sort_values(inplace=True, key=abs)
-    print(m)
+
+    return m.keys()[-k - 1:-1]
 
 
 if __name__ == '__main__':
@@ -87,12 +85,14 @@ if __name__ == '__main__':
            'Weekend', 'temperature_2m', 'relativehumidity_2m',
            'dewpoint_2m', 'apparent_temperature',
            'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
-           'direct_normal_irradiance', 'windspeed_10m', 'winddirection_10m',
-           'Prev_4d_mean_cons', 'Prev_4w_mean_cons', 'precipitation']
+           'direct_normal_irradiance', 'windspeed_10m',
+           'Prev_4d_mean_cons', 'Prev_4w_mean_cons']
 
-    for i in ['01', '02', '03', '04']: # '05', '06', '07', '08']:
+    for i in ['01', '02']: #, '03', '04', '05', '06', '07', '08']:
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
         print(i)
         for m in models:
             print(m)
-            wrapping_feature_selection(filename, m, var)
+        #mutual_info(filename, var)
+        #print(correlation(filename, 'pearson', 5, var))
+            wrapping_feature_selection(filename, m, var, 'r2')

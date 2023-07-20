@@ -11,10 +11,12 @@ def plot_model(y, y_predict, model_name):
     ax.plot(y, label='True values')
     ax.plot(y_predict, label='Predicted values')
     ax.set_ylabel("Consumption(Wh)")
+    ax.set_xlabel("Hour of the day")
     ax.legend(facecolor='white')
-    fig1 = plt.gcf()
+    #fig1 = plt.gcf()
     #fig1.savefig('../plots/' + model_name)
     plt.title(model_name)
+    plt.xticks(np.arange(0, 24, 4))
     plt.show()
 
 

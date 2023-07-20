@@ -1,0 +1,17 @@
+01
+---
+KNeighborsRegressor(60)
+--------------------
+'Minutes', 'relativehumidity_2m', 'apparent_temperature', 'shortwave_radiation', 'diffuse_radiation', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'
+
+MLPRegressor(early_stopping=True, hidden_layer_sizes=(100, 100, 100), learning_rate='adaptive', learning_rate_init=0.005, max_iter=1500)
+---------------------
+'Day', 'temperature_2m', 'shortwave_radiation', 'diffuse_radiation', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons', 'precipitation'
+
+SVR()
+-----
+'Day', 'Weekend', 'temperature_2m', 'apparent_temperature', 'windspeed_10m', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'
+
+RandomForestRegressor(criterion='absolute_error', max_depth=150, max_features=1, n_jobs=2, random_state=5)
+---------------------
+'relativehumidity_2m', 'dewpoint_2m', 'apparent_temperature', 'direct_normal_irradiance', 'windspeed_10m', 'winddirection_10m', 'Prev_4d_mean_cons'
