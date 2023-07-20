@@ -12,13 +12,12 @@ from Models.polynomial_regression import polynomial_regressor
 from Models.SVM import SVM_regressor_model
 from Models.XGB import XGB_regressor_model
 from Models.mlp_regression import mlp_model
+from Models.linear_regression import linear_regression
 from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
 
 
-models = {"XGB": XGB_regressor_model, 'R_F': random_forest_model, "MLP": mlp_model, "SVM": SVM_regressor_model, "KNN": knn_regressor}
-#models = {'R_F': random_forest_model}
-#models = {"KNN": knn_regressor, "SVM": SVM_regressor_model, "MLP": mlp_model, "POLY": polynomial_regressor}
+models = {"LR" : linear_regression, "SVM": SVM_regressor_model, "KNN": knn_regressor, "XGB": XGB_regressor_model, 'R_F': random_forest_model, "MLP": mlp_model}
 
 source_models = {"XGB": XGB_regressor_model, 'R_F': RandomForestRegressor, "MLP": mlp_model,
                  "POLY": polynomial_regressor, "KNN": knn_regressor, "SVM": SVM_regressor_model}

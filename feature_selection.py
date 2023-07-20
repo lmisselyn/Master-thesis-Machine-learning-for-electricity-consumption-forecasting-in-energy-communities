@@ -54,7 +54,7 @@ def mutual_info(filename, features):
     df = pd.read_csv(filename)
     y = df['Consumption(Wh)']
     x = df[features]
-    select = SelectKBest(mutual_info_regression, k=7)
+    select = SelectKBest(mutual_info_regression, k=5)
     select.fit(x, y)
     mask = select.get_support()
     print(x.columns[mask])
@@ -90,12 +90,12 @@ if __name__ == '__main__':
            'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
            'direct_normal_irradiance', 'windspeed_10m',
            'Prev_4d_mean_cons', 'Prev_4w_mean_cons']
-    print(models[:3])
-    for m in models[:3]:
-        print(m)
-        for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
-            filename = 'Datasets/' + i + '/' + i + 'final.csv'
-            print(i)
-            wrapping_feature_selection(filename, m, var, 'r2')
-        # mutual_info(filename, var)
+
+    #for m in models[:3]:
+        #print(m)
+    for i in ['01', '02', '03', '04']: #, '05', '06', '07', '08']:
+        filename = 'Datasets/' + i + '/' + i + 'final.csv'
+        print(i)
+            #wrapping_feature_selection(filename, m, var, 'r2')
+        mutual_info(filename, var)
         # print(correlation(filename, 'pearson', 5, var))

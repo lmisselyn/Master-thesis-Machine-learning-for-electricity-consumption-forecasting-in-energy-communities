@@ -2,9 +2,11 @@ from datetime import datetime, timedelta
 import numpy as np
 from helper import *
 from helperv2 import *
+from Models.linear_regression import linear_regression
 from Models.RandomForest import random_forest_model
 from Models.XGB import XGB_regressor_model
 import pandas as pd
+from sklearn.metrics import mean_absolute_percentage_error
 
 from Models.mlp_regression import mlp_model
 # 'dewpoint_2m','pressure_msl', 'surface_pressure', 'cloudcover_low', 'cloudcover_mid', 'cloudcover_high', 'diffuse_radiation', 'winddirection_10m','direct_radiation', 'direct_normal_irradiance',
@@ -12,16 +14,20 @@ features = ['Day', 'Minutes',
            'Weekend', 'temperature_2m', 'relativehumidity_2m',
            'dewpoint_2m', 'apparent_temperature',
            'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
-           'direct_normal_irradiance', 'windspeed_10m', 'winddirection_10m',
-           'Prev_4d_mean_cons', 'Prev_4w_mean_cons', 'precipitation']
+           'direct_normal_irradiance', 'windspeed_10m',
+           'Prev_4d_mean_cons', 'Prev_4w_mean_cons']
 
-models = {"XGB": XGB_regressor_model, 'R_F': random_forest_model, "MLP": mlp_model,
+first_d = {'01': '2020-02-25 00:00:00', '02': '2020-02-15 00:00:00', '03': '2020-02-27 00:00:00',
+           '04': '2020-07-24 00:00:00',
+           '05': '2020-08-22 00:00:00', '06': '2020-08-25 00:00:00', '07': '2020-08-25 00:00:00',
+           '08': '2020-10-06 00:00:00'}
+
+models = {"LR": linear_regression, "XGB": XGB_regressor_model, 'R_F': random_forest_model, "MLP": mlp_model,
                  "POLY": polynomial_regressor, "KNN": knn_regressor, "SVM": SVM_regressor_model}
 
 
 def anomaly_detection(y_true, y_predict):
     results = {"MAE": [], "MSE": [], "RMSE": [], "MAPE": []}
-
     indice=0
     while indice < len(y_true):
         acc = evaluate_model(
@@ -32,7 +38,7 @@ def anomaly_detection(y_true, y_predict):
     for k in results.keys():
         results[k] = np.mean(results[k])
 
-    if results['MAPE'] > 0.8:
+    if results['MAPE'] > 0.5:
         print("Anomaly detected : " + str(results))
         return True
     else:
@@ -41,6 +47,7 @@ def anomaly_detection(y_true, y_predict):
 
 def anomaly_simulator(df, train_n_weeks, n_week, n_days, dataset):
 
+    total_error = []
     dates = [datetime.fromisoformat(d) for d in df.index]
     test_start_date = dates[-1]-timedelta(weeks=n_week)
     train_start_date = test_start_date-timedelta(weeks=train_n_weeks)
@@ -71,11 +78,13 @@ def anomaly_simulator(df, train_n_weeks, n_week, n_days, dataset):
         y_test = y[str(test_start_date):str(end_date)]
         y_predict = trained_model.predict(x_test)
         aggregated = aggregate(y_test.values, y_predict)
-        plot_model(aggregated[0], aggregated[1], best_model)
+        MAPE = round(mean_absolute_percentage_error(aggregated[0], aggregated[1]), 6)
+        total_error.append(MAPE)
+        #plot_model(aggregated[0], aggregated[1], best_model)
         anomaly = anomaly_detection(aggregated[0], aggregated[1])
         if anomaly:
             anomaly_cnt += 1
-            if anomaly_cnt == 3:
+            if anomaly_cnt == 5:
                 find_models_features(df[:str(test_start_date)], features.copy(), dataset, train_n_weeks)
                 best_model = select_best_model(dataset)
                 variables = get_feature(best_model, dataset)
@@ -90,12 +99,16 @@ def anomaly_simulator(df, train_n_weeks, n_week, n_days, dataset):
             anomaly_cnt = 0
         test_start_date = end_date
         train_start_date = test_start_date-timedelta(weeks=train_n_weeks)
+    print("Final error :" + str(np.mean(total_error)))
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('Datasets/03/03final.csv', index_col='Datetime')
+    for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
+        filename = 'Datasets/' + i + '/' + i + 'final.csv'
+        df = pd.read_csv(filename, index_col='Datetime')
+        print(i)
 
-    anomaly_simulator(df['2020-08-20 00:00:00':], 16, 4, 1, '01')
+        anomaly_simulator(df[first_d[i]:], 16, 10, 1, i)
 
     #df = pd.read_csv('Datasets/01.csv', index_col='Datetime')
     #anomaly_simulator(df['2020-06-01 00:00:00':], 8, 3, '09_test')

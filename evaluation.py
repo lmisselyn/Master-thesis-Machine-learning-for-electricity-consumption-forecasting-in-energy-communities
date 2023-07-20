@@ -33,15 +33,14 @@ spearman = {'01': ['shortwave_radiation', 'direct_normal_irradiance', 'dewpoint_
    'Prev_4w_mean_cons', 'Prev_4d_mean_cons']
 }
 
-mutual_i = {'01': ['Minutes', 'temperature_2m', 'dewpoint_2m', 'apparent_temperature',
-   'shortwave_radiation', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'], '02': ['Minutes', 'temperature_2m', 'relativehumidity_2m', 'dewpoint_2m',
-   'apparent_temperature', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'], '03': ['Minutes', 'dewpoint_2m', 'apparent_temperature', 'diffuse_radiation',
-   'direct_normal_irradiance', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'], '04': ['Minutes', 'temperature_2m', 'dewpoint_2m', 'apparent_temperature',
-   'shortwave_radiation', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'], '05': ['Minutes', 'temperature_2m', 'dewpoint_2m', 'apparent_temperature',
-   'diffuse_radiation', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'], '06' : ['Day', 'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
-   'windspeed_10m', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'], '07': ['Minutes', 'temperature_2m', 'dewpoint_2m', 'apparent_temperature',
-   'direct_normal_irradiance', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'], '08': ['Minutes', 'temperature_2m', 'dewpoint_2m', 'apparent_temperature',
-   'winddirection_10m', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons']}
+mutual_i = {'01': ['Minutes', 'dewpoint_2m', 'apparent_temperature', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+            '02': ['temperature_2m', 'dewpoint_2m', 'apparent_temperature', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+            '03': ['Minutes', 'dewpoint_2m', 'shortwave_radiation', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+            '04': ['Minutes', 'temperature_2m', 'apparent_temperature', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+            '05': ['Minutes', 'dewpoint_2m', 'apparent_temperature', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+            '06': ['shortwave_radiation', 'diffuse_radiation', 'windspeed_10m', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+            '07': ['Minutes', 'temperature_2m', 'dewpoint_2m', 'apparent_temperature', 'Prev_4w_mean_cons'],
+            '08': ['Minutes', 'temperature_2m', 'dewpoint_2m', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons']}
 
 wrapp_r2 = {'01':{}}
 
