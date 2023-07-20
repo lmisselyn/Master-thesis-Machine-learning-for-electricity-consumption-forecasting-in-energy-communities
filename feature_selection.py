@@ -63,7 +63,7 @@ def wrapping_feature_selection(filename, model, features, score):
               n_features_to_select=5,
               direction='forward',
               scoring=score,
-              cv=5,
+              cv=None,
               n_jobs=2)
     sfs.fit(x, y)
     print(sfs.get_feature_names_out())
