@@ -60,8 +60,7 @@ def wrapping_feature_selection(filename, model, features, score):
     x = df[features]
     y = df['Consumption(Wh)']
     sfs = SFS(model,
-              n_features_to_select='auto',
-              tol=0.001,
+              n_features_to_select=5,
               direction='forward',
               scoring=score,
               cv=5,
