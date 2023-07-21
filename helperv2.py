@@ -1,26 +1,20 @@
 from datetime import datetime, timedelta
 import numpy as np
-import pandas as pd
-from matplotlib import pyplot as plt
-from sklearn.model_selection import TimeSeriesSplit, GridSearchCV
+
 import helper
 from helper import aggregate, evaluate_model
 from sklearn import metrics
 from Models.KNN import knn_regressor
 from Models.RandomForest import random_forest_model
-from Models.polynomial_regression import polynomial_regressor
 from Models.SVM import SVM_regressor_model
 from Models.XGB import XGB_regressor_model
 from Models.mlp_regression import mlp_model
 from Models.linear_regression import linear_regression
-from sklearn.ensemble import RandomForestRegressor
-from xgboost import XGBRegressor
 
 
-models = {"LR" : linear_regression, "SVM": SVM_regressor_model, "KNN": knn_regressor, "XGB": XGB_regressor_model, 'R_F': random_forest_model, "MLP": mlp_model}
+models = {"LR": linear_regression, "SVM": SVM_regressor_model, "KNN": knn_regressor, "XGB": XGB_regressor_model,
+          'R_F': random_forest_model, "MLP": mlp_model}
 
-source_models = {"XGB": XGB_regressor_model, 'R_F': RandomForestRegressor, "MLP": mlp_model,
-                 "POLY": polynomial_regressor, "KNN": knn_regressor, "SVM": SVM_regressor_model}
 
 def select_best_model(dataset):
     best_acc = 100
@@ -29,7 +23,7 @@ def select_best_model(dataset):
     Select the best model for the specific dataset
     """
     for model in models.keys():
-        with open('Features/'+model+'_'+dataset+'.txt', 'r') as file:
+        with open('Features/' + model + '_' + dataset + '.txt', 'r') as file:
             line = file.readlines()[1]
             acc = line.split(':')
             mape = float(acc[-1].strip()[:6])
@@ -47,12 +41,12 @@ def find_models_features(df, features, dataset, train_n_weeks):
     for model in models.keys():
         selected = []
         accuracy = []
-        select_best_features(df, models[model], features, train_n_weeks, selected, accuracy)
+        select_best_features(df, models[model], features.copy(), train_n_weeks, selected, accuracy)
         result = ''
         for s in selected:
             result += s + " "
 
-        with open('Features/'+model+'_'+dataset+'.txt', 'w') as file:
+        with open('Features/' + model + '_' + dataset + '.txt', 'w') as file:
             file.write(result + '\n' + str(accuracy))
 
 
@@ -60,9 +54,10 @@ def get_feature(model, dataset):
     """
     Retrieve the best features for a specific model and dataset
     """
-    with open('Features/'+model+'_'+dataset+'.txt', 'r') as file:
+    with open('Features/' + model + '_' + dataset + '.txt', 'r') as file:
         features = file.readline().split(' ')[:-1]
         return features
+
 
 def select_best_features(df, model, features, train_n_weeks, selected=[], accuracy=[]):
     """
@@ -86,7 +81,7 @@ def select_best_features(df, model, features, train_n_weeks, selected=[], accura
         current = selected.copy()
         current.append(v)
         measures = one_week_test(df, model, current)
-        #measures = multi_month_test(df, model, current, train_n_weeks)
+        # measures = multi_month_test(df, model, current, train_n_weeks)
         if measures['MAPE'] < min_MAPE:
             min_MAPE = measures['MAPE']
             best_var = v
@@ -120,8 +115,7 @@ def one_week_test(df, model, features):
     results = {"MAE": [], "MSE": [], "RMSE": [], "MAPE": []}
 
     last_date = dates[-1]
-    train_last_date = last_date-timedelta(weeks=1)
-
+    train_last_date = last_date - timedelta(weeks=1)
 
     x_train = x[:str(train_last_date)]
     y_train = y[:str(train_last_date)]
@@ -133,7 +127,7 @@ def one_week_test(df, model, features):
     test_first_date = train_last_date
 
     for i in range(1, 8):
-        end_of_day = test_first_date+timedelta(days=1)
+        end_of_day = test_first_date + timedelta(days=1)
         x_test = x[str(test_first_date):str(end_of_day)]
         y_test = y[str(test_first_date):str(end_of_day)]
         test_first_date = end_of_day
@@ -166,8 +160,8 @@ def multi_month_test(df, model, features, train_n_weeks):
 
     while train_first_date + timedelta(weeks=train_n_weeks) < last_date:
 
-        train_last_date = train_first_date+timedelta(weeks=train_n_weeks)
-        test_last_date = train_last_date+timedelta(days=1)
+        train_last_date = train_first_date + timedelta(weeks=train_n_weeks)
+        test_last_date = train_last_date + timedelta(days=1)
         x_train = x[str(train_first_date):str(train_last_date)]
         y_train = y[str(train_first_date):str(train_last_date)]
         x_test = x[str(train_last_date):str(test_last_date)]
@@ -185,78 +179,3 @@ def multi_month_test(df, model, features, train_n_weeks):
     for k in results.keys():
         results[k] = np.mean(results[k])
     return results
-
-def parameter_search(df, parameters, model, dataset):
-
-    df = df['2020-02-08 00:00:00':]
-    features = get_feature(model, dataset)
-
-    df.reset_index(inplace=True)
-    x_train = df[features]
-    y_train = df["Consumption(Wh)"]
-
-    tscv = TimeSeriesSplit(n_splits=5, test_size=672)
-
-    mlp_gs = GridSearchCV(source_models[model], param_grid=parameters, cv=tscv,
-                          scoring='neg_root_mean_squared_error')
-    mlp_gs.fit(x_train, y_train)
-    best_params = mlp_gs.best_params_
-    best_score = mlp_gs.best_score_
-
-    with open('Parameters/' + model + dataset + '.txt', 'w') as f:
-        f.write(str(best_params) + '\n' + str(best_score))
-
-
-if __name__ == '__main__':
-    var = ['Day', 'Minutes',
-           'Weekend', 'temperature_2m', 'relativehumidity_2m',
-           'dewpoint_2m', 'apparent_temperature',
-           'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
-           'direct_normal_irradiance', 'windspeed_10m', 'winddirection_10m',
-           'Prev_4d_mean_cons', 'Prev_4w_mean_cons', 'precipitation'] #'pressure_msl', 'surface_pressure', 'snowfall', 'weathercode', 'cloudcover', 'cloudcover_low', 'cloudcover_mid', 'cloudcover_high', 'Consumption(Wh)', 'Week', 'Month', 'Day_of_year',
-    df = pd.read_csv('Datasets/01/01final.csv')
-    sequential_feature_selection(df, XGBRegressor(), var)
-
-    """
-    features = ["Minutes", "Day", "Week", "Weekend", "Month", "Temperature",
-                "Humidity", "Pressure", "Wind_speed", "Wind_direction", "Snowfall",
-                "Snow_depth", "Irradiation", "Rainfall", 'Previous_4d_mean_cons']
-
-
-    df = pd.read_csv('Datasets/02/10.csv', index_col='Datetime')
-
-    #print(select_best_model('09_test'))
-    #find_models_features(df['2020-06-01 00:00:00':], features, '09_test')
-
-
-
-    rf_param = {'n_estimators': [75, 100, 150, 200],
-             'criterion': ['squared_error', 'absolute_error'],
-             'max_depth': [None, 6, 20]}
-
-    mlp_param = {'hidden_layer_sizes': [(150, 150, 150), (100, 100, 100), (500, 500, 500), (1000, 100)],
-                  'activation': ['relu'],
-                  'solver': ['adam'],
-                  'learning_rate': ['adaptive'],
-                  'learning_rate_init': [0.005],
-                  'max_iter': [1500],
-                  'shuffle': [False],
-                  'warm_start': [False],
-                  'early_stopping': [True]}
-
-    xgb_param = {'booster': ['gbtree'],
-                 'eta': [0.015, 0.05, 0.2, 0.3],
-                 'gamma': [0, 1, 2],
-                 'subsample': [0.7, 1],
-                 'eval_metric': ['rmse'],
-                 'early_stopping_rounds': [100],
-                 'objective': ['reg:squarederror'],
-                 'max_depth': [None, 5, 6],
-                 'n_estimators': [100]}
-
-    parameter_search(df['2020-02-08 00:00:00':], rf_param, 'R_F', '10_test')
-
-    parameter_search(df['2020-02-08 00:00:00':], mlp_param, 'MLP', '10_test')
-
-    parameter_search(df['2020-02-08 00:00:00':], xgb_param, 'XGB', '10_test')
-    """

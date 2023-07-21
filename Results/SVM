@@ -2,11 +2,56 @@
 
 
 
-Dataset10
+Average MAPE for model SVM with feature selection strategy pearson and dataset 01
+0.31388089999999996
+Average MAPE for model SVM with feature selection strategy pearson and dataset 02
+0.35212560000000004
+Average MAPE for model SVM with feature selection strategy pearson and dataset 03
+0.49450530000000004
+Average MAPE for model SVM with feature selection strategy pearson and dataset 04
+0.44171930000000004
+Average MAPE for model SVM with feature selection strategy pearson and dataset 05
+0.2192332
+Average MAPE for model SVM with feature selection strategy pearson and dataset 06
+0.5101569
+Average MAPE for model SVM with feature selection strategy pearson and dataset 07
+0.32147679999999995
+Average MAPE for model SVM with feature selection strategy pearson and dataset 08
+0.3740581
+total error :0.3783945125
 
-Best variables : ['Previous_4d_mean_cons', 'Humidity', 'Week', 'Month']
-Accuracy :
-        'MAE': 75.295
-        'MSE': 14364.147
-        'RMSE': 113.132
-        'MAPE': 0.352
+Average MAPE for model SVM with feature selection strategy spearman and dataset 01
+0.3554041
+Average MAPE for model SVM with feature selection strategy spearman and dataset 02
+0.35062550000000003
+Average MAPE for model SVM with feature selection strategy spearman and dataset 03
+0.4889113
+Average MAPE for model SVM with feature selection strategy spearman and dataset 04
+0.4735904000000001
+Average MAPE for model SVM with feature selection strategy spearman and dataset 05
+0.2232861
+Average MAPE for model SVM with feature selection strategy spearman and dataset 06
+0.5094417
+Average MAPE for model SVM with feature selection strategy spearman and dataset 07
+0.3209487
+Average MAPE for model SVM with feature selection strategy spearman and dataset 08
+0.37367300000000003
+total error :0.38698509999999997
+
+Average MAPE for model SVM with feature selection strategy mutual_info and dataset 01
+0.388857
+Average MAPE for model SVM with feature selection strategy mutual_info and dataset 02
+0.3501966
+Average MAPE for model SVM with feature selection strategy mutual_info and dataset 03
+0.49452690000000005
+Average MAPE for model SVM with feature selection strategy mutual_info and dataset 04
+0.4413437
+Average MAPE for model SVM with feature selection strategy mutual_info and dataset 05
+0.2232861
+Average MAPE for model SVM with feature selection strategy mutual_info and dataset 06
+0.5076120000000001
+Average MAPE for model SVM with feature selection strategy mutual_info and dataset 07
+0.3169437
+Average MAPE for model SVM with feature selection strategy mutual_info and dataset 08
+0.3739903
+total error :0.3870945375

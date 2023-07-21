@@ -1,10 +1,14 @@
 from datetime import datetime
 from datetime import timedelta
+
+import numpy as np
 from sklearn.metrics import mean_absolute_percentage_error
 import pandas as pd
-from Models.mlp_regression import *
-from Models.linear_regression import *
-from Models.KNN import *
+from Models.mlp_regression import mlp_model
+from Models.linear_regression import linear_regression
+from Models.KNN import knn_regressor
+from Models.SVM import SVM_regressor_model
+from Models.RandomForest import random_forest_model
 from helper import aggregate
 
 first_d = {'01': '2020-02-25 00:00:00', '02': '2020-02-15 00:00:00', '03': '2020-02-27 00:00:00',
@@ -48,15 +52,15 @@ wrapp_mape = {}
 
 if __name__ == '__main__':
 
-    model = mlp_model
-    model_name = 'MLP'
-    feature_selection_strategy = 'mutual information'
+    model = random_forest_model
+    model_name = 'RF'
+    feature_selection_strategy = 'pearson'
 
     total_error = []
     for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
-        features = mutual_i[i]
+        features = pearson[i]
         errors = []
         last_date = datetime.fromisoformat(df.index[-1])
         train_first_date = datetime.fromisoformat(first_d[i])
@@ -84,7 +88,8 @@ if __name__ == '__main__':
             total_error.append((MAPE))
 
             train_first_date = train_first_date+timedelta(weeks=3)
-        print("Average MAPE for model " + model_name + " with feature selection strategy " + feature_selection_strategy + " and dataset " + i)
+        print("Average MAPE for model " + model_name + " with feature selection strategy " + feature_selection_strategy
+              + " and dataset " + i)
         print(np.mean(errors))
     print("total error :" + str(np.mean(total_error)))
 
