@@ -5,11 +5,11 @@ from helperv2 import *
 from Models.linear_regression import linear_regression
 from Models.RandomForest import random_forest_model
 from Models.XGB import XGB_regressor_model
+from Models.mlp_regression import mlp_model
 import pandas as pd
 from sklearn.metrics import mean_absolute_percentage_error
 
-from Models.mlp_regression import mlp_model
-# 'dewpoint_2m','pressure_msl', 'surface_pressure', 'cloudcover_low', 'cloudcover_mid', 'cloudcover_high', 'diffuse_radiation', 'winddirection_10m','direct_radiation', 'direct_normal_irradiance',
+
 features = ['Day', 'Minutes',
            'Weekend', 'temperature_2m', 'relativehumidity_2m',
            'dewpoint_2m', 'apparent_temperature',
@@ -23,7 +23,7 @@ first_d = {'01': '2020-02-25 00:00:00', '02': '2020-02-15 00:00:00', '03': '2020
            '08': '2020-10-06 00:00:00'}
 
 models = {"LR": linear_regression, "XGB": XGB_regressor_model, 'R_F': random_forest_model, "MLP": mlp_model,
-                 "POLY": polynomial_regressor, "KNN": knn_regressor, "SVM": SVM_regressor_model}
+          "KNN": knn_regressor, "SVM": SVM_regressor_model}
 
 
 def anomaly_detection(y_true, y_predict):
