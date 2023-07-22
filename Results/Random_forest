@@ -1,20 +1,38 @@
 
 
-Variable selection results for Random forest model :
-----------------------------------------------------
+Average MAPE for model RF with feature selection strategy pearson and dataset 01
+0.4156947000000001
+Average MAPE for model RF with feature selection strategy pearson and dataset 02
+0.499925
+Average MAPE for model RF with feature selection strategy pearson and dataset 03
+1.04007
+Average MAPE for model RF with feature selection strategy pearson and dataset 04
+0.9245732
+Average MAPE for model RF with feature selection strategy pearson and dataset 05
+0.3556448
+Average MAPE for model RF with feature selection strategy pearson and dataset 06
+0.8225933
+Average MAPE for model RF with feature selection strategy pearson and dataset 07
+0.5144589999999999
+Average MAPE for model RF with feature selection strategy pearson and dataset 08
+0.735139
+total error :0.663512375
 
-Dataset09
-Best variables : ['Minutes', 'Snow depth', 'Day', 'Weekend', 'Snowfall']
-Accuracy :
-        'MAE': 38.6173
-        'MSE': 7645.4964
-        'RMSE': 73.5789
-        'MAPE': 0.3486
 
-Dataset10
-Best variables : ['Month', 'Minutes']
-Accuracy :
-        'MAE': 76.0209
-        'MSE': 15047.6707
-        'RMSE': 110.5350
-        'MAPE': 0.3342
+Average MAPE for model RF with feature selection strategy no feature selection and dataset 01
+0.5024566
+Average MAPE for model RF with feature selection strategy no feature selection and dataset 02
+0.5391786
+Average MAPE for model RF with feature selection strategy no feature selection and dataset 03
+1.1363756
+Average MAPE for model RF with feature selection strategy no feature selection and dataset 04
+1.0338307000000002
+Average MAPE for model RF with feature selection strategy no feature selection and dataset 05
+0.39889539999999996
+Average MAPE for model RF with feature selection strategy no feature selection and dataset 06
+0.9279557
+Average MAPE for model RF with feature selection strategy no feature selection and dataset 07
+0.5517282000000001
+Average MAPE for model RF with feature selection strategy no feature selection and dataset 08
+0.8299252000000001
+total error :0.74004325

@@ -1,21 +1,73 @@
 
-Variable selection results for XGB model :
-------------------------------------------
 
-Dataset09:
-Best variables : ['Minutes', 'Humidity', 'Day', 'Snow depth', 'Snowfall', 'Weekend']
-Accuracy :
-        'MAE': 39.7509
-        'MSE': 7601.6972
-        'RMSE': 74.1249
-        'MAPE': 0.3613056
+Average MAPE for model XGB with feature selection strategy pearson and dataset 01
+0.29808320000000005
+Average MAPE for model XGB with feature selection strategy pearson and dataset 02
+0.3477741
+Average MAPE for model XGB with feature selection strategy pearson and dataset 03
+0.6933392
+Average MAPE for model XGB with feature selection strategy pearson and dataset 04
+0.6081891000000001
+Average MAPE for model XGB with feature selection strategy pearson and dataset 05
+0.2528703
+Average MAPE for model XGB with feature selection strategy pearson and dataset 06
+0.5530372000000001
+Average MAPE for model XGB with feature selection strategy pearson and dataset 07
+0.3274207
+Average MAPE for model XGB with feature selection strategy pearson and dataset 08
+0.5056407999999999
+total error :0.448294325
 
+Average MAPE for model XGB with feature selection strategy spearman and dataset 01
+0.3004731
+Average MAPE for model XGB with feature selection strategy spearman and dataset 02
+0.3462173999999999
+Average MAPE for model XGB with feature selection strategy spearman and dataset 03
+0.6535874
+Average MAPE for model XGB with feature selection strategy spearman and dataset 04
+0.5710979
+Average MAPE for model XGB with feature selection strategy spearman and dataset 05
+0.24993610000000005
+Average MAPE for model XGB with feature selection strategy spearman and dataset 06
+0.5587829
+Average MAPE for model XGB with feature selection strategy spearman and dataset 07
+0.3413075
+Average MAPE for model XGB with feature selection strategy spearman and dataset 08
+0.5041428
+total error :0.4406931375
 
-Dataset 10:
-Best variables : ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
-Accuracy :
-        'MAE': 69.2668
-        'MSE': 12324.5919
-        'RMSE': 105.1662
-        'MAPE': 0.31699
+Average MAPE for model XGB with feature selection strategy mutual_info and dataset 01
+0.3010623
+Average MAPE for model XGB with feature selection strategy mutual_info and dataset 02
+0.35324230000000006
+Average MAPE for model XGB with feature selection strategy mutual_info and dataset 03
+0.643576
+Average MAPE for model XGB with feature selection strategy mutual_info and dataset 04
+0.6149545999999999
+Average MAPE for model XGB with feature selection strategy mutual_info and dataset 05
+0.250576
+Average MAPE for model XGB with feature selection strategy mutual_info and dataset 06
+0.5616530000000001
+Average MAPE for model XGB with feature selection strategy mutual_info and dataset 07
+0.34107960000000004
+Average MAPE for model XGB with feature selection strategy mutual_info and dataset 08
+0.5118782
+total error :0.44725275
 
+Average MAPE for model XGB with feature selection strategy no feature selection and dataset 01
+0.3034977
+Average MAPE for model XGB with feature selection strategy no feature selection and dataset 02
+0.3659399
+Average MAPE for model XGB with feature selection strategy no feature selection and dataset 03
+0.6593667000000001
+Average MAPE for model XGB with feature selection strategy no feature selection and dataset 04
+0.5978422
+Average MAPE for model XGB with feature selection strategy no feature selection and dataset 05
+0.2570374
+Average MAPE for model XGB with feature selection strategy no feature selection and dataset 06
+0.5547247
+Average MAPE for model XGB with feature selection strategy no feature selection and dataset 07
+0.35778309999999997
+Average MAPE for model XGB with feature selection strategy no feature selection and dataset 08
+0.5158339
+total error :0.4515032

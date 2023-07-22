@@ -9,7 +9,15 @@ from Models.linear_regression import linear_regression
 from Models.KNN import knn_regressor
 from Models.SVM import SVM_regressor_model
 from Models.RandomForest import random_forest_model
+from Models.XGB import XGB_regressor_model
 from helper import aggregate
+
+var = ['Day', 'Minutes',
+       'Weekend', 'temperature_2m', 'relativehumidity_2m',
+       'dewpoint_2m', 'apparent_temperature',
+       'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
+       'direct_normal_irradiance', 'windspeed_10m',
+       'Prev_4d_mean_cons', 'Prev_4w_mean_cons']
 
 first_d = {'01': '2020-02-25 00:00:00', '02': '2020-02-15 00:00:00', '03': '2020-02-27 00:00:00',
            '04': '2020-07-24 00:00:00',
@@ -46,21 +54,36 @@ mutual_i = {'01': ['Minutes', 'dewpoint_2m', 'apparent_temperature', 'Prev_4d_me
             '07': ['Minutes', 'temperature_2m', 'dewpoint_2m', 'apparent_temperature', 'Prev_4w_mean_cons'],
             '08': ['Minutes', 'temperature_2m', 'dewpoint_2m', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons']}
 
-wrapp_r2 = {'01':{}}
+wrapp_r2 = {'LR':{'01': ['Minutes', 'apparent_temperature', 'direct_radiation', 'direct_normal_irradiance',
+                         'windspeed_10m', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+                  '02': ['Day', 'Weekend', 'relativehumidity_2m', 'direct_radiation', 'diffuse_radiation',
+                        'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+                  '03': ['Day', 'Minutes', 'Weekend', 'relativehumidity_2m', 'diffuse_radiation',
+                         'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+                  '04': ['Minutes', 'Weekend', 'shortwave_radiation', 'direct_radiation',
+                         'diffuse_radiation', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+                  '05': ['Day', 'Weekend', 'shortwave_radiation', 'diffuse_radiation',
+                         'direct_normal_irradiance', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+                  '06': ['Weekend', 'relativehumidity_2m', 'dewpoint_2m', 'diffuse_radiation',
+                         'direct_normal_irradiance', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+                  '07': ['dewpoint_2m', 'apparent_temperature', 'diffuse_radiation',
+                         'direct_normal_irradiance', 'windspeed_10m', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+                  '08': ['Minutes', 'temperature_2m', 'relativehumidity_2m', 'apparent_temperature',
+                         'direct_normal_irradiance', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons']}}
 
 wrapp_mape = {}
 
 if __name__ == '__main__':
 
-    model = random_forest_model
-    model_name = 'RF'
+    model = SVM_regressor_model
+    model_name = 'SVM'
     feature_selection_strategy = 'pearson'
 
     total_error = []
     for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
-        features = pearson[i]
+        features = spearman[i]
         errors = []
         last_date = datetime.fromisoformat(df.index[-1])
         train_first_date = datetime.fromisoformat(first_d[i])

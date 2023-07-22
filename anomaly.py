@@ -38,7 +38,7 @@ def anomaly_detection(y_true, y_predict):
     for k in results.keys():
         results[k] = np.mean(results[k])
 
-    if results['MAPE'] > 0.5:
+    if results['MAPE'] > 2:
         print("Anomaly detected : " + str(results))
         return True
     else:
@@ -101,7 +101,7 @@ def anomaly_simulator(df, train_n_weeks, n_week, n_days, dataset):
 
 
 if __name__ == '__main__':
-    for i in ['01'] :#, '02', '03', '04', '05', '06', '07', '08']:
+    for i in ['01', '02', '03', '04']:# '05', '06', '07', '08']:
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
         print(i)

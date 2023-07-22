@@ -1,10 +1,15 @@
+import datetime
+from datetime import timedelta
 import numpy as np
 from sklearn import svm
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import helper
 
-
+first_d = {'01': '2020-02-25 00:00:00', '02': '2020-02-15 00:00:00', '03': '2020-02-27 00:00:00',
+           '04': '2020-07-24 00:00:00',
+           '05': '2020-08-22 00:00:00', '06': '2020-08-25 00:00:00', '07': '2020-08-25 00:00:00',
+           '08': '2020-10-06 00:00:00'}
 def SVM_regressor_model(set, scale=False, show=False):
     """
     train a random forest model with the dataset 'filename'
@@ -37,17 +42,23 @@ def SVM_regressor_model(set, scale=False, show=False):
     return model
 
 if __name__ == '__main__':
-
-    variables10 = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
-    df = pd.read_csv('../Datasets/02/10.csv', index_col=["Datetime"],
-                     parse_dates=["Datetime"])
-
-    train_set = df[:'2021-02-05 00:00:00']
-    test_set = df['2021-02-05 00:00:00':'2021-02-06 00:00:00']
-
-    x_train = np.transpose([train_set[var].to_numpy() for var in variables10])
-    y_train = train_set["Consumption(Wh)"]
-    x_test = np.transpose([test_set[var].to_numpy() for var in variables10])
-    y_test = test_set["Consumption(Wh)"]
-    print("Agrregated accuracy")
-    print(SVM_regressor_model(set=[x_train, y_train, x_test, y_test], scale=True))
+    features = ['Day', 'Minutes',
+                'Weekend', 'temperature_2m', 'relativehumidity_2m',
+                'dewpoint_2m', 'apparent_temperature',
+                'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
+                'direct_normal_irradiance', 'windspeed_10m',
+                'Prev_4d_mean_cons', 'Prev_4w_mean_cons']
+    for i in ['01']:#, '02', '03', '04', '05', '06', '07', '08']:
+        filename = '../Datasets/' + i + '/' + i + 'final.csv'
+        df = pd.read_csv(filename, index_col='Datetime')
+        x = df['Day']
+        y = df['Consumption(Wh)']
+        n_days=1
+        train_first_date = datetime.datetime.fromisoformat(first_d[i])
+        train_last_date = train_first_date+timedelta(weeks=16)
+        test_start_date = train_last_date+timedelta(days=3)
+        x_train = x[str(train_first_date):str(test_start_date)]
+        y_train = y[str(train_first_date):str(test_start_date)]
+        x_test = x[str(test_start_date):str(test_start_date + timedelta(days=n_days))]
+        y_test = y[str(test_start_date):str(test_start_date + timedelta(days=n_days))]
+        SVM_regressor_model(set=[x_train, y_train, x_test, y_test], show=True)

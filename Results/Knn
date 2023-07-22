@@ -1,19 +1,19 @@
 
 
-Averageb MAPE for model KNN with feature selection strategy spearman and dataset 01
-0.45577009999999996
-Averageb MAPE for model KNN with feature selection strategy spearman and dataset 02
-0.46855910000000006
-Averageb MAPE for model KNN with feature selection strategy spearman and dataset 03
-0.9272685999999999
-Averageb MAPE for model KNN with feature selection strategy spearman and dataset 04
-0.8294986999999999
-Averageb MAPE for model KNN with feature selection strategy spearman and dataset 05
-0.30031189999999996
-Averageb MAPE for model KNN with feature selection strategy spearman and dataset 06
-0.7588421999999999
-Averageb MAPE for model KNN with feature selection strategy spearman and dataset 07
-0.50072
-Averageb MAPE for model KNN with feature selection strategy spearman and dataset 08
-0.6908353999999999
-total error :0.61647575
+Average MAPE for model KNN with feature selection strategy spearman and dataset 01
+0.5296168000000001
+Average MAPE for model KNN with feature selection strategy spearman and dataset 02
+0.4875208
+Average MAPE for model KNN with feature selection strategy spearman and dataset 03
+0.9139892
+Average MAPE for model KNN with feature selection strategy spearman and dataset 04
+0.7833296
+Average MAPE for model KNN with feature selection strategy spearman and dataset 05
+0.3019694
+Average MAPE for model KNN with feature selection strategy spearman and dataset 06
+0.7371206
+Average MAPE for model KNN with feature selection strategy spearman and dataset 07
+0.4948976
+Average MAPE for model KNN with feature selection strategy spearman and dataset 08
+0.6658973
+total error :0.614

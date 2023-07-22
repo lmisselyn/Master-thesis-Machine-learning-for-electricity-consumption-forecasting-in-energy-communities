@@ -19,3 +19,22 @@ Averageb MAPE for model linear with feature selection strategy spearman and data
 Averageb MAPE for model linear with feature selection strategy spearman and dataset 08
 0.7305747
 total error :0.627167075
+
+Sequential feature selection auto :
+
+Average MAPE for model LR with feature selection strategy Sequential f selection with r2 score and dataset 01
+0.44852690000000006
+Average MAPE for model LR with feature selection strategy Sequential f selection with r2 score and dataset 02
+0.4708521
+Average MAPE for model LR with feature selection strategy Sequential f selection with r2 score and dataset 03
+1.0397805
+Average MAPE for model LR with feature selection strategy Sequential f selection with r2 score and dataset 04
+0.8878672
+Average MAPE for model LR with feature selection strategy Sequential f selection with r2 score and dataset 05
+0.3110069
+Average MAPE for model LR with feature selection strategy Sequential f selection with r2 score and dataset 06
+0.7908518999999999
+Average MAPE for model LR with feature selection strategy Sequential f selection with r2 score and dataset 07
+0.4827807
+Average MAPE for model LR with feature selection strategy Sequential f selection with r2 score and dataset 08
+0.7015627

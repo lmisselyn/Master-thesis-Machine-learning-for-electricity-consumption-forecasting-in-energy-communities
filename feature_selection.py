@@ -1,3 +1,5 @@
+import datetime
+
 import pandas as pd
 from sklearn.feature_selection import mutual_info_regression, SelectKBest
 from sklearn.feature_selection import SequentialFeatureSelector as SFS
@@ -60,8 +62,7 @@ def mutual_info(filename, features):
     print(x.columns[mask])
 
 
-def wrapping_feature_selection(filename, model, features, score):
-    df = pd.read_csv(filename)
+def wrapping_feature_selection(df, model, features, score):
     x = df[features]
     y = df['Consumption(Wh)']
     sfs = SFS(model,
@@ -77,6 +78,7 @@ def correlation(filename, method, k, features):
     df = pd.read_csv(filename)
     df = df[features]
     m = df.corr(method=method)
+    #print(m['shortwave_radiation'])
     m = m['Consumption(Wh)'].copy()
     m.sort_values(inplace=True, key=abs)
 
@@ -84,18 +86,23 @@ def correlation(filename, method, k, features):
 
 
 if __name__ == '__main__':
-    var = ['Day', 'Minutes',
+    var = ['Consumption(Wh)', 'Day', 'Minutes',
            'Weekend', 'temperature_2m', 'relativehumidity_2m',
            'dewpoint_2m', 'apparent_temperature',
            'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
            'direct_normal_irradiance', 'windspeed_10m',
            'Prev_4d_mean_cons', 'Prev_4w_mean_cons']
 
-    #for m in models[:3]:
+    for m in models[2:]:
         #print(m)
-    for i in ['01', '02', '03', '04']: #, '05', '06', '07', '08']:
-        filename = 'Datasets/' + i + '/' + i + 'final.csv'
-        print(i)
-            #wrapping_feature_selection(filename, m, var, 'r2')
-        mutual_info(filename, var)
+        for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
+            filename = 'Datasets/' + i + '/' + i + 'final.csv'
+            df = pd.read_csv(filename, index_col='Datetime')
+            train_first_date = datetime.datetime.fromisoformat(first_d[i])
+            train_last_date = train_first_date+datetime.timedelta(weeks=16)
+            df = df[str(train_first_date):str(train_last_date)]
+            print(i)
+            wrapping_feature_selection(df, m, var, 'r2')
+        #wrapping_feature_selection(filename, models[0], var, 'r2')
+        #mutual_info(filename, var)
         # print(correlation(filename, 'pearson', 5, var))
