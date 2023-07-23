@@ -1,6 +1,9 @@
-import datetime
 
+import numpy as np
 import pandas as pd
+
+from helper import evaluate_model, aggregate
+from datetime import datetime, timedelta
 from sklearn.feature_selection import mutual_info_regression, SelectKBest
 from sklearn.feature_selection import SequentialFeatureSelector as SFS
 from sklearn.neighbors import KNeighborsRegressor
@@ -8,12 +11,21 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
+from Models.KNN import knn_regressor
+from Models.RandomForest import random_forest_model
+from Models.SVM import SVM_regressor_model
+from Models.XGB import XGB_regressor_model
+from Models.mlp_regression import mlp_model
+from Models.linear_regression import linear_regression
 from xgboost import XGBRegressor
 
 first_d = {'01': '2020-02-25 00:00:00', '02': '2020-02-15 00:00:00', '03': '2020-02-27 00:00:00',
            '04': '2020-07-24 00:00:00',
            '05': '2020-08-22 00:00:00', '06': '2020-08-25 00:00:00', '07': '2020-08-25 00:00:00',
            '08': '2020-10-06 00:00:00'}
+
+models2 = {"SVM": SVM_regressor_model, "XGB": XGB_regressor_model,
+          'R_F': random_forest_model, "MLP": mlp_model}
 
 models = [LinearRegression(),
           KNeighborsRegressor(
@@ -85,24 +97,23 @@ def correlation(filename, method, k, features):
     return m.keys()[-k - 1:-1]
 
 
+
 if __name__ == '__main__':
-    var = ['Consumption(Wh)', 'Day', 'Minutes',
-           'Weekend', 'temperature_2m', 'relativehumidity_2m',
+    var = ['Day', 'Minutes',
+           'Weekend', 'relativehumidity_2m',
            'dewpoint_2m', 'apparent_temperature',
-           'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
-           'direct_normal_irradiance', 'windspeed_10m',
+           'shortwave_radiation',
+           'windspeed_10m',
            'Prev_4d_mean_cons', 'Prev_4w_mean_cons']
 
-    for m in models[2:]:
+    #for m in models:
         #print(m)
-        for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
-            filename = 'Datasets/' + i + '/' + i + 'final.csv'
-            df = pd.read_csv(filename, index_col='Datetime')
-            train_first_date = datetime.datetime.fromisoformat(first_d[i])
-            train_last_date = train_first_date+datetime.timedelta(weeks=16)
-            df = df[str(train_first_date):str(train_last_date)]
-            print(i)
-            wrapping_feature_selection(df, m, var, 'r2')
-        #wrapping_feature_selection(filename, models[0], var, 'r2')
-        #mutual_info(filename, var)
-        # print(correlation(filename, 'pearson', 5, var))
+    for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
+        filename = 'Datasets/' + i + '/' + i + 'final.csv'
+        df = pd.read_csv(filename, index_col='Datetime')
+        train_first_date = datetime.fromisoformat(first_d[i])
+        train_last_date = train_first_date+timedelta(weeks=16)
+        df = df[str(train_first_date):str(train_last_date)]
+        print(i)
+        wrapping_feature_selection(df, SVR(), var,  'r2')
+

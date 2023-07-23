@@ -72,21 +72,21 @@ if __name__ == '__main__':
                  'max_depth': [None, 5, 6],
                  'n_estimators': [100]}
 
-    svm_param = {'C': [1, 1.5, 2, 2.5, 3],
-                 'epsilon': [0.05, 0.1, 0.15, 0.2]}
+    svm_param = {'C': [2.9, 3, 5],
+                 'epsilon': [0.2, 0.4]}
 
     knn_param = {'n_neighbors': [100, 60, 500, 1125, 1150],
                  'weights': ['uniform'],
                  'algorithm': ['brute'],
                  'metric': ['minkowski']}
 
-    for i in ['02']:  # , '02', '03', '04', '05', '06', '07', '08']:
+    for i in ['01']:  # , '02', '03', '04', '05', '06', '07', '08']:
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
         train_first_date = datetime.datetime.fromisoformat(first_d[i])
         train_last_date = train_first_date + datetime.timedelta(weeks=16)
-        features = evaluation.spearman[i]
-        parameter_search(df[str(train_first_date):str(train_last_date)], knn_param, 'KNN', features)
+        features = evaluation.pearson[i]
+        parameter_search(df[str(train_first_date):str(train_last_date)], svm_param, 'SVM', features)
 
     #parameter_search(df['2020-02-08 00:00:00':], rf_param, 'R_F', '10_test')
 

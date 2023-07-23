@@ -4,6 +4,8 @@ import numpy as np
 from sklearn import svm
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
+
+#import evaluation
 import helper
 
 first_d = {'01': '2020-02-25 00:00:00', '02': '2020-02-15 00:00:00', '03': '2020-02-27 00:00:00',
@@ -42,16 +44,19 @@ def SVM_regressor_model(set, scale=False, show=False):
     return model
 
 if __name__ == '__main__':
-    features = ['Day', 'Minutes',
+
+    var = ['Day', 'Minutes',
                 'Weekend', 'temperature_2m', 'relativehumidity_2m',
                 'dewpoint_2m', 'apparent_temperature',
                 'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
                 'direct_normal_irradiance', 'windspeed_10m',
                 'Prev_4d_mean_cons', 'Prev_4w_mean_cons']
+
     for i in ['01']:#, '02', '03', '04', '05', '06', '07', '08']:
         filename = '../Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
-        x = df['Day']
+        features = evaluation.spearman[i]
+        x = df[features]
         y = df['Consumption(Wh)']
         n_days=1
         train_first_date = datetime.datetime.fromisoformat(first_d[i])
