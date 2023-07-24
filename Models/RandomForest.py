@@ -1,3 +1,4 @@
+from matplotlib import pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -26,7 +27,7 @@ def random_forest_model(set, scale=False, show=False):
     model = RandomForestRegressor(
         n_estimators=100,
         criterion='absolute_error',
-        max_depth=150,
+        max_depth=7,
         min_samples_split=2,
         min_samples_leaf=1,
         min_weight_fraction_leaf=0.0,
@@ -58,16 +59,30 @@ def random_forest_model(set, scale=False, show=False):
 
 if __name__ == '__main__':
 
-    variables10 = ['Minutes', 'Month', 'Weekend', 'Temperature', 'Snowfall', 'Pressure']
-    df = pd.read_csv('../Datasets/01/09.csv', index_col=["Datetime"],
-                     parse_dates=["Datetime"])
-    train_set = df['2020-06-01 00:00:00':'2020-04-01 00:00:00']
-    test_set = df['2020-04-01 00:00:00':'2020-04-02 00:00:00']
+    for i in ['01']:  # , '02', '03', '04', '05', '06', '07', '08']:  #
+        filename = '../Datasets/' + i + '/' + i + 'final.csv'
+        features = ['apparent_temperature', 'diffuse_radiation', 'dewpoint_2m',
+                    'Prev_4w_mean_cons', 'Prev_4d_mean_cons']
+        df = pd.read_csv(filename, index_col='Datetime')
 
-    x_train = np.transpose([train_set[var].to_numpy() for var in variables10])
-    y_train = train_set["Consumption(Wh)"]
-    x_test = np.transpose([test_set[var].to_numpy() for var in variables10])
-    y_test = test_set["Consumption(Wh)"]
-    print("Agrregated accuracy")
-    print(random_forest_model(set=[x_train, y_train, x_test, y_test], show=True))
+        train_set = df['2020-11-24 00:00:00':'2021-02-24 00:00:00']
+        test_set = df['2021-02-27 00:00:00':'2021-02-28 00:00:00']
+        train_visu = df['2021-02-21 00:00:00':'2021-02-24 00:00:00']
 
+        x_train = np.transpose([train_set[var].to_numpy() for var in features])
+        y_train = train_set["Consumption(Wh)"]
+        x_test = np.transpose([test_set[var].to_numpy() for var in features])
+        y_test = test_set["Consumption(Wh)"]
+        rf = random_forest_model(set=[x_train, y_train, x_test, y_test], show=True)
+        print(features)
+
+        x_train_visu = train_visu[features]
+        y_train_visu = train_visu['Consumption(Wh)']
+
+        plt.plot(y_train_visu, label='Training data')
+        plt.plot(rf.predict(x_train_visu), label='fitted model')
+        plt.title("RF visualisation - dataset01 - (2021-02-21, 2021-02-24)")
+        plt.xticks([''])
+        plt.legend()
+        plt.ylabel("Consumption(Wh)")
+        plt.show()

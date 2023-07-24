@@ -115,5 +115,23 @@ if __name__ == '__main__':
         train_last_date = train_first_date+timedelta(weeks=16)
         df = df[str(train_first_date):str(train_last_date)]
         print(i)
-        wrapping_feature_selection(df, SVR(), var,  'r2')
+        m = RandomForestRegressor(
+        n_estimators=100,
+        criterion='absolute_error',
+        max_depth=7,
+        min_samples_split=2,
+        min_samples_leaf=1,
+        min_weight_fraction_leaf=0.0,
+        max_features=1,
+        max_leaf_nodes=None,
+        min_impurity_decrease=0.0,
+        bootstrap=True,
+        oob_score=False,
+        n_jobs=2,
+        random_state=5,
+        verbose=0,
+        warm_start=False,
+        ccp_alpha=0.0,
+        max_samples=None)
+        wrapping_feature_selection(df, m, var,  'r2')
 

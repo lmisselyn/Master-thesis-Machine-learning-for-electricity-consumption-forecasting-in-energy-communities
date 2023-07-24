@@ -1,57 +1,55 @@
 
 
-
-
 Average MAPE for model SVM with feature selection strategy pearson and dataset 01
-0.31388089999999996
+0.30610919999999997
 Average MAPE for model SVM with feature selection strategy pearson and dataset 02
-0.35212560000000004
+0.3477736
 Average MAPE for model SVM with feature selection strategy pearson and dataset 03
-0.49450530000000004
+0.5076809999999999
 Average MAPE for model SVM with feature selection strategy pearson and dataset 04
-0.44171930000000004
+0.45544609999999996
 Average MAPE for model SVM with feature selection strategy pearson and dataset 05
-0.2192332
+0.21967710000000001
 Average MAPE for model SVM with feature selection strategy pearson and dataset 06
-0.5101569
+0.5094254
 Average MAPE for model SVM with feature selection strategy pearson and dataset 07
-0.32147679999999995
+0.3256632
 Average MAPE for model SVM with feature selection strategy pearson and dataset 08
-0.3740581
-total error :0.3783945125
+0.37241040000000003
+total error :0.38052325
 
 Average MAPE for model SVM with feature selection strategy spearman and dataset 01
-0.3554041
+0.32903519999999997
 Average MAPE for model SVM with feature selection strategy spearman and dataset 02
-0.35062550000000003
+0.34327070000000004
 Average MAPE for model SVM with feature selection strategy spearman and dataset 03
-0.4889113
+0.5019138000000001
 Average MAPE for model SVM with feature selection strategy spearman and dataset 04
-0.4735904000000001
+0.48328319999999997
 Average MAPE for model SVM with feature selection strategy spearman and dataset 05
-0.2232861
+0.2161631
 Average MAPE for model SVM with feature selection strategy spearman and dataset 06
-0.5094417
+0.5083127000000001
 Average MAPE for model SVM with feature selection strategy spearman and dataset 07
-0.3209487
+0.32535119999999995
 Average MAPE for model SVM with feature selection strategy spearman and dataset 08
-0.37367300000000003
-total error :0.38698509999999997
+0.3706147
+total error :0.384743075
 
 Average MAPE for model SVM with feature selection strategy mutual_info and dataset 01
-0.388857
+0.34650139999999996
 Average MAPE for model SVM with feature selection strategy mutual_info and dataset 02
-0.3501966
+0.342516
 Average MAPE for model SVM with feature selection strategy mutual_info and dataset 03
-0.49452690000000005
+0.5060881000000002
 Average MAPE for model SVM with feature selection strategy mutual_info and dataset 04
-0.4413437
+0.454718
 Average MAPE for model SVM with feature selection strategy mutual_info and dataset 05
-0.2232861
+0.2161631
 Average MAPE for model SVM with feature selection strategy mutual_info and dataset 06
-0.5076120000000001
+0.5052029000000001
 Average MAPE for model SVM with feature selection strategy mutual_info and dataset 07
-0.3169437
+0.3166877
 Average MAPE for model SVM with feature selection strategy mutual_info and dataset 08
-0.3739903
-total error :0.3870945375
+0.37208610000000003
+total error :0.38249541249999996

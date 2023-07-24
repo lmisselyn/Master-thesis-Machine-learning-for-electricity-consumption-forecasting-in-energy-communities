@@ -29,7 +29,7 @@ def parameter_search(df, parameters, model, features):
     tscv = TimeSeriesSplit(n_splits=5, test_size=672)
 
     mlp_gs = GridSearchCV(source_models[model], param_grid=parameters, cv=tscv,
-                          scoring='neg_root_mean_squared_error')
+                          scoring='neg_mean_squared_error')
     mlp_gs.fit(x_train, y_train)
     best_params = mlp_gs.best_params_
     best_score = mlp_gs.best_score_
@@ -72,8 +72,9 @@ if __name__ == '__main__':
                  'max_depth': [None, 5, 6],
                  'n_estimators': [100]}
 
-    svm_param = {'C': [2.9, 3, 5],
-                 'epsilon': [0.2, 0.4]}
+    svm_param = {'C': [0.1, 1, 10, 100],
+                 'epsilon': [0.1, 0.4],
+                 'gamma': ['scale', 1, 0.1, 0.01, 0.001]}
 
     knn_param = {'n_neighbors': [100, 60, 500, 1125, 1150],
                  'weights': ['uniform'],
