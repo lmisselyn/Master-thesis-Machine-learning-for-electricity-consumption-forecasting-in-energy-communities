@@ -91,7 +91,17 @@ wrapp_r2 = {'LR': {'01': ['Minutes', 'apparent_temperature', 'direct_radiation',
                     '07': ['Day', 'apparent_temperature', 'shortwave_radiation', 'Prev_4d_mean_cons',
                            'Prev_4w_mean_cons'],
                     '08': ['relativehumidity_2m', 'apparent_temperature', 'windspeed_10m', 'Prev_4d_mean_cons',
-                           'Prev_4w_mean_cons']}}
+                           'Prev_4w_mean_cons']},
+            'RF': {'01': ['Minutes', 'Weekend', 'dewpoint_2m', 'shortwave_radiation', 'Prev_4d_mean_cons'],
+                   '02': ['Minutes', 'dewpoint_2m', 'apparent_temperature', 'Prev_4d_mean_cons',
+                          'Prev_4w_mean_cons'],
+                   '03': ['Day', 'Minutes', 'shortwave_radiation', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+                   '04': ['Day', 'Minutes', 'shortwave_radiation', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+                   '05': ['Day', 'Minutes', 'Weekend', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+                   '06': ['apparent_temperature', 'shortwave_radiation', 'windspeed_10m', 'Prev_4d_mean_cons',
+                          'Prev_4w_mean_cons'],
+                   '07': ['Day', 'Weekend', 'relativehumidity_2m', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],
+                   '08': ['Day', 'Minutes', 'relativehumidity_2m', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons']}}
 
 wrapp_mape = {}
 
@@ -99,13 +109,13 @@ if __name__ == '__main__':
 
     model = random_forest_model
     model_name = 'RF'
-    feature_selection_strategy = 'spearman'
+    feature_selection_strategy = 'mutual_info'
 
     total_error = []
     for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
-        features = spearman[i]
+        features = mutual_i[i]
         errors = []
         last_date = datetime.fromisoformat(df.index[-1])
         train_first_date = datetime.fromisoformat(first_d[i])
