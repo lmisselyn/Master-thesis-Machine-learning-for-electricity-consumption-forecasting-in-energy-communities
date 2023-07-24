@@ -27,15 +27,15 @@ def random_forest_model(set, scale=False, show=False):
     model = RandomForestRegressor(
         n_estimators=100,
         criterion='absolute_error',
-        max_depth=8,
+        max_depth=7,
         min_samples_split=2,
-        max_features=0.9,
+        max_features=1,
         max_leaf_nodes=None,
         random_state=5,
         min_impurity_decrease=0.0,
-        bootstrap=True,
+        bootstrap=False,
         n_jobs=2,
-        max_samples=0.9
+        max_samples=None
     )
 
     model.fit(x_train, y_train)
