@@ -1,22 +1,22 @@
 
 
 Average MAPE for model RF with feature selection strategy pearson and dataset 01
-0.4156947000000001
+0.3283241
 Average MAPE for model RF with feature selection strategy pearson and dataset 02
-0.499925
+0.3628884
 Average MAPE for model RF with feature selection strategy pearson and dataset 03
-1.04007
+0.48555000000000004
 Average MAPE for model RF with feature selection strategy pearson and dataset 04
-0.9245732
+0.5571170000000001
 Average MAPE for model RF with feature selection strategy pearson and dataset 05
-0.3556448
+0.26126390000000005
 Average MAPE for model RF with feature selection strategy pearson and dataset 06
-0.8225933
+0.5465815
 Average MAPE for model RF with feature selection strategy pearson and dataset 07
-0.5144589999999999
+0.31524139999999995
 Average MAPE for model RF with feature selection strategy pearson and dataset 08
-0.735139
-total error :0.663512375
+0.40738199999999997
+total error :0.40804353750000005
 
 
 Average MAPE for model RF with feature selection strategy no feature selection and dataset 01
