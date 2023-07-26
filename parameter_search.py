@@ -26,7 +26,7 @@ def parameter_search(df, parameters, model, features):
     x_train = df[features]
     y_train = df["Consumption(Wh)"]
 
-    tscv = TimeSeriesSplit(n_splits=1, test_size=9216)
+    tscv = TimeSeriesSplit(n_splits=2, test_size=672,)
 
     mlp_gs = GridSearchCV(source_models[model], param_grid=parameters, cv=tscv,
                           scoring='neg_mean_absolute_percentage_error')
@@ -63,12 +63,12 @@ if __name__ == '__main__':
                  'early_stopping': [True]}
 
     xgb_param = {'booster': ['gbtree'],
-                 'eta': [0.01, 0.0075, 0.008],
+                 'eta': [0.02, 0.01, 0.0075, 0.008, 0.005],
                  'eval_metric': ['rmse'],
-                 'early_stopping_rounds': [10, 20],
+                 #'early_stopping_rounds': [10, 20],
                  'objective': ['reg:squarederror'],
                  'max_depth': [None, 6],
-                 'n_estimators': [50, 100, 125],
+                 'n_estimators': [50, 100, 125, 200],
                  'colsample_bylevel': [0.2]}
 
     svm_param = {'C': [0.1, 1, 10, 100],
@@ -80,11 +80,11 @@ if __name__ == '__main__':
                  'algorithm': ['brute'],
                  'metric': ['minkowski']}
 
-    for i in ['01']:  # , '02', '03', '04', '05', '06', '07', '08']:
+    for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
         train_first_date = datetime.datetime.fromisoformat(first_d[i])
-        train_last_date = train_first_date + datetime.timedelta(weeks=16)
+        train_last_date = train_first_date + datetime.timedelta(weeks=32)
         features = evaluation.pearson[i]
         parameter_search(df[str(train_first_date):str(train_last_date)], xgb_param, 'XGB', features)
 

@@ -1,0 +1,2 @@
+{'booster': 'gbtree', 'colsample_bylevel': 0.2, 'eta': 0.0075, 'eval_metric': 'rmse', 'max_depth': None, 'n_estimators': 200, 'objective': 'reg:squarederror'}
+-0.2594428848237549
