@@ -26,10 +26,10 @@ def parameter_search(df, parameters, model, features):
     x_train = df[features]
     y_train = df["Consumption(Wh)"]
 
-    tscv = TimeSeriesSplit(n_splits=5, test_size=672)
+    tscv = TimeSeriesSplit(n_splits=1, test_size=9216)
 
     mlp_gs = GridSearchCV(source_models[model], param_grid=parameters, cv=tscv,
-                          scoring='neg_mean_squared_error')
+                          scoring='neg_mean_absolute_percentage_error')
     mlp_gs.fit(x_train, y_train)
     best_params = mlp_gs.best_params_
     best_score = mlp_gs.best_score_
@@ -63,14 +63,13 @@ if __name__ == '__main__':
                  'early_stopping': [True]}
 
     xgb_param = {'booster': ['gbtree'],
-                 'eta': [0.015, 0.05, 0.2, 0.3],
-                 'gamma': [0, 1, 2],
-                 'subsample': [0.7, 1],
+                 'eta': [0.01, 0.0075, 0.008],
                  'eval_metric': ['rmse'],
-                 'early_stopping_rounds': [100],
+                 'early_stopping_rounds': [10, 20],
                  'objective': ['reg:squarederror'],
-                 'max_depth': [None, 5, 6],
-                 'n_estimators': [100]}
+                 'max_depth': [None, 6],
+                 'n_estimators': [50, 100, 125],
+                 'colsample_bylevel': [0.2]}
 
     svm_param = {'C': [0.1, 1, 10, 100],
                  'epsilon': [0.1, 0.4],
@@ -87,7 +86,7 @@ if __name__ == '__main__':
         train_first_date = datetime.datetime.fromisoformat(first_d[i])
         train_last_date = train_first_date + datetime.timedelta(weeks=16)
         features = evaluation.pearson[i]
-        parameter_search(df[str(train_first_date):str(train_last_date)], svm_param, 'SVM', features)
+        parameter_search(df[str(train_first_date):str(train_last_date)], xgb_param, 'XGB', features)
 
     #parameter_search(df['2020-02-08 00:00:00':], rf_param, 'R_F', '10_test')
 

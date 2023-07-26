@@ -1,22 +1,22 @@
 
 
 Average MAPE for model XGB with feature selection strategy pearson and dataset 01
-0.340816
+0.32827769999999995
 Average MAPE for model XGB with feature selection strategy pearson and dataset 02
-0.351405
+0.35104379999999996
 Average MAPE for model XGB with feature selection strategy pearson and dataset 03
-0.5570898
+0.5824722
 Average MAPE for model XGB with feature selection strategy pearson and dataset 04
-0.5660816
+0.4980044
 Average MAPE for model XGB with feature selection strategy pearson and dataset 05
-0.3215043
+0.3208564
 Average MAPE for model XGB with feature selection strategy pearson and dataset 06
-0.5004937
+0.48841070000000003
 Average MAPE for model XGB with feature selection strategy pearson and dataset 07
-0.32263959999999997
+0.3208025
 Average MAPE for model XGB with feature selection strategy pearson and dataset 08
-0.44403419999999993
-total error :0.42550802499999996
+0.4309095
+total error :0.41509714999999997
 
 Average MAPE for model XGB with feature selection strategy spearman and dataset 01
 0.34624710000000003

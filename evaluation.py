@@ -109,13 +109,13 @@ if __name__ == '__main__':
 
     model = XGB_regressor_model
     model_name = 'XGB'
-    feature_selection_strategy = 'No feature selection'
+    feature_selection_strategy = 'pearson'
 
     total_error = []
     for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
-        features = var
+        features = pearson[i]
         errors = []
         last_date = datetime.fromisoformat(df.index[-1])
         train_first_date = datetime.fromisoformat(first_d[i])

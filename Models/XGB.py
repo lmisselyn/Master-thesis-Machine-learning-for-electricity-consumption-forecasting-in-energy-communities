@@ -29,12 +29,13 @@ def XGB_regressor_model(set, scale=False, show=False):
     model = xgboost.XGBRegressor(
         booster='gbtree',
         eval_metric='rmse',
-        early_stopping_rounds=10,
+        early_stopping_rounds=20,
         objective='reg:squarederror',
-        learning_rate=0.01, #best 0.015
-        max_depth=6, #best None
-        n_estimators=100, #best 100
-        subsample=0.85
+        learning_rate=0.0075, #best 0.0075
+        max_depth=6, #best 6
+        n_estimators=125, #best 125
+        #subsample=0.85,
+        colsample_bylevel=0.2
     )
 
     model.fit(x_train, y_train, eval_set=[(x_train, y_train), (x_test, y_test)], verbose=False)
