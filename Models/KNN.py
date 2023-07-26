@@ -21,8 +21,8 @@ def knn_regressor(set, scale=False, show=False):
         x_test = scaler.transform(x_test)
 
     model = KNeighborsRegressor(
-        n_neighbors=1125,
-        weights='uniform',
+        n_neighbors=100,
+        weights='distance',
         algorithm='brute',
         metric='minkowski')
 

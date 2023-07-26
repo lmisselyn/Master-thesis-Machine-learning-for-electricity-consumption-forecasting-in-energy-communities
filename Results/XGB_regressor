@@ -1,73 +1,74 @@
 
 
 Average MAPE for model XGB with feature selection strategy pearson and dataset 01
-0.29808320000000005
+0.340816
 Average MAPE for model XGB with feature selection strategy pearson and dataset 02
-0.3477741
+0.351405
 Average MAPE for model XGB with feature selection strategy pearson and dataset 03
-0.6933392
+0.5570898
 Average MAPE for model XGB with feature selection strategy pearson and dataset 04
-0.6081891000000001
+0.5660816
 Average MAPE for model XGB with feature selection strategy pearson and dataset 05
-0.2528703
+0.3215043
 Average MAPE for model XGB with feature selection strategy pearson and dataset 06
-0.5530372000000001
+0.5004937
 Average MAPE for model XGB with feature selection strategy pearson and dataset 07
-0.3274207
+0.32263959999999997
 Average MAPE for model XGB with feature selection strategy pearson and dataset 08
-0.5056407999999999
-total error :0.448294325
+0.44403419999999993
+total error :0.42550802499999996
 
 Average MAPE for model XGB with feature selection strategy spearman and dataset 01
-0.3004731
+0.34624710000000003
 Average MAPE for model XGB with feature selection strategy spearman and dataset 02
-0.3462173999999999
+0.3606887
 Average MAPE for model XGB with feature selection strategy spearman and dataset 03
-0.6535874
+0.5367527
 Average MAPE for model XGB with feature selection strategy spearman and dataset 04
-0.5710979
+0.5302952000000001
 Average MAPE for model XGB with feature selection strategy spearman and dataset 05
-0.24993610000000005
+0.3204214
 Average MAPE for model XGB with feature selection strategy spearman and dataset 06
-0.5587829
+0.5190895
 Average MAPE for model XGB with feature selection strategy spearman and dataset 07
-0.3413075
+0.31811819999999996
 Average MAPE for model XGB with feature selection strategy spearman and dataset 08
-0.5041428
-total error :0.4406931375
+0.4468282
+total error :0.422305125
 
-Average MAPE for model XGB with feature selection strategy mutual_info and dataset 01
-0.3010623
-Average MAPE for model XGB with feature selection strategy mutual_info and dataset 02
-0.35324230000000006
-Average MAPE for model XGB with feature selection strategy mutual_info and dataset 03
-0.643576
-Average MAPE for model XGB with feature selection strategy mutual_info and dataset 04
-0.6149545999999999
-Average MAPE for model XGB with feature selection strategy mutual_info and dataset 05
-0.250576
-Average MAPE for model XGB with feature selection strategy mutual_info and dataset 06
-0.5616530000000001
-Average MAPE for model XGB with feature selection strategy mutual_info and dataset 07
-0.34107960000000004
-Average MAPE for model XGB with feature selection strategy mutual_info and dataset 08
-0.5118782
-total error :0.44725275
 
-Average MAPE for model XGB with feature selection strategy no feature selection and dataset 01
-0.3034977
-Average MAPE for model XGB with feature selection strategy no feature selection and dataset 02
-0.3659399
-Average MAPE for model XGB with feature selection strategy no feature selection and dataset 03
-0.6593667000000001
-Average MAPE for model XGB with feature selection strategy no feature selection and dataset 04
-0.5978422
-Average MAPE for model XGB with feature selection strategy no feature selection and dataset 05
-0.2570374
-Average MAPE for model XGB with feature selection strategy no feature selection and dataset 06
-0.5547247
-Average MAPE for model XGB with feature selection strategy no feature selection and dataset 07
-0.35778309999999997
-Average MAPE for model XGB with feature selection strategy no feature selection and dataset 08
-0.5158339
-total error :0.4515032
+Average MAPE for model XGB with feature selection strategy mutual info and dataset 01
+0.3414951
+Average MAPE for model XGB with feature selection strategy mutual info and dataset 02
+0.36230590000000007
+Average MAPE for model XGB with feature selection strategy mutual info and dataset 03
+0.5308302
+Average MAPE for model XGB with feature selection strategy mutual info and dataset 04
+0.5760924000000001
+Average MAPE for model XGB with feature selection strategy mutual info and dataset 05
+0.3234362
+Average MAPE for model XGB with feature selection strategy mutual info and dataset 06
+0.5074009
+Average MAPE for model XGB with feature selection strategy mutual info and dataset 07
+0.3218454
+Average MAPE for model XGB with feature selection strategy mutual info and dataset 08
+0.45553699999999997
+total error :0.4273678874999999
+
+Average MAPE for model XGB with feature selection strategy No feature selection and dataset 01
+0.34021959999999996
+Average MAPE for model XGB with feature selection strategy No feature selection and dataset 02
+0.3808855
+Average MAPE for model XGB with feature selection strategy No feature selection and dataset 03
+0.5458559000000001
+Average MAPE for model XGB with feature selection strategy No feature selection and dataset 04
+0.5490780000000001
+Average MAPE for model XGB with feature selection strategy No feature selection and dataset 05
+0.323728
+Average MAPE for model XGB with feature selection strategy No feature selection and dataset 06
+0.5193481
+Average MAPE for model XGB with feature selection strategy No feature selection and dataset 07
+0.3267767
+Average MAPE for model XGB with feature selection strategy No feature selection and dataset 08
+0.4536492000000001
+total error :0.42994262499999997

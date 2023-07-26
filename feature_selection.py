@@ -1,6 +1,7 @@
 
 import numpy as np
 import pandas as pd
+import xgboost
 
 from helper import evaluate_model, aggregate
 from datetime import datetime, timedelta
@@ -115,18 +116,16 @@ if __name__ == '__main__':
         train_last_date = train_first_date+timedelta(weeks=16)
         df = df[str(train_first_date):str(train_last_date)]
         print(i)
-        m = RandomForestRegressor(
-        n_estimators=50,
-        criterion='absolute_error',
-        max_depth=7,
-        min_samples_split=2,
-        max_features=1,
-        max_leaf_nodes=None,
-        min_impurity_decrease=0.0,
-        bootstrap=True,
-        n_jobs=2,
-        verbose=0,
-        ccp_alpha=0.0,
-        max_samples=0.6)
+        m = xgboost.XGBRegressor(
+            booster='gbtree',
+            eval_metric='rmse',
+            #early_stopping_rounds=10,
+            objective='reg:squarederror',
+            learning_rate=0.01,  # best 0.015
+            max_depth=6,  # best None
+            n_estimators=100,  # best 100
+            subsample=0.85
+        )
+
         wrapping_feature_selection(df, m, var,  'r2')
 
