@@ -109,6 +109,7 @@ def arima_model(filename=None, set=[], scale=False):
     model.summary()
 
     prediction = model.predict(481, test_exo)
+    print(prediction)
     aggregated = aggregate(test_set.values, prediction)
     result = evaluate_model(aggregated[0], aggregated[1], show=True)
     print(result)
