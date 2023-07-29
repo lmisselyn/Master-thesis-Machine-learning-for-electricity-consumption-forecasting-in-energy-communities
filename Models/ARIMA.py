@@ -1,8 +1,8 @@
-from helper import evaluate_model, aggregate
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from statsmodels.tsa.stattools import adfuller
+from sklearn import metrics
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.arima.model import ARIMA
 from pandas.plotting import register_matplotlib_converters
@@ -53,6 +53,26 @@ def get_stationarity(filename):
     for key, value in result[4].items():
         print('\t{}: {}'.format(key, value))
 
+def evaluate_model(y, y_pred, show=False):
+    MAE = metrics.mean_absolute_error(y, y_pred)
+    MSE = metrics.mean_squared_error(y, y_pred)
+    RMSE = metrics.mean_squared_error(y, y_pred, squared=False)
+    MAPE = round(metrics.mean_absolute_percentage_error(y, y_pred),6)
+    if show:
+        print("Mean absolute error : " + str(MAE))
+        print("Mean squared error : " + str(MSE))
+        print("Root Mean square error : " + str(RMSE))
+        print("Mean absolute percentage error : " + str(MAPE))
+    return {"MAE": MAE, "MSE": MSE, "RMSE": RMSE, "MAPE": MAPE}
+def aggregate(y, y_predict):
+    aggregated_y = []
+    aggregated_y_pred = []
+    index = 0
+    while index <= len(y) - 4:
+        aggregated_y.append(sum(y[index:index + 4]) / 4)
+        aggregated_y_pred.append(sum(y_predict[index:index + 4]) / 4)
+        index += 4
+    return [aggregated_y, aggregated_y_pred]
 
 def auto_correlation_function(filename):
     timeseries = pd.read_csv(filename, index_col=["Datetime"], usecols=['Consumption(Wh)', 'Datetime'],
