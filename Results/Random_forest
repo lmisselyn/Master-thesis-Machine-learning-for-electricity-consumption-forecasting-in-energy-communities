@@ -36,21 +36,21 @@ Average MAPE for model RF with feature selection strategy spearman and dataset 0
 0.43065939999999997
 total error :0.43773540000000005
 
+Average MAPE for model RF with feature selection strategy mutual_info and dataset 01
+0.3244538
+Average MAPE for model RF with feature selection strategy mutual_info and dataset 02
+0.3721169
+Average MAPE for model RF with feature selection strategy mutual_info and dataset 03
+0.4764117
+Average MAPE for model RF with feature selection strategy mutual_info and dataset 04
+0.5345811
+Average MAPE for model RF with feature selection strategy mutual_info and dataset 05
+0.25029019999999996
+Average MAPE for model RF with feature selection strategy mutual_info and dataset 06
+0.5625104999999999
+Average MAPE for model RF with feature selection strategy mutual_info and dataset 07
+0.3203914
+Average MAPE for model RF with feature selection strategy mutual_info and dataset 08
+0.4161056
+total error :0.40710765000000004
 
-Average MAPE for model RF with feature selection strategy no feature selection and dataset 01
-0.5024566
-Average MAPE for model RF with feature selection strategy no feature selection and dataset 02
-0.5391786
-Average MAPE for model RF with feature selection strategy no feature selection and dataset 03
-1.1363756
-Average MAPE for model RF with feature selection strategy no feature selection and dataset 04
-1.0338307000000002
-Average MAPE for model RF with feature selection strategy no feature selection and dataset 05
-0.39889539999999996
-Average MAPE for model RF with feature selection strategy no feature selection and dataset 06
-0.9279557
-Average MAPE for model RF with feature selection strategy no feature selection and dataset 07
-0.5517282000000001
-Average MAPE for model RF with feature selection strategy no feature selection and dataset 08
-0.8299252000000001
-total error :0.74004325

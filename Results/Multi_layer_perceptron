@@ -1,19 +1,55 @@
-
+Average MAPE for model MLP with feature selection strategy pearson and dataset 01
+0.3598622
+Average MAPE for model MLP with feature selection strategy pearson and dataset 02
+0.46846909999999997
+Average MAPE for model MLP with feature selection strategy pearson and dataset 03
+1.0691273000000001
+Average MAPE for model MLP with feature selection strategy pearson and dataset 04
+0.8785812000000002
+Average MAPE for model MLP with feature selection strategy pearson and dataset 05
+0.2918561
+Average MAPE for model MLP with feature selection strategy pearson and dataset 06
+0.7647581999999999
+Average MAPE for model MLP with feature selection strategy pearson and dataset 07
+0.48672190000000004
+Average MAPE for model MLP with feature selection strategy pearson and dataset 08
+0.6645454000000001
+total error :0.6229901750000001
 
 Average MAPE for model MLP with feature selection strategy spearman and dataset 01
-0.39070130000000003
-Averageb MAPE for model MLP with feature selection strategy spearman and dataset 02
-0.4396234
-Averageb MAPE for model MLP with feature selection strategy spearman and dataset 03
-0.9199639
-Averageb MAPE for model MLP with feature selection strategy spearman and dataset 04
-0.8513308
-Averageb MAPE for model MLP with feature selection strategy spearman and dataset 05
-0.3130252
-Averageb MAPE for model MLP with feature selection strategy spearman and dataset 06
-0.7450081999999998
-Averageb MAPE for model MLP with feature selection strategy spearman and dataset 07
-0.4994528
-Averageb MAPE for model MLP with feature selection strategy spearman and dataset 08
-0.7139730999999999
-total error :0.6091348374999999
+0.3709601
+Average MAPE for model MLP with feature selection strategy spearman and dataset 02
+0.46908690000000003
+Average MAPE for model MLP with feature selection strategy spearman and dataset 03
+0.9769072999999999
+Average MAPE for model MLP with feature selection strategy spearman and dataset 04
+0.9080274000000002
+Average MAPE for model MLP with feature selection strategy spearman and dataset 05
+0.2952073
+Average MAPE for model MLP with feature selection strategy spearman and dataset 06
+0.7187816
+Average MAPE for model MLP with feature selection strategy spearman and dataset 07
+0.4918794
+Average MAPE for model MLP with feature selection strategy spearman and dataset 08
+0.6603637
+total error :0.6114017125
+
+Average MAPE for model MLP with feature selection strategy no feature selection and dataset 01
+0.4242667
+Average MAPE for model MLP with feature selection strategy no feature selection and dataset 02
+0.47193009999999996
+Average MAPE for model MLP with feature selection strategy no feature selection and dataset 03
+0.9782321999999999
+Average MAPE for model MLP with feature selection strategy no feature selection and dataset 04
+0.8574453
+Average MAPE for model MLP with feature selection strategy no feature selection and dataset 05
+0.3104656
+Average MAPE for model MLP with feature selection strategy no feature selection and dataset 06
+0.7639538
+Average MAPE for model MLP with feature selection strategy no feature selection and dataset 07
+0.4835774
+Average MAPE for model MLP with feature selection strategy no feature selection and dataset 08
+0.6970850000000001
+total error :0.6233695125
+
+Process finished with exit code 0

@@ -4,6 +4,8 @@ from datetime import timedelta
 import numpy as np
 from sklearn.metrics import mean_absolute_percentage_error
 import pandas as pd
+
+import helper
 from Models.mlp_regression import mlp_model
 from Models.linear_regression import linear_regression
 from Models.KNN import knn_regressor
@@ -106,16 +108,38 @@ wrapp_r2 = {'LR': {'01': ['Minutes', 'apparent_temperature', 'direct_radiation',
 wrapp_mape = {}
 
 if __name__ == '__main__':
+    '''
+    cnt = {}
+    for method in [spearman, pearson, mutual_i]:
+        for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
+            for f in method[i]:
+                if f not in cnt:
+                    cnt[f] = 1
+                else:
+                    cnt[f] = cnt[f]+1
+    for model in wrapp_r2.keys():
+        for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
+            for f in wrapp_r2[model][i]:
+                if f not in cnt:
+                    cnt[f] = 1
+                else:
+                    cnt[f] = cnt[f]+1
+    for f in cnt.keys():
+        cnt[f] = (cnt[f]/48)*100
+    print(cnt)
+    '''
 
-    model = XGB_regressor_model
-    model_name = 'XGB'
-    feature_selection_strategy = 'pearson'
+    model = linear_regression
+    model_name = 'LR'
+    feature_selection_strategy = 'spearman'
+
 
     total_error = []
-    for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
+    for i in ['07']: #, '02', '03', '04', '05', '06', '07', '08']:
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
-        features = pearson[i]
+        #features = pearson[i]
+        features = spearman[i]
         errors = []
         last_date = datetime.fromisoformat(df.index[-1])
         train_first_date = datetime.fromisoformat(first_d[i])
@@ -133,11 +157,13 @@ if __name__ == '__main__':
 
             x_train = x[str(train_first_date):str(train_last_date)]
             y_train = y[str(train_first_date):str(train_last_date)]
-            x_test = x[str(train_last_date + timedelta(days=3)):str(train_last_date + timedelta(days=10))]
-            y_test = y[str(train_last_date + timedelta(days=3)):str(train_last_date + timedelta(days=10))]
+            x_test = x[str(train_last_date + timedelta(days=3)):str(train_last_date + timedelta(days=4))]
+            y_test = y[str(train_last_date + timedelta(days=3)):str(train_last_date + timedelta(days=4))]
             trained_model = model(set=[x_train, y_train, x_test, y_test])
             y_predict = trained_model.predict(x_test)
             aggregated = aggregate(y_test.values, y_predict)
+            MAPE = round(mean_absolute_percentage_error(aggregated[0], aggregated[1]), 6)
+            helper.plot_model(aggregated[0], aggregated[1], 'LR - testing - '+str(train_last_date)[:10] + str(MAPE))
             MAPE = round(mean_absolute_percentage_error(aggregated[0], aggregated[1]), 6)
             errors.append(MAPE)
             total_error.append((MAPE))
