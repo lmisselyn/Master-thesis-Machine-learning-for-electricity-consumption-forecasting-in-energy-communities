@@ -108,11 +108,12 @@ def arima_model(filename=None, set=[], scale=False):
     model = pm.arima.auto_arima(y=train_set, X=train_exo, seasonal=True, m=96)
     model.summary()
 
-    prediction = model.predict(480, test_exo)
-    aggregated = aggregate(test_set["Consumption(Wh)"].values, prediction)
-    arima_plot(train_set, test_set, prediction)
+    prediction = model.predict(481, test_exo)
+    aggregated = aggregate(test_set.values, prediction)
     result = evaluate_model(aggregated[0], aggregated[1], show=True)
     print(result)
+    arima_plot(train_set, test_set, prediction)
+
     return result
 
 def arima_plot(train_set, test_set, prediction):
@@ -122,10 +123,8 @@ def arima_plot(train_set, test_set, prediction):
     plt.plot(train_set, label='training')
     plt.plot(test_set, label='actual')
     plt.plot(prediction, label='forecast')
-
     plt.title('Forecast vs Actuals')
     plt.legend(loc='upper left', fontsize=8)
-    plt.savefig("arima")
     plt.show()
 
 
