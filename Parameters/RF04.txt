@@ -1,0 +1,15 @@
+( #0.42
+    n_estimators=200, # 100
+    criterion='absolute_error',
+    max_depth=1, # best 3
+    min_samples_split=2,
+    max_features=0.2, #0.5
+    max_leaf_nodes=None,
+    random_state=5,
+    min_impurity_decrease=0.0,
+    bootstrap=True, # False
+    n_jobs=2,
+    max_samples=0.8, #None
+)
+
+0.42

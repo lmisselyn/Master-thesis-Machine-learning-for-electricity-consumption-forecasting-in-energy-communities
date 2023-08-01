@@ -63,8 +63,8 @@ def aggregate(y, y_predict):
     aggregated_y_pred = []
     index = 0
     while index <= len(y) - 4:
-        aggregated_y.append(sum(y[index:index + 4]) / 4)
-        aggregated_y_pred.append(sum(y_predict[index:index + 4]) / 4)
+        aggregated_y.append(sum(y[index:index + 4]))
+        aggregated_y_pred.append(sum(y_predict[index:index + 4]))
         index += 4
     return [aggregated_y, aggregated_y_pred]
 

@@ -1,22 +1,30 @@
-
+(booster='gbtree',
+ eval_metric='rmse',
+ early_stopping_rounds=20,
+ objective='reg:squarederror',
+ learning_rate=0.008,  # best 0.0075
+ max_depth=4,  # best 6
+ n_estimators=135,  # best 125
+ subsample=0.95,
+ colsample_bylevel=0.5)
 
 Average MAPE for model XGB with feature selection strategy pearson and dataset 01
-0.32827769999999995
+0.29957160000000005
 Average MAPE for model XGB with feature selection strategy pearson and dataset 02
-0.35104379999999996
+0.3465684
 Average MAPE for model XGB with feature selection strategy pearson and dataset 03
-0.5824722
+0.5592995000000001
 Average MAPE for model XGB with feature selection strategy pearson and dataset 04
-0.4980044
+0.5272059
 Average MAPE for model XGB with feature selection strategy pearson and dataset 05
-0.3208564
+0.28572110000000006
 Average MAPE for model XGB with feature selection strategy pearson and dataset 06
-0.48841070000000003
+0.4716494
 Average MAPE for model XGB with feature selection strategy pearson and dataset 07
-0.3208025
+0.2967586
 Average MAPE for model XGB with feature selection strategy pearson and dataset 08
-0.4309095
-total error :0.41509714999999997
+0.4610248
+total error :0.40597491249999995
 
 Average MAPE for model XGB with feature selection strategy spearman and dataset 01
 0.34624710000000003

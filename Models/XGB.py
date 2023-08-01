@@ -1,13 +1,14 @@
+from datetime import datetime, timedelta
+
 import pandas as pd
 import xgboost
 from matplotlib import pyplot as plt
 from sklearn.metrics import mean_absolute_percentage_error
 from sklearn.preprocessing import StandardScaler
 import numpy as np
+#import evaluation
 import helper
-from pandas import DataFrame
 
-#from sklearn.model_selection import GridSearchCV
 
 def XGB_regressor_model(set, scale=False, show=False):
     """
@@ -26,17 +27,15 @@ def XGB_regressor_model(set, scale=False, show=False):
         x_train = scaler.transform(x_train)
         x_test = scaler.transform(x_test)
 
-    model = xgboost.XGBRegressor(
-        booster='gbtree',
-        eval_metric='rmse',
-        early_stopping_rounds=20,
-        objective='reg:squarederror',
-        learning_rate=0.0075, #best 0.0075
-        max_depth=6, #best 6
-        n_estimators=125, #best 125
-        #subsample=0.85,
-        colsample_bylevel=0.2
-    )
+    model = xgboost.XGBRegressor(booster='gbtree',
+                                 eval_metric='rmse',
+                                 early_stopping_rounds=20,
+                                 objective='reg:squarederror',
+                                 learning_rate=0.008,  # best 0.0075
+                                 max_depth=4,  # best 6
+                                 n_estimators=135,  # best 125
+                                 subsample=0.95,
+                                 colsample_bylevel=0.5)
 
     model.fit(x_train, y_train, eval_set=[(x_train, y_train), (x_test, y_test)], verbose=False)
 
@@ -53,17 +52,47 @@ def XGB_regressor_model(set, scale=False, show=False):
     return model
 
 
-
 if __name__ == '__main__':
+    total_error = []
+    for i in ['08']:  # , '02', '03', '04', '05', '06', '07', '08']:
+        filename = '../Datasets/' + i + '/' + i + 'final.csv'
+        df = pd.read_csv(filename, index_col='Datetime')
+        features = evaluation.pearson[i]
+        # features = evaluation.spearman[i]
+        errors = []
+        last_date = datetime.fromisoformat(df.index[-1])
+        train_first_date = datetime.fromisoformat(evaluation.first_d[i])
 
-    variables = ['Day', 'Minutes',
-           'Weekend', 'temperature_2m', 'relativehumidity_2m',
-           'dewpoint_2m', 'apparent_temperature',
-           'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
-           'direct_normal_irradiance', 'windspeed_10m',
-           'Prev_4d_mean_cons', 'Prev_4w_mean_cons']
+        x = df[features]
+        y = df['Consumption(Wh)']
 
-    for i in ['01']: #, '02', '03', '04', '05', '06', '07', '08']:  #
+        for j in range(10):
+            train_last_date = train_first_date + timedelta(weeks=16)
+            if train_last_date + timedelta(days=6) > last_date:
+                print("Date error" + i)
+                print(str(train_last_date + timedelta(days=6)))
+                print(str(last_date))
+                break
+
+            x_train = x[str(train_first_date):str(train_last_date)]
+            y_train = y[str(train_first_date):str(train_last_date)]
+            x_test = x[str(train_last_date + timedelta(days=3)):str(train_last_date + timedelta(days=10))]
+            y_test = y[str(train_last_date + timedelta(days=3)):str(train_last_date + timedelta(days=10))]
+            trained_model = XGB_regressor_model(set=[x_train, y_train, x_test, y_test])
+            y_predict = trained_model.predict(x_test)
+            aggregated = helper.aggregate(y_test.values, y_predict)
+            MAPE = round(mean_absolute_percentage_error(aggregated[0], aggregated[1]), 6)
+            errors.append(MAPE)
+            total_error.append((MAPE))
+
+            train_first_date = train_first_date + timedelta(weeks=3)
+        print("Average MAPE for model " + 'XGB' + " with feature selection strategy " + 'Spearman'
+              + " and dataset " + i)
+        print(np.mean(errors))
+    print("total error :" + str(np.mean(total_error)))
+
+    """
+    for i in ['03']: #, '02', '03', '04', '05', '06', '07', '08']:  #
         filename = '../Datasets/' + i + '/' + i + 'final.csv'
         features = ['shortwave_radiation', 'direct_normal_irradiance', 'dewpoint_2m',
                     'Prev_4w_mean_cons', 'Prev_4d_mean_cons']
@@ -90,4 +119,4 @@ if __name__ == '__main__':
         plt.legend()
         plt.ylabel("Consumption(Wh)")
         plt.show()
-
+        """
