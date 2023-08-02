@@ -6,6 +6,8 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import mean_absolute_percentage_error
 from sklearn.preprocessing import StandardScaler
 import numpy as np
+
+import global_variables
 # import evaluation
 import helper
 
@@ -29,13 +31,13 @@ def XGB_regressor_model(set, scale=False, show=False):
 
     model = xgboost.XGBRegressor(booster='gbtree',
                                  eval_metric='rmse',
-                                 early_stopping_rounds=20,
+                                 early_stopping_rounds=40,
                                  objective='reg:squarederror',
-                                 learning_rate=0.008,  # best 0.0075
-                                 max_depth=4,  # best 6
-                                 n_estimators=135,  # best 125
-                                 subsample=0.95,
-                                 colsample_bylevel=0.5)
+                                 learning_rate=0.0065,  # best 0.0075
+                                 max_depth=2,  # best 2
+                                 n_estimators=200,  # best 175
+                                 subsample=0.8,
+                                 colsample_bylevel=0.4)
 
     model.fit(x_train, y_train, eval_set=[(x_train, y_train), (x_test, y_test)], verbose=False)
 
@@ -54,14 +56,15 @@ def XGB_regressor_model(set, scale=False, show=False):
 
 if __name__ == '__main__':
     total_error = []
-    for i in ['08']:  # , '02', '03', '04', '05', '06', '07', '08']:
+    for i in ['05']:  # , '02', '03', '04', '05', '06', '07', '08']:
         filename = '../Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
-        features = evaluation.pearson[i]
-        # features = evaluation.spearman[i]
+        features = global_variables.pearson[i]
+        # features = global_variables.spearman[i]
+        # features = global_variables.mutual_i[i]
         errors = []
         last_date = datetime.fromisoformat(df.index[-1])
-        train_first_date = datetime.fromisoformat(evaluation.first_d[i])
+        train_first_date = datetime.fromisoformat(global_variables.first_d[i])
 
         x = df[features]
         y = df['Consumption(Wh)']

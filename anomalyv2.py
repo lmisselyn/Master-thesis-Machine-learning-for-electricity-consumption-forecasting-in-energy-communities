@@ -21,8 +21,10 @@ def best_model_search(dataset, end_date, model):
         n_split = 2
 
     parameters = {'booster': ['gbtree'],
+                  'validate_parameters': [False],
+                  'verbosity': [0],
                   'eval_metric': ['rmse'],
-                  'early_stopping': ['False'],
+                  'early_stopping': [False],
                   'objective': ['reg:squarederror'],
                   'learning_rate': [0.005, 0.0075, 0.008, 0.01],
                   'max_depth': [1, 2, 3, 4, 6],
@@ -65,8 +67,8 @@ def anomaly_simulator(dataset):
         total_error.append(MAPE)
         if MAPE > 0.4:
             print('Anomaly detected : ' + str(MAPE))
-            #best_model_search(dataset, str(test_end_date), model)
-            #print(model.get_params)
+            best_model_search(dataset, str(test_end_date), model)
+            print(model.get_params)
         else:
             print("MAPE : " + str(MAPE))
         train_start_date = train_start_date + timedelta(weeks=1)
