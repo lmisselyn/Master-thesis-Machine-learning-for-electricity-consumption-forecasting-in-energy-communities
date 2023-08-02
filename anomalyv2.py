@@ -10,11 +10,8 @@ import global_variables
 import helper
 
 
-def best_model_search(dataset, end_date, model):
-    filename = 'Datasets/' + dataset + '/' + i + 'final.csv'
-    df = pd.read_csv(filename, index_col='Datetime')
-    df = df[global_variables.first_d[dataset]: end_date]
-    x = df[global_variables.pearson[dataset]]
+def new_parameters_search(df, model):
+    x = df[global_variables.pearson['01']]
     y = df['Consumption(Wh)']
     n_split = len(df) // 11424
     if n_split == 1:
@@ -42,19 +39,19 @@ def best_model_search(dataset, end_date, model):
 
 def anomaly_simulator(dataset):
     total_error = []
-    filename = 'Datasets/' + dataset + '/' + i + 'final.csv'
-    df = pd.read_csv(filename, index_col='Datetime')
+    # filename = 'Datasets/' + dataset + '/' + i + 'final.csv'
+    df = pd.read_csv(dataset, index_col='Datetime')
     last_date = datetime.fromisoformat(df.index[-1])
-    train_start_date = datetime.fromisoformat(global_variables.first_d[dataset])
+    train_start_date = datetime.fromisoformat(global_variables.first_d['01'])
     train_end_date = train_start_date + timedelta(weeks=16)
     test_end_date = train_end_date + timedelta(weeks=1)
 
-    features = global_variables.pearson[dataset]
-    model = global_variables.best_model[dataset]
+    features = global_variables.pearson['01']
+    model = global_variables.best_model['01']
 
     x = df[features]
     y = df['Consumption(Wh)']
-
+    cnt = 0
     while test_end_date < last_date:
         x_train = x[str(train_start_date):str(train_end_date)]
         y_train = y[str(train_start_date):str(train_end_date)]
@@ -63,14 +60,18 @@ def anomaly_simulator(dataset):
         model.fit(x_train, y_train, eval_set=[(x_test, y_test)], verbose=False)
         y_pred = model.predict(x_test)
         aggregated = helper.aggregate(y_test, y_pred)
+        #helper.plot_model(aggregated[0], aggregated[1], 'ok')
         MAPE = mean_absolute_percentage_error(aggregated[0], aggregated[1])
         total_error.append(MAPE)
         if MAPE > 0.4:
             print('Anomaly detected : ' + str(MAPE))
-            best_model_search(dataset, str(test_end_date), model)
-            print(model.get_params)
+            cnt += 1
         else:
+            cnt = 0
             print("MAPE : " + str(MAPE))
+        if cnt == 3:
+            new_parameters_search(df[str(train_start_date):str(test_end_date)], model)
+            print(model.get_params)
         train_start_date = train_start_date + timedelta(weeks=1)
         train_end_date = train_start_date + timedelta(weeks=16)
         test_end_date = train_end_date + timedelta(weeks=1)
@@ -78,5 +79,4 @@ def anomaly_simulator(dataset):
 
 
 if __name__ == '__main__':
-    for i in ['01']:  # , '02', '03', '04', '05', '06', '07', '08']:
-        anomaly_simulator(i)
+    anomaly_simulator('Datasets/anomaly_test/anomaly_test2.csv')

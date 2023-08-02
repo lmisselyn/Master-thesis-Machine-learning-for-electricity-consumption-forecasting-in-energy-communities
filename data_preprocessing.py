@@ -337,11 +337,9 @@ def tmp_time_features(filename):
 
 if __name__ == '__main__':
 
-    for i in ['03', '04', '05', '06', '07', '08']:  #'01', '02',
-        filename = 'Datasets/' + i + '/' + i + 'final.csv'
-        tmp_date(filename)
-        print(i + 'done')
-
+    tmp_date('Datasets/anomaly_test/anomaly_test2.csv')
+    #df = pd.read_csv('Datasets/anomaly_test/anomaly_test2.csv')
+    #print(df['Datetime'])
     """
     #print(cons.var())
     #tmp_cons_calcu(filename)
