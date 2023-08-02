@@ -5,7 +5,7 @@ import xgboost
 from sklearn.model_selection import TimeSeriesSplit
 
 import global_variables
-from helper import evaluate_model, aggregate
+
 from datetime import datetime, timedelta
 from sklearn.feature_selection import mutual_info_regression, SelectKBest
 from sklearn.feature_selection import SequentialFeatureSelector as SFS
@@ -14,16 +14,10 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
-from Models.KNN import knn_regressor
-from Models.RandomForest import random_forest_model
-from Models.SVM import SVM_regressor_model
-from Models.XGB import XGB_regressor_model
-from Models.mlp_regression import mlp_model
-from Models.linear_regression import linear_regression
+
 from xgboost import XGBRegressor
 
-models2 = {"SVM": SVM_regressor_model, "XGB": XGB_regressor_model,
-          'R_F': random_forest_model, "MLP": mlp_model}
+
 
 models = [LinearRegression(),
           KNeighborsRegressor(
