@@ -1,0 +1,6 @@
+( #0.3621
+        C=10, #5
+        epsilon=0.4, #0.4
+        gamma='scale') #scale
+
+ 0.362

@@ -2,7 +2,9 @@
 import numpy as np
 import pandas as pd
 import xgboost
+from sklearn.model_selection import TimeSeriesSplit
 
+import global_variables
 from helper import evaluate_model, aggregate
 from datetime import datetime, timedelta
 from sklearn.feature_selection import mutual_info_regression, SelectKBest
@@ -19,11 +21,6 @@ from Models.XGB import XGB_regressor_model
 from Models.mlp_regression import mlp_model
 from Models.linear_regression import linear_regression
 from xgboost import XGBRegressor
-
-first_d = {'01': '2020-02-25 00:00:00', '02': '2020-02-15 00:00:00', '03': '2020-02-27 00:00:00',
-           '04': '2020-07-24 00:00:00',
-           '05': '2020-08-22 00:00:00', '06': '2020-08-25 00:00:00', '07': '2020-08-25 00:00:00',
-           '08': '2020-10-06 00:00:00'}
 
 models2 = {"SVM": SVM_regressor_model, "XGB": XGB_regressor_model,
           'R_F': random_forest_model, "MLP": mlp_model}
@@ -78,11 +75,13 @@ def mutual_info(filename, features):
 def wrapping_feature_selection(df, model, features, score):
     x = df[features]
     y = df['Consumption(Wh)']
+
+    tscv = TimeSeriesSplit(n_splits=10, max_train_size=10752, test_size=672)
     sfs = SFS(model,
               n_features_to_select='auto',
               direction='forward',
               scoring=score,
-              cv=None)
+              cv=tscv)
     sfs.fit(x, y)
     print(sfs.get_feature_names_out())
 
@@ -112,20 +111,19 @@ if __name__ == '__main__':
     for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
-        train_first_date = datetime.fromisoformat(first_d[i])
+        train_first_date = datetime.fromisoformat(global_variables.first_d[i])
         train_last_date = train_first_date+timedelta(weeks=16)
         df = df[str(train_first_date):str(train_last_date)]
         print(i)
-        m = xgboost.XGBRegressor(
-            booster='gbtree',
-            eval_metric='rmse',
-            #early_stopping_rounds=10,
-            objective='reg:squarederror',
-            learning_rate=0.01,  # best 0.015
-            max_depth=6,  # best None
-            n_estimators=100,  # best 100
-            subsample=0.85
-        )
+        m = xgboost.XGBRegressor(booster='gbtree',
+                                 eval_metric='rmse',
+                                 #early_stopping_rounds=20,
+                                 objective='reg:squarederror',
+                                 learning_rate=0.008,  # best 0.0075
+                                 max_depth=4,  # best 6
+                                 n_estimators=135,  # best 125
+                                 subsample=0.95,
+                                 colsample_bylevel=0.5)
 
-        wrapping_feature_selection(df, m, var,  'r2')
+        wrapping_feature_selection(df, m, var, 'r2')
 

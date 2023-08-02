@@ -1,0 +1,5 @@
+C=85, #70
+epsilon=0.55, #0.55
+gamma='scale') #scale
+
+0.466

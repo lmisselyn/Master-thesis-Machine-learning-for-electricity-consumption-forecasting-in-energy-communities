@@ -5,14 +5,10 @@ from sklearn import svm
 from sklearn.metrics import mean_absolute_percentage_error
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
-
-import evaluation
+import global_variables
 import helper
 
-first_d = {'01': '2020-02-25 00:00:00', '02': '2020-02-15 00:00:00', '03': '2020-02-27 00:00:00',
-           '04': '2020-07-24 00:00:00',
-           '05': '2020-08-22 00:00:00', '06': '2020-08-25 00:00:00', '07': '2020-08-25 00:00:00',
-           '08': '2020-10-06 00:00:00'}
+
 def SVM_regressor_model(set, scale=False, show=False):
     """
     train a random forest model with the dataset 'filename'
@@ -30,7 +26,11 @@ def SVM_regressor_model(set, scale=False, show=False):
         x_train = scaler.transform(x_train)
         x_test = scaler.transform(x_test)
 
-    model = svm.SVR(C=5, epsilon=0.4, gamma='scale')
+    model = svm.SVR( #0.315
+                    C=1,  # 1
+                    epsilon=0.5,  # 0.2
+                    gamma=0.0001)  # 'scale
+
     model.fit(x_train, y_train)
 
     if show:
@@ -44,17 +44,18 @@ def SVM_regressor_model(set, scale=False, show=False):
         print(helper.evaluate_model(aggregated[0], aggregated[1]))
     return model
 
+
 if __name__ == '__main__':
 
     total_error = []
-    for i in ['01']:  # , '02', '03', '04', '05', '06', '07', '08']:
+    for i in ['08']:  # , '02', '03', '04', '05', '06', '07', '08']:
         filename = '../Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
-        features = evaluation.pearson[i]
+        features = global_variables.pearson[i]
         # features = evaluation.spearman[i]
         errors = []
         last_date = datetime.fromisoformat(df.index[-1])
-        train_first_date = datetime.fromisoformat(evaluation.first_d[i])
+        train_first_date = datetime.fromisoformat(global_variables.first_d[i])
 
         x = df[features]
         y = df['Consumption(Wh)']

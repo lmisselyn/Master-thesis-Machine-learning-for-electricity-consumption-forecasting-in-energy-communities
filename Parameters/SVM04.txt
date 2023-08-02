@@ -1,0 +1,7 @@
+(
+C=1, #1
+epsilon=0.6, #0.1
+gamma='scale') #0.001
+model.fit(x_train, y_train)
+
+ 0.456
