@@ -13,7 +13,7 @@ import helper
 def new_parameters_search(df, model):
     x = df[global_variables.pearson['01']]
     y = df['Consumption(Wh)']
-    n_split = len(df) // 11424
+    n_split = len(df) // 11424 # number of train & test set(s)
     if n_split == 1:
         n_split = 2
 
