@@ -27,9 +27,9 @@ def SVM_regressor_model(set, scale=False, show=False):
         x_test = scaler.transform(x_test)
 
     model = svm.SVR( #0.315
-                    C=1,  # 1
-                    epsilon=0.5,  # 0.2
-                    gamma=0.0001)  # 'scale
+                    C=5,  # 1
+                    epsilon=0.4,  # 0.2
+                    gamma='scale')  # 'scale
 
     model.fit(x_train, y_train)
 
@@ -37,7 +37,7 @@ def SVM_regressor_model(set, scale=False, show=False):
         y_predict = model.predict(x_test)
         aggregated = helper.aggregate(y_test.values, y_predict)
         helper.plot_model(y_test.values, y_predict, 'SVM')
-        helper.plot_model(aggregated[0], aggregated[1], 'SVM regression - dataset01 - (2021-02-27) ')
+        helper.plot_model(aggregated[0], aggregated[1], 'SVM - testing - dataset01 - (2021-02-27)')
         print("Accuracy : ")
         print(helper.evaluate_model(y_test.values, y_predict))
         print("Accuracy for aggregated values :")
@@ -46,7 +46,7 @@ def SVM_regressor_model(set, scale=False, show=False):
 
 
 if __name__ == '__main__':
-
+    """
     total_error = []
     for i in ['08']:  # , '02', '03', '04', '05', '06', '07', '08']:
         filename = '../Datasets/' + i + '/' + i + 'final.csv'
@@ -88,8 +88,7 @@ if __name__ == '__main__':
     """
     for i in ['01']: #, '02', '03', '04', '05', '06', '07', '08']:  #
         filename = '../Datasets/' + i + '/' + i + 'final.csv'
-        features =  ['apparent_temperature', 'diffuse_radiation', 'dewpoint_2m',
-   'Prev_4w_mean_cons', 'Prev_4d_mean_cons']
+        features = global_variables.pearson[i]
         df = pd.read_csv(filename, index_col='Datetime')
 
         train_set = df['2020-11-24 00:00:00':'2021-02-24 00:00:00']
@@ -108,9 +107,9 @@ if __name__ == '__main__':
 
         plt.plot(y_train_visu,  label='Training data')
         plt.plot(svm.predict(x_train_visu),  label='fitted model')
-        plt.title("SVM visualisation - dataset01 - (2021-02-21, 2021-02-24)")
+        plt.title("SVM - training - dataset01 - (2021-02-21, 2021-02-24)")
         plt.xticks([''])
         plt.legend()
         plt.ylabel("Consumption(Wh)")
         plt.show()
-    """
+

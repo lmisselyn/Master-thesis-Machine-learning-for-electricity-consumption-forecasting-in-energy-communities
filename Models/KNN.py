@@ -21,7 +21,7 @@ def knn_regressor(set, scale=False, show=False):
         x_test = scaler.transform(x_test)
 
     model = KNeighborsRegressor(
-        n_neighbors=100,
+        n_neighbors=40,
         weights='distance',
         algorithm='brute',
         metric='minkowski')
@@ -31,7 +31,7 @@ def knn_regressor(set, scale=False, show=False):
         y_predict = model.predict(x_test)
         aggregated = helper.aggregate(y_test.values, y_predict)
         helper.plot_model(y_test.values, y_predict, 'KNN')
-        helper.plot_model(aggregated[0], aggregated[1], 'KNN - test - distance weights - dataset01 - (2021-02-27)')
+        helper.plot_model(aggregated[0], aggregated[1], 'KNN - testing - uniform weights - dataset01 - (2021-02-27)')
         print("Accuracy : ")
         print(helper.evaluate_model(y_test.values, y_predict))
         print("Accuracy for aggregated values :")
@@ -64,7 +64,7 @@ if __name__ == '__main__':
         y_test = test_set["Consumption(Wh)"]
         knn = knn_regressor(set=[x_train, y_train, x_test, y_test], show=True)
 
-        print('MAPE:' + str(np.round(mean_absolute_percentage_error(y_train.values, knn.predict(x_train)))))
+        print('MAPE:' + str(np.round(mean_absolute_percentage_error(y_train.values, knn.predict(x_train)), 5)))
         x_train_visu = train_visu[features]
         y_train_visu = train_visu['Consumption(Wh)']
 

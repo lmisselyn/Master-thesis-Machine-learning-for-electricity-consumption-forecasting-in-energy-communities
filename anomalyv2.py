@@ -23,12 +23,12 @@ def new_parameters_search(df, model):
                   'eval_metric': ['rmse'],
                   'early_stopping': [False],
                   'objective': ['reg:squarederror'],
-                  'learning_rate': [0.005, 0.0075, 0.008, 0.01],
-                  'max_depth': [1, 2, 3, 4, 6],
+                  'learning_rate': [0.006, 0.0075, 0.008, 0.01],
+                  'max_depth': [1, 2, 3, 4],
                   'max_features': [0.2, 0.5],
-                  'n_estimators': [70, 85, 100, 125, 140, 180],
+                  'n_estimators': [100, 125, 140, 180],
                   'colsample_bylevel': [0.2, 0.5],
-                  'subsample': [0.85, None]}
+                  'subsample': [0.85]}
 
     tscv = TimeSeriesSplit(n_splits=n_split, max_train_size=10752, test_size=672)
     xgb_gs = GridSearchCV(xgboost.XGBRegressor(), param_grid=parameters, cv=tscv,
@@ -72,6 +72,7 @@ def anomaly_simulator(dataset):
         if cnt == 3:
             new_parameters_search(df[str(train_start_date):str(test_end_date)], model)
             print(model.get_params)
+            cnt = 0
         train_start_date = train_start_date + timedelta(weeks=1)
         train_end_date = train_start_date + timedelta(weeks=16)
         test_end_date = train_end_date + timedelta(weeks=1)

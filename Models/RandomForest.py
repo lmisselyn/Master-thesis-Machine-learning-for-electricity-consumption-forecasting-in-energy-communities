@@ -48,7 +48,7 @@ def random_forest_model(set, scale=False, show=False):
         y_predict = model.predict(x_test)
         aggregated = helper.aggregate(y_test.values, y_predict)
         helper.plot_model(y_test.values, y_predict, 'R_F')
-        helper.plot_model(aggregated[0], aggregated[1], 'RF - test - dataset01 - (2021-02-27)')
+        helper.plot_model(aggregated[0], aggregated[1], 'RF - testing - dataset01 - (2021-02-27)')
         print("Accuracy : ")
         print(helper.evaluate_model(y_test.values, y_predict))
         print("Accuracy for aggregated values :")
@@ -57,6 +57,7 @@ def random_forest_model(set, scale=False, show=False):
 
 
 if __name__ == '__main__':
+    """
     total_error = []
     for i in ['08']:  # , '02', '03', '04', '05', '06', '07', '08']:
         filename = '../Datasets/' + i + '/' + i + 'final.csv'
@@ -119,9 +120,9 @@ if __name__ == '__main__':
 
         plt.plot(y_train_visu, label='Training data')
         plt.plot(rf.predict(x_train_visu), label='fitted model')
-        plt.title("RF training - dataset01 - (2021-02-21, 2021-02-24)")
+        plt.title("RF - training - dataset01 - (2021-02-21, 2021-02-24)")
         plt.xticks([''])
         plt.legend()
         plt.ylabel("Consumption(Wh)")
         plt.show()
-        """
+

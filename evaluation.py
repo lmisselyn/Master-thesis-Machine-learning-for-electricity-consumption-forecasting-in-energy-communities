@@ -48,8 +48,8 @@ if __name__ == '__main__':
     print(cnt)
     '''
 
-    model = XGB_regressor_model
-    model_name = 'XGB'
+    model = knn_regressor
+    model_name = 'KNN'
     feature_selection_strategy = 'spearman'
 
     total_error = []
@@ -81,7 +81,7 @@ if __name__ == '__main__':
             y_predict = trained_model.predict(x_test)
             aggregated = aggregate(y_test.values, y_predict)
             MAPE = round(mean_absolute_percentage_error(aggregated[0], aggregated[1]), 6)
-            print('MAPE : '+str(MAPE))
+            #print('MAPE : '+str(MAPE))
             #helper.plot_model(aggregated[0], aggregated[1], 'LR - testing - '+str(train_last_date)[:10] + str(MAPE))
             #MAPE = round(mean_absolute_percentage_error(aggregated[0], aggregated[1]), 6)
             errors.append(MAPE)

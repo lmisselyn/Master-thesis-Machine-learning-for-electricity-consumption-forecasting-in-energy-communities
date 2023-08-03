@@ -9,9 +9,10 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.neighbors import KNeighborsRegressor
 
 import evaluation
+import global_variables
 from helperv2 import get_feature
 
-source_models = {'RF': RandomForestRegressor(), 'SVM': SVR(), 'XGB': XGBRegressor()}
+source_models = {'RF': RandomForestRegressor(), 'SVM': SVR(), 'XGB': XGBRegressor(), 'KNN': KNeighborsRegressor()}
 first_d = {'01': '2020-02-25 00:00:00', '02': '2020-02-15 00:00:00', '03': '2020-02-27 00:00:00',
            '04': '2020-07-24 00:00:00',
            '05': '2020-08-22 00:00:00', '06': '2020-08-25 00:00:00', '07': '2020-08-25 00:00:00',
@@ -46,7 +47,11 @@ param = {'RF': {'n_estimators': [75, 100, 150, 200],
                  'max_iter': [1500],
                  'shuffle': [False],
                  'warm_start': [False],
-                 'early_stopping': [True]}
+                 'early_stopping': [True]},
+         'KNN': {'n_neighbors': [5, 10, 20, 30, 50],
+                 'weights': ['uniform'],
+                 'algorithm': ['ball_tree', 'kd_tree', 'brute'],
+                 'metric': ['minkowski']}
          }
 
 
@@ -69,10 +74,10 @@ def parameter_search(df, parameters, model, features, dataset):
 
 if __name__ == '__main__':
 
-    for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
-        m = 'SVM'
+    for i in ['01']: #, '02', '03', '04', '05', '06', '07', '08']:
+        m = 'KNN'
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
         train_first_date = datetime.datetime.fromisoformat(first_d[i])
-        features = evaluation.pearson[i]
+        features = global_variables.pearson[i]
         parameter_search(df[str(train_first_date):], param[m], m, features, i)

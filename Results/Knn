@@ -1,19 +1,19 @@
 
 
 Average MAPE for model KNN with feature selection strategy spearman and dataset 01
-0.5296168000000001
+0.434716
 Average MAPE for model KNN with feature selection strategy spearman and dataset 02
-0.4875208
+0.4915679
 Average MAPE for model KNN with feature selection strategy spearman and dataset 03
-0.9139892
+0.8460113999999999
 Average MAPE for model KNN with feature selection strategy spearman and dataset 04
-0.7833296
+0.8470358000000001
 Average MAPE for model KNN with feature selection strategy spearman and dataset 05
-0.3019694
+0.31323550000000006
 Average MAPE for model KNN with feature selection strategy spearman and dataset 06
-0.7371206
+0.7330862
 Average MAPE for model KNN with feature selection strategy spearman and dataset 07
-0.4948976
+0.5051581
 Average MAPE for model KNN with feature selection strategy spearman and dataset 08
-0.6658973
-total error :0.614
+0.7064351
+total error :0.6096557500000002

@@ -7,6 +7,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+
+import global_variables
 import helper
 
 
@@ -122,7 +124,7 @@ def linear_regression(set, scale=False, show=False):
         y_predict = model.predict(x_test)
         aggregated = helper.aggregate(y_test.values, y_predict)
         helper.plot_model(y_test.values, y_predict, 'linear regression')
-        helper.plot_model(aggregated[0], aggregated[1], 'Linear regression - dataset01 - (2021-02-27) ')
+        helper.plot_model(aggregated[0], aggregated[1], 'LR - testing - dataset01 - (2021-02-27) ')
         print("Accuracy : ")
         print(helper.evaluate_model(y_test.values, y_predict))
         print("Accuracy for aggregated values : ")
@@ -132,16 +134,10 @@ def linear_regression(set, scale=False, show=False):
 
 
 if __name__ == '__main__':
-    var = ['Consumption(Wh)', 'Day', 'Minutes',
-           'Weekend', 'temperature_2m', 'relativehumidity_2m',
-           'dewpoint_2m', 'apparent_temperature',
-           'shortwave_radiation', 'direct_radiation', 'diffuse_radiation',
-           'direct_normal_irradiance', 'windspeed_10m', 'winddirection_10m',
-           'Prev_4d_mean_cons', 'Prev_4w_mean_cons', 'precipitation']
 
     for i in ['01']: #, '02', '03', '04', '05', '06', '07', '08']:  #
         filename = '../Datasets/' + i + '/' + i + 'final.csv'
-        features = correlation(filename, 'spearman', 5, var)
+        features = global_variables.spearman[i]
         df = pd.read_csv(filename, index_col='Datetime')
 
         train_set = df['2020-11-24 00:00:00':'2021-02-24 00:00:00']
@@ -160,9 +156,10 @@ if __name__ == '__main__':
         x_train_visu = train_visu[features]
         y_train_visu = train_visu['Consumption(Wh)']
 
+        #train_aggregated = helper.aggregate()
         plt.plot(y_train_visu,  label='Training data')
         plt.plot(lr.predict(x_train_visu),  label='fitted model')
-        plt.title("Lr visualisation - dataset01 - (2021-02-21, 2021-02-24)")
+        plt.title("LR - training - dataset01 - (2021-02-1, 2021-02-24)")
         plt.xticks([''])
         plt.legend()
         plt.ylabel("Consumption(Wh)")

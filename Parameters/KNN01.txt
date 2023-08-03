@@ -1,2 +1,2 @@
-{'algorithm': 'brute', 'metric': 'minkowski', 'n_neighbors': 1125, 'weights': 'uniform'}
--151.32863075409563
+{'algorithm': 'ball_tree', 'metric': 'minkowski', 'n_neighbors': 5, 'weights': 'uniform'}
+-0.686914779282356
