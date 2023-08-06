@@ -40,9 +40,26 @@ best_model = {'01': xgboost.XGBRegressor(booster='gbtree',
                                          max_depth=1,  # best 6
                                          n_estimators=110,  # best 125
                                          # subsample=0.85,
+                                         colsample_bylevel=0.2),
+              '07': xgboost.XGBRegressor(booster='gbtree',
+                                         eval_metric='rmse',
+                                         early_stopping_rounds=20,
+                                         objective='reg:squarederror',
+                                         learning_rate=0.006,  # best 0.0075
+                                         max_depth=1,  # best 6
+                                         n_estimators=170,  # best 125
+                                         subsample=0.85,
+                                         colsample_bylevel=0.2),
+              '08': xgboost.XGBRegressor(booster='gbtree',
+                                         eval_metric='rmse',
+                                         early_stopping_rounds=20,
+                                         objective='reg:squarederror',
+                                         learning_rate=0.0075,  # best 0.0075
+                                         max_depth=1,  # best 6
+                                         n_estimators=95,  # best 125
+                                         subsample=0.95,
                                          colsample_bylevel=0.2)
               }
-
 
 pearson = {'01': ['apparent_temperature', 'diffuse_radiation', 'dewpoint_2m',
                   'Prev_4w_mean_cons', 'Prev_4d_mean_cons'],
@@ -83,7 +100,6 @@ mutual_i = {'01': ['Minutes', 'dewpoint_2m', 'apparent_temperature', 'Prev_4d_me
                    'Prev_4w_mean_cons'],
             '07': ['Minutes', 'temperature_2m', 'dewpoint_2m', 'apparent_temperature', 'Prev_4w_mean_cons'],
             '08': ['Minutes', 'temperature_2m', 'dewpoint_2m', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons']}
-
 
 wrapp_r2 = {'LR': {'01': ['Minutes', 'apparent_temperature', 'direct_radiation', 'direct_normal_irradiance',
                           'windspeed_10m', 'Prev_4d_mean_cons', 'Prev_4w_mean_cons'],

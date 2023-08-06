@@ -31,13 +31,13 @@ def XGB_regressor_model(set, scale=False, show=False):
 
     model = xgboost.XGBRegressor(booster='gbtree',
                                  eval_metric='rmse',
-                                 early_stopping_rounds=40,
+                                 early_stopping_rounds=20,
                                  objective='reg:squarederror',
-                                 learning_rate=0.0065,  # best 0.0075
-                                 max_depth=2,  # best 2
-                                 n_estimators=200,  # best 175
-                                 subsample=0.8,
-                                 colsample_bylevel=0.4)
+                                 learning_rate=0.008,  # best 0.0075
+                                 max_depth=4,  # best 6
+                                 n_estimators=135,  # best 125
+                                 subsample=0.95,
+                                 colsample_bylevel=0.5)
 
     model.fit(x_train, y_train, eval_set=[(x_train, y_train), (x_test, y_test)], verbose=False)
 
@@ -45,7 +45,7 @@ def XGB_regressor_model(set, scale=False, show=False):
         y_predict = model.predict(x_test)
         aggregated = helper.aggregate(y_test.values, y_predict)
         helper.plot_model(y_test.values, y_predict, 'XGB')
-        helper.plot_model(aggregated[0], aggregated[1], 'XGB - test - dataset01 - (2021-02-27)')
+        helper.plot_model(aggregated[0], aggregated[1], 'XGB - testing - dataset01 - (2021-02-27)')
         print("Accuracy : ")
         print(helper.evaluate_model(y_test.values, y_predict))
         print("Accuracy for aggregated values : ")
@@ -55,6 +55,7 @@ def XGB_regressor_model(set, scale=False, show=False):
 
 
 if __name__ == '__main__':
+    """
     total_error = []
     for i in ['05']:  # , '02', '03', '04', '05', '06', '07', '08']:
         filename = '../Datasets/' + i + '/' + i + 'final.csv'
@@ -95,7 +96,7 @@ if __name__ == '__main__':
     print("total error :" + str(np.mean(total_error)))
 
     """
-    for i in ['03']: #, '02', '03', '04', '05', '06', '07', '08']:  #
+    for i in ['01']:  # , '02', '03', '04', '05', '06', '07', '08']:  #
         filename = '../Datasets/' + i + '/' + i + 'final.csv'
         features = ['shortwave_radiation', 'direct_normal_irradiance', 'dewpoint_2m',
                     'Prev_4w_mean_cons', 'Prev_4d_mean_cons']
@@ -115,11 +116,10 @@ if __name__ == '__main__':
         x_train_visu = train_visu[features]
         y_train_visu = train_visu['Consumption(Wh)']
 
-        plt.plot(y_train_visu,  label='Training data')
-        plt.plot(xgb.predict(x_train_visu),  label='fitted model')
-        plt.title("XGB training - dataset01 - (2021-02-21, 2021-02-24)")
+        plt.plot(y_train_visu, label='Training data')
+        plt.plot(xgb.predict(x_train_visu), label='fitted model')
+        plt.title("XGB - training - dataset01 - (2021-02-21, 2021-02-24)")
         plt.xticks([''])
         plt.legend()
         plt.ylabel("Consumption(Wh)")
         plt.show()
-        """

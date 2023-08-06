@@ -339,8 +339,23 @@ if __name__ == '__main__':
 
     tmp_date('Datasets/anomaly_test/anomaly_test2.csv')
     #df = pd.read_csv('Datasets/anomaly_test/anomaly_test2.csv')
-    #print(df['Datetime'])
+
     """
+    dt = df['Datetime'][:64952]
+    dates = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in dt]
+
+    curr_date = dates[-1]
+    print(curr_date)
+
+    for i in range(len(df)-len(dates)):
+        next = curr_date+timedelta(minutes=15)
+        curr_date = next
+        dates.append(next)
+    df['Datetime'] = dates
+    print(df['Datetime'])
+    #df.to_csv('Datasets/anomaly_test/anomaly_test2.csv')
+
+    
     #print(cons.var())
     #tmp_cons_calcu(filename)
     #tmp_time_features(filename)
