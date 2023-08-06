@@ -90,4 +90,4 @@ def anomaly_simulator(dataset):
 
 if __name__ == '__main__':
     #anomaly_simulator('07')
-    anomaly_simulator('Datasets/anomaly_test/anomaly_test2.csv')
+    anomaly_simulator('Datasets/anomaly_test/anomaly_test.csv')
