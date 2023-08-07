@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime, timedelta
 import numpy as np
-
+from sklearn.metrics import mean_absolute_percentage_error
 
 def get_data_csv_10():
     df = pd.read_csv("../02final.csv")[["Date", "Heure", "Index(Wh)"]]
@@ -337,8 +337,25 @@ def tmp_time_features(filename):
 
 if __name__ == '__main__':
 
-    tmp_date('Datasets/anomaly_test/anomaly_test2.csv')
-    #df = pd.read_csv('Datasets/anomaly_test/anomaly_test2.csv')
+    for i in ['01']: #, '02', '03', '04', '05', '06', '07', '08']:
+
+        filename = 'Datasets/' + i + '/' + i + 'final.csv'
+        #tmp_date(filename)
+        df = pd.read_csv(filename)
+        cons = df['Consumption(Wh)'].values
+        slp = df['slp_forecast'].values
+
+        print(mean_absolute_percentage_error(df['Consumption(Wh)'].values, slp))
+        """
+        cons = df['Consumption(Wh)'].values
+        cons = cons[:35040]
+        total_cons = np.sum(cons)
+        slp = df['slp'].values
+        slp_forecast = slp*total_cons
+        df['slp_forecast']=slp_forecast
+        df.to_csv(filename)
+        """
+
 
     """
     dt = df['Datetime'][:64952]

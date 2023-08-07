@@ -23,9 +23,9 @@ def new_parameters_search(df, model):
                   'early_stopping': [False],
                   'objective': ['reg:squarederror'],
                   'learning_rate': [0.006, 0.0075, 0.0085],
-                  'max_depth': [1, 4],
+                  'max_depth': [1, 3, 4],
                   'max_features': [0.2, 0.5],
-                  'n_estimators': [95, 170],
+                  'n_estimators': [95, 125, 170],
                   'colsample_bylevel': [0.2, 0.5],
                   'subsample': [None, 0.85]}
 
@@ -77,8 +77,8 @@ def anomaly_simulator(dataset):
         train_start_date = test_end_date - timedelta(weeks=16)
         train_end_date = test_end_date
         test_end_date = test_end_date + timedelta(weeks=1)
-        if cnt == 3:
-            train_start_date = test_end_date - timedelta(weeks=6)
+        if cnt == 4:
+            train_start_date = test_end_date - timedelta(weeks=10)
             train_end_date = test_end_date
             test_end_date = test_end_date + timedelta(weeks=1)
             model = new_parameters_search(df[str(train_start_date):str(test_end_date)], model)
@@ -90,4 +90,4 @@ def anomaly_simulator(dataset):
 
 if __name__ == '__main__':
     #anomaly_simulator('07')
-    anomaly_simulator('Datasets/anomaly_test/anomaly_test.csv')
+    anomaly_simulator('Datasets/anomaly_test/anomaly_test2.csv')

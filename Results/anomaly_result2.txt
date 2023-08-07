@@ -1,0 +1,224 @@
+MAPE : 0.28816291644790337
+MAPE : 0.24718585534895157
+MAPE : 0.27382587779602025
+MAPE : 0.30400507327969545
+Anomaly detected : 0.49778959369237963
+MAPE : 0.2938998847634489
+MAPE : 0.1636300408933274
+MAPE : 0.19592430863880714
+MAPE : 0.22430422205699346
+MAPE : 0.2247344849990683
+MAPE : 0.3102382645900465
+MAPE : 0.225891490828982
+MAPE : 0.21683914021545453
+MAPE : 0.23612129060909556
+MAPE : 0.21923670967882533
+MAPE : 0.21509748321484534
+MAPE : 0.33802747534790434
+MAPE : 0.38479602971240723
+MAPE : 0.39056155139978077
+MAPE : 0.33769954673009367
+MAPE : 0.33763366324541283
+MAPE : 0.30890950272376533
+MAPE : 0.2888735597361044
+Anomaly detected : 0.4235913901569736
+MAPE : 0.31343698256071234
+MAPE : 0.28908385238164785
+MAPE : 0.3831183241695773
+MAPE : 0.37710489966238303
+MAPE : 0.2883233690089166
+MAPE : 0.2841478787649258
+MAPE : 0.3138183941571502
+MAPE : 0.3126932673121289
+MAPE : 0.3350394443517734
+MAPE : 0.3672055068612562
+MAPE : 0.3129006093331738
+MAPE : 0.38773665870392326
+MAPE : 0.35058436676477234
+MAPE : 0.32046637739231454
+MAPE : 0.3111633034795923
+MAPE : 0.295626435547921
+MAPE : 0.3582555368252189
+Anomaly detected : 0.4992806076470527
+MAPE : 0.3599091736348394
+MAPE : 0.32951611878521775
+MAPE : 0.31918521217896545
+MAPE : 0.35264207590752605
+MAPE : 0.36099189799637416
+MAPE : 0.3096865040656834
+MAPE : 0.35894293965426977
+Anomaly detected : 0.4177148956874825
+Anomaly detected : 0.41290269888914577
+Anomaly detected : 0.5231042482007678
+<bound method XGBModel.get_params of XGBRegressor(base_score=None, booster='gbtree', callbacks=None,
+             colsample_bylevel=0.5, colsample_bynode=None,
+             colsample_bytree=None, early_stopping=False,
+             early_stopping_rounds=None, enable_categorical=False,
+             eval_metric='rmse', feature_types=None, gamma=None, gpu_id=None,
+             grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.006, max_bin=None,
+             max_cat_threshold=None, max_cat_to_onehot=None,
+             max_delta_step=None, max_depth=1, max_features=0.2,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=95, n_jobs=None,
+             num_parallel_tree=None, ...)>
+MAPE : 0.2660127572248534
+MAPE : 0.26861183156215035
+MAPE : 0.26794234347759993
+Anomaly detected : 0.434946671443266
+Anomaly detected : 0.4219438907392893
+MAPE : 0.34064435002787646
+MAPE : 0.3463623058792008
+MAPE : 0.3496355265912232
+Anomaly detected : 0.6587270948943493
+Anomaly detected : 0.5576759783133363
+Anomaly detected : 0.5880028052952524
+<bound method XGBModel.get_params of XGBRegressor(base_score=None, booster='gbtree', callbacks=None,
+             colsample_bylevel=0.2, colsample_bynode=None,
+             colsample_bytree=None, early_stopping=False,
+             early_stopping_rounds=None, enable_categorical=False,
+             eval_metric='rmse', feature_types=None, gamma=None, gpu_id=None,
+             grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.006, max_bin=None,
+             max_cat_threshold=None, max_cat_to_onehot=None,
+             max_delta_step=None, max_depth=1, max_features=0.2,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=95, n_jobs=None,
+             num_parallel_tree=None, ...)>
+Anomaly detected : 1.5580268493791214
+Anomaly detected : 0.49914456058347234
+Anomaly detected : 0.5277089790136661
+<bound method XGBModel.get_params of XGBRegressor(base_score=None, booster='gbtree', callbacks=None,
+             colsample_bylevel=0.5, colsample_bynode=None,
+             colsample_bytree=None, early_stopping=False,
+             early_stopping_rounds=None, enable_categorical=False,
+             eval_metric='rmse', feature_types=None, gamma=None, gpu_id=None,
+             grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.0075, max_bin=None,
+             max_cat_threshold=None, max_cat_to_onehot=None,
+             max_delta_step=None, max_depth=1, max_features=0.2,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=95, n_jobs=None,
+             num_parallel_tree=None, ...)>
+Anomaly detected : 0.4037126080429643
+Anomaly detected : 0.4543821453265315
+Anomaly detected : 0.45211705423233134
+<bound method XGBModel.get_params of XGBRegressor(base_score=None, booster='gbtree', callbacks=None,
+             colsample_bylevel=0.5, colsample_bynode=None,
+             colsample_bytree=None, early_stopping=False,
+             early_stopping_rounds=None, enable_categorical=False,
+             eval_metric='rmse', feature_types=None, gamma=None, gpu_id=None,
+             grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.006, max_bin=None,
+             max_cat_threshold=None, max_cat_to_onehot=None,
+             max_delta_step=None, max_depth=1, max_features=0.2,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=95, n_jobs=None,
+             num_parallel_tree=None, ...)>
+Anomaly detected : 0.4631886850587917
+Anomaly detected : 0.45254978727894724
+Anomaly detected : 0.44258297523456713
+<bound method XGBModel.get_params of XGBRegressor(base_score=None, booster='gbtree', callbacks=None,
+             colsample_bylevel=0.2, colsample_bynode=None,
+             colsample_bytree=None, early_stopping=False,
+             early_stopping_rounds=None, enable_categorical=False,
+             eval_metric='rmse', feature_types=None, gamma=None, gpu_id=None,
+             grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.006, max_bin=None,
+             max_cat_threshold=None, max_cat_to_onehot=None,
+             max_delta_step=None, max_depth=1, max_features=0.2,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=95, n_jobs=None,
+             num_parallel_tree=None, ...)>
+Anomaly detected : 0.44459015613108877
+Anomaly detected : 0.4556171799291436
+Anomaly detected : 0.45606091000825444
+<bound method XGBModel.get_params of XGBRegressor(base_score=None, booster='gbtree', callbacks=None,
+             colsample_bylevel=0.5, colsample_bynode=None,
+             colsample_bytree=None, early_stopping=False,
+             early_stopping_rounds=None, enable_categorical=False,
+             eval_metric='rmse', feature_types=None, gamma=None, gpu_id=None,
+             grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.006, max_bin=None,
+             max_cat_threshold=None, max_cat_to_onehot=None,
+             max_delta_step=None, max_depth=1, max_features=0.2,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=95, n_jobs=None,
+             num_parallel_tree=None, ...)>
+Anomaly detected : 0.4241267148708645
+Anomaly detected : 0.42073055460655934
+Anomaly detected : 0.4383068114167385
+<bound method XGBModel.get_params of XGBRegressor(base_score=None, booster='gbtree', callbacks=None,
+             colsample_bylevel=0.2, colsample_bynode=None,
+             colsample_bytree=None, early_stopping=False,
+             early_stopping_rounds=None, enable_categorical=False,
+             eval_metric='rmse', feature_types=None, gamma=None, gpu_id=None,
+             grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.006, max_bin=None,
+             max_cat_threshold=None, max_cat_to_onehot=None,
+             max_delta_step=None, max_depth=1, max_features=0.2,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=95, n_jobs=None,
+             num_parallel_tree=None, ...)>
+Anomaly detected : 0.4014057920433962
+Anomaly detected : 0.4697254760497958
+Anomaly detected : 0.40827161291702624
+<bound method XGBModel.get_params of XGBRegressor(base_score=None, booster='gbtree', callbacks=None,
+             colsample_bylevel=0.2, colsample_bynode=None,
+             colsample_bytree=None, early_stopping=False,
+             early_stopping_rounds=None, enable_categorical=False,
+             eval_metric='rmse', feature_types=None, gamma=None, gpu_id=None,
+             grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.006, max_bin=None,
+             max_cat_threshold=None, max_cat_to_onehot=None,
+             max_delta_step=None, max_depth=4, max_features=0.2,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=95, n_jobs=None,
+             num_parallel_tree=None, ...)>
+MAPE : 0.3912032371562916
+Anomaly detected : 0.45244303840589817
+Anomaly detected : 0.4133035566318844
+Anomaly detected : 0.44907937421293925
+<bound method XGBModel.get_params of XGBRegressor(base_score=None, booster='gbtree', callbacks=None,
+             colsample_bylevel=0.2, colsample_bynode=None,
+             colsample_bytree=None, early_stopping=False,
+             early_stopping_rounds=None, enable_categorical=False,
+             eval_metric='rmse', feature_types=None, gamma=None, gpu_id=None,
+             grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.006, max_bin=None,
+             max_cat_threshold=None, max_cat_to_onehot=None,
+             max_delta_step=None, max_depth=1, max_features=0.2,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=95, n_jobs=None,
+             num_parallel_tree=None, ...)>
+Anomaly detected : 0.4022554204064262
+MAPE : 0.3950256529904216
+MAPE : 0.38599683937720286
+MAPE : 0.39683666225583536
+MAPE : 0.397457966765569
+Anomaly detected : 0.4370993832386401
+MAPE : 0.304335857159458
+Anomaly detected : 0.41126423418338326
+MAPE : 0.3755214756536218
+MAPE : 0.2822132464045922
+MAPE : 0.14031921732817432
+MAPE : 0.34074844480412897
+Anomaly detected : 0.4857551345421219
+Anomaly detected : 0.5427707224316045
+Anomaly detected : 1.2169789424219344
+<bound method XGBModel.get_params of XGBRegressor(base_score=None, booster='gbtree', callbacks=None,
+             colsample_bylevel=0.5, colsample_bynode=None,
+             colsample_bytree=None, early_stopping=False,
+             early_stopping_rounds=None, enable_categorical=False,
+             eval_metric='rmse', feature_types=None, gamma=None, gpu_id=None,
+             grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.0085, max_bin=None,
+             max_cat_threshold=None, max_cat_to_onehot=None,
+             max_delta_step=None, max_depth=4, max_features=0.2,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=95, n_jobs=None,
+             num_parallel_tree=None, ...)>
+Anomaly detected : 0.45188230217815833
+MAPE : 0.23972508403527826
+MAPE : 0.24661935919658728
+Average MAPE : 0.3846907815085709

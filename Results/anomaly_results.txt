@@ -1,0 +1,139 @@
+file 01 + 07
+
+MAPE : 0.28816291644790337
+MAPE : 0.24718585534895157
+MAPE : 0.27382587779602025
+MAPE : 0.30400507327969545
+Anomaly detected : 0.49778959369237963
+MAPE : 0.2938998847634489
+MAPE : 0.1636300408933274
+MAPE : 0.19592430863880714
+MAPE : 0.22430422205699346
+MAPE : 0.2247344849990683
+MAPE : 0.3102382645900465
+MAPE : 0.225891490828982
+MAPE : 0.21683914021545453
+MAPE : 0.23612129060909556
+MAPE : 0.21923670967882533
+MAPE : 0.21509748321484534
+MAPE : 0.33802747534790434
+MAPE : 0.38479602971240723
+MAPE : 0.39056155139978077
+MAPE : 0.33769954673009367
+MAPE : 0.33763366324541283
+MAPE : 0.30890950272376533
+MAPE : 0.2888735597361044
+Anomaly detected : 0.4235913901569736
+MAPE : 0.31343698256071234
+MAPE : 0.28908385238164785
+MAPE : 0.3831183241695773
+MAPE : 0.37710489966238303
+MAPE : 0.2883233690089166
+MAPE : 0.2841478787649258
+MAPE : 0.3138183941571502
+MAPE : 0.3126932673121289
+MAPE : 0.3350394443517734
+MAPE : 0.3672055068612562
+MAPE : 0.3129006093331738
+MAPE : 0.38773665870392326
+MAPE : 0.35058436676477234
+MAPE : 0.32046637739231454
+MAPE : 0.3111633034795923
+MAPE : 0.295626435547921
+MAPE : 0.3582555368252189
+Anomaly detected : 0.4992806076470527
+MAPE : 0.3599091736348394
+MAPE : 0.32951611878521775
+MAPE : 0.31918521217896545
+MAPE : 0.35264207590752605
+MAPE : 0.36099189799637416
+MAPE : 0.3096865040656834
+MAPE : 0.35894293965426977
+Anomaly detected : 0.4177148956874825
+Anomaly detected : 0.41290269888914577
+Anomaly detected : 0.5231042482007678
+<bound method XGBModel.get_params of XGBRegressor(base_score=None, booster='gbtree', callbacks=None,
+             colsample_bylevel=0.5, colsample_bynode=None,
+             colsample_bytree=None, early_stopping=False,
+             early_stopping_rounds=None, enable_categorical=False,
+             eval_metric='rmse', feature_types=None, gamma=None, gpu_id=None,
+             grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.006, max_bin=None,
+             max_cat_threshold=None, max_cat_to_onehot=None,
+             max_delta_step=None, max_depth=1, max_features=0.2,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=95, n_jobs=None,
+             num_parallel_tree=None, ...)>
+MAPE : 0.2660127572248534
+MAPE : 0.26861183156215035
+MAPE : 0.26794234347759993
+Anomaly detected : 0.434946671443266
+Anomaly detected : 0.4219438907392893
+MAPE : 0.34064435002787646
+MAPE : 0.3463623058792008
+MAPE : 0.3496355265912232
+MAPE : 0.3558629522325611
+MAPE : 0.27295662788532526
+MAPE : 0.2720541600891266
+MAPE : 0.26054485209086053
+MAPE : 0.30183872441167897
+MAPE : 0.3610987653127953
+MAPE : 0.3540763560849329
+Anomaly detected : 0.43563867686302116
+Anomaly detected : 0.4357331790503915
+Anomaly detected : 0.46947413457591414
+<bound method XGBModel.get_params of XGBRegressor(base_score=None, booster='gbtree', callbacks=None,
+             colsample_bylevel=0.5, colsample_bynode=None,
+             colsample_bytree=None, early_stopping=False,
+             early_stopping_rounds=None, enable_categorical=False,
+             eval_metric='rmse', feature_types=None, gamma=None, gpu_id=None,
+             grow_policy=None, importance_type=None,
+             interaction_constraints=None, learning_rate=0.0075, max_bin=None,
+             max_cat_threshold=None, max_cat_to_onehot=None,
+             max_delta_step=None, max_depth=1, max_features=0.2,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, n_estimators=95, n_jobs=None,
+             num_parallel_tree=None, ...)>
+MAPE : 0.34070687459075366
+MAPE : 0.2956099739049154
+MAPE : 0.3183449728175753
+MAPE : 0.35968116174272896
+MAPE : 0.37450333460086904
+MAPE : 0.3829926911318957
+MAPE : 0.34616231820223803
+MAPE : 0.3795553119894226
+Anomaly detected : 0.4324066513509249
+MAPE : 0.3991346067661655
+Anomaly detected : 0.4211925311205958
+MAPE : 0.36166969416459327
+MAPE : 0.36446677034264574
+MAPE : 0.33052478793362594
+Anomaly detected : 0.4715506164185816
+Anomaly detected : 0.4145138460557255
+MAPE : 0.3243072576836492
+MAPE : 0.20246761051074885
+MAPE : 0.3498922156669247
+MAPE : 0.3203027250095709
+MAPE : 0.28501134659921085
+MAPE : 0.29740246356209055
+MAPE : 0.37227186509320764
+MAPE : 0.3589270320291857
+MAPE : 0.29561388881044914
+MAPE : 0.2733086136895312
+MAPE : 0.26463109721973216
+MAPE : 0.3287565269195856
+MAPE : 0.3393554443001528
+MAPE : 0.2938800033144414
+MAPE : 0.3168837430890904
+MAPE : 0.3312793677496848
+Anomaly detected : 0.41056541905183636
+MAPE : 0.3264375070741656
+MAPE : 0.3544528330295734
+MAPE : 0.374985977911743
+MAPE : 0.27392763452144003
+MAPE : 0.32016843593273603
+Anomaly detected : 0.45296390631916694
+MAPE : 0.2967418768864697
+MAPE : 0.2926447044168945
+Average MAPE : 0.3338480601900685
+
