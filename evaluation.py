@@ -14,7 +14,7 @@ from Models.SVM import SVM_regressor_model
 from Models.RandomForest import random_forest_model
 from Models.XGB import XGB_regressor_model
 from helper import aggregate
-
+from global_variables import *
 var = ['Day', 'Minutes',
        'Weekend', 'temperature_2m', 'relativehumidity_2m',
        'dewpoint_2m', 'apparent_temperature',
@@ -24,10 +24,8 @@ var = ['Day', 'Minutes',
 
 
 
-wrapp_mape = {}
-
 if __name__ == '__main__':
-    '''
+
     cnt = {}
     for method in [spearman, pearson, mutual_i]:
         for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
@@ -43,11 +41,20 @@ if __name__ == '__main__':
                     cnt[f] = 1
                 else:
                     cnt[f] = cnt[f]+1
+
+    for model in wrapp_mape.keys():
+        for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
+            for f in wrapp_mape[model][i]:
+                if f not in cnt:
+                    cnt[f] = 1
+                else:
+                    cnt[f] = cnt[f] + 1
+
     for f in cnt.keys():
         cnt[f] = (cnt[f]/48)*100
     print(cnt)
-    '''
 
+    """
     model = XGB_regressor_model
     model_name = 'XGB'
     feature_selection_strategy = 'pearson'
@@ -92,3 +99,4 @@ if __name__ == '__main__':
               + " and dataset " + i)
         print(np.mean(errors))
     print("total error :" + str(np.mean(total_error)))
+    """

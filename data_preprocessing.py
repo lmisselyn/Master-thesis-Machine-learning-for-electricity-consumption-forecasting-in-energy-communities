@@ -337,24 +337,34 @@ def tmp_time_features(filename):
 
 if __name__ == '__main__':
 
-    for i in ['01']: #, '02', '03', '04', '05', '06', '07', '08']:
+    filename = 'Datasets/anomaly_test/anomaly_test.csv'
+    df = pd.read_csv(filename)
+    dt = df['Datetime'][:35268]
+    datetime = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in dt]
+    print(datetime[-1])
 
-        filename = 'Datasets/' + i + '/' + i + 'final.csv'
-        #tmp_date(filename)
-        df = pd.read_csv(filename)
-        cons = df['Consumption(Wh)'].values
-        slp = df['slp_forecast'].values
+    curr = datetime[-1]
+    for i in range(len(df)-len(datetime)):
+        next = curr+timedelta(minutes=15)
+        curr = next
+        datetime.append(next)
+    df['Datetime'] = datetime
+    df.to_csv('Datasets/anomaly_test/anomaly_test.csv')
 
-        print(mean_absolute_percentage_error(df['Consumption(Wh)'].values, slp))
-        """
-        cons = df['Consumption(Wh)'].values
-        cons = cons[:35040]
-        total_cons = np.sum(cons)
-        slp = df['slp'].values
-        slp_forecast = slp*total_cons
-        df['slp_forecast']=slp_forecast
-        df.to_csv(filename)
-        """
+
+
+
+    """
+    
+    cons = df['Consumption(Wh)'].values
+    cons = cons[:35040]
+    total_cons = np.sum(cons)
+    slp = df['slp'].values
+    slp_forecast = slp*total_cons
+    df['slp_forecast']=slp_forecast
+    df.to_csv(filename)
+    """
+
 
 
     """

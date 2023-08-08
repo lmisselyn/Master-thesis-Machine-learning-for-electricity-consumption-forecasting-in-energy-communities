@@ -46,12 +46,12 @@ def anomaly_simulator(dataset):
     #filename = 'Datasets/' + dataset + '/' + dataset + 'final.csv'
     df = pd.read_csv(dataset, index_col='Datetime')
     last_date = datetime.fromisoformat(df.index[-1])
-    train_start_date = datetime.fromisoformat(global_variables.first_d['01'])
+    train_start_date = datetime.fromisoformat(global_variables.first_d['07'])
     train_end_date = train_start_date + timedelta(weeks=16)
     test_end_date = train_end_date + timedelta(weeks=1)
 
-    features = global_variables.pearson['01']
-    model = global_variables.best_model['01']
+    features = global_variables.pearson['07']
+    model = global_variables.best_model['07']
 
     x = df[features]
     y = df['Consumption(Wh)']
@@ -74,17 +74,20 @@ def anomaly_simulator(dataset):
         else:
             cnt = 0
             print("MAPE : " + str(MAPE))
-        train_start_date = test_end_date - timedelta(weeks=16)
-        train_end_date = test_end_date
-        test_end_date = test_end_date + timedelta(weeks=1)
-        if cnt == 4:
-            train_start_date = test_end_date - timedelta(weeks=10)
+
+        if cnt == 3:
+            train_start_date = test_end_date - timedelta(weeks=6)
             train_end_date = test_end_date
             test_end_date = test_end_date + timedelta(weeks=1)
             model = new_parameters_search(df[str(train_start_date):str(test_end_date)], model)
             print(model.get_params)
             #model = global_variables.best_model['08']
             cnt = 0
+        else:
+            train_start_date = test_end_date - timedelta(weeks=16)
+            train_end_date = test_end_date
+            test_end_date = test_end_date + timedelta(weeks=1)
+
     print("Average MAPE : " + str(np.mean(total_error)))
 
 
