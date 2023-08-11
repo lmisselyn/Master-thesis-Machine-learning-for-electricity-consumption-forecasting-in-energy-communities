@@ -6,6 +6,9 @@ from datetime import datetime, timedelta
 import numpy as np
 from sklearn.metrics import mean_absolute_percentage_error
 
+import helper
+
+
 def get_data_csv_10():
     df = pd.read_csv("../02final.csv")[["Date", "Heure", "Index(Wh)"]]
     one_year = df.loc[34:35199]
@@ -337,33 +340,35 @@ def tmp_time_features(filename):
 
 if __name__ == '__main__':
 
-    filename = 'Datasets/anomaly_test/anomaly_test.csv'
-    df = pd.read_csv(filename)
-    dt = df['Datetime'][:35268]
-    datetime = [datetime.strptime(d, "%d/%m/%Y %H:%M") for d in dt]
-    print(datetime[-1])
+    for i in ['03', '04', '05', '06', '07', '08']:
 
-    curr = datetime[-1]
-    for i in range(len(df)-len(datetime)):
-        next = curr+timedelta(minutes=15)
-        curr = next
-        datetime.append(next)
-    df['Datetime'] = datetime
-    df.to_csv('Datasets/anomaly_test/anomaly_test.csv')
+        filename = 'Datasets/' + i + '/' + i + 'final.csv'
+        #tmp_date(filename)
+        df = pd.read_csv(filename)
+
+        cons = df['Consumption(Wh)'].values
+        slp = df['slp_forecast'].values
+        slp_2020 = df['slp_forecast_2020'].values
+        for j in range(len(cons)):
+            if slp[j] == 0:
+                df.at[j, 'slp_forecast'] = df['slp_forecast'][j-1]
+            if slp_2020[j] == 0:
+                df.at[j, 'slp_forecast_2020'] = df['slp_forecast_2020'][j - 1]
+            if cons[j] == 0:
+                if j == 0:
+                    df.at[j, 'Consumption(Wh)'] = 20
+                else :
+                    df.at[j, 'Consumption(Wh)'] = df['Consumption(Wh)'][j - 1]
+
+        slp = df['slp_forecast'].values
+        slp_2020 = df['slp_forecast_2020'].values
+        agg = helper.aggregate(cons, slp)
+        agg_2020 = helper.aggregate(cons, slp_2020)
+        print('Dataset' + i + ' : ')
+        print("slp_2019 : " + str(mean_absolute_percentage_error(agg[0], agg[1])))
+        print("slp_2020 : " + str(mean_absolute_percentage_error(agg_2020[0], agg_2020[1])))
 
 
-
-
-    """
-    
-    cons = df['Consumption(Wh)'].values
-    cons = cons[:35040]
-    total_cons = np.sum(cons)
-    slp = df['slp'].values
-    slp_forecast = slp*total_cons
-    df['slp_forecast']=slp_forecast
-    df.to_csv(filename)
-    """
 
 
 

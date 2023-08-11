@@ -186,3 +186,5 @@ wrapp_mape = {'XGB': {'01': ['relativehumidity_2m', 'dewpoint_2m', 'apparent_tem
                      '07': ['Weekend', 'apparent_temperature', 'windspeed_10m', 'Prev_4d_mean_cons',
                             'Prev_4w_mean_cons'],
                      '08': ['Day', 'Weekend', 'shortwave_radiation', 'windspeed_10m', 'Prev_4d_mean_cons']}}
+
+most_present_features = ['Prev_4d_mean_cons', 'Prev_4w_mean_cons', 'Day', 'apparent_temperature', 'Minutes']

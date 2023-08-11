@@ -105,7 +105,7 @@ def arima_model(filename=None, set=[], scale=False):
     train_set = cons['2020-02-25 00:00:00':'2020-05-25 00:00:00']
     test_set = cons['2020-05-25 00:00:00':'2020-05-30 00:00:00']
 
-    model = pm.arima.auto_arima(y=train_set, X=train_exo, seasonal=True, m=96)
+    model = pm.arima.auto_arima(stationary=True, y=train_set, X=train_exo, seasonal=True, m=96)
     model.summary()
 
     prediction = model.predict(481, test_exo)

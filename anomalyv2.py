@@ -66,7 +66,7 @@ def anomaly_simulator(dataset):
         aggregated = helper.aggregate(y_test.values, y_pred)
         #helper.plot_model(aggregated[0], aggregated[1], 'ok')
         MAPE = mean_absolute_percentage_error(aggregated[0], aggregated[1])
-        total_error.append(MAPE)
+        total_error.append(np.round(MAPE, 4))
 
         if MAPE > 0.4:
             print('Anomaly detected : ' + str(MAPE))
@@ -75,7 +75,7 @@ def anomaly_simulator(dataset):
             cnt = 0
             print("MAPE : " + str(MAPE))
 
-        if cnt == 3:
+        if cnt == 40:
             train_start_date = test_end_date - timedelta(weeks=6)
             train_end_date = test_end_date
             test_end_date = test_end_date + timedelta(weeks=1)
@@ -89,6 +89,7 @@ def anomaly_simulator(dataset):
             test_end_date = test_end_date + timedelta(weeks=1)
 
     print("Average MAPE : " + str(np.mean(total_error)))
+    print(total_error)
 
 
 if __name__ == '__main__':

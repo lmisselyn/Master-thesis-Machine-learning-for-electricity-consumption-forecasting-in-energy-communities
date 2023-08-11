@@ -51,19 +51,20 @@ if __name__ == '__main__':
                     cnt[f] = cnt[f] + 1
 
     for f in cnt.keys():
-        cnt[f] = (cnt[f]/48)*100
+        cnt[f] = (cnt[f]/72)*100
     print(cnt)
 
     """
     model = XGB_regressor_model
     model_name = 'XGB'
-    feature_selection_strategy = 'pearson'
+    feature_selection_strategy = 'most present'
 
     total_error = []
     for i in ['01', '02', '03', '04', '05', '06', '07', '08']:
         filename = 'Datasets/' + i + '/' + i + 'final.csv'
         df = pd.read_csv(filename, index_col='Datetime')
-        features = global_variables.pearson[i]
+        features = most_present_features
+        #features = global_variables.pearson[i]
         #features = global_variables.spearman[i]
         errors = []
         last_date = datetime.fromisoformat(df.index[-1])
