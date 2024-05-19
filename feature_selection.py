@@ -2,9 +2,7 @@ import numpy as np
 import pandas as pd
 import xgboost
 from sklearn.model_selection import TimeSeriesSplit
-
 import global_variables
-
 from datetime import datetime, timedelta
 from sklearn.feature_selection import mutual_info_regression, SelectKBest
 from sklearn.feature_selection import SequentialFeatureSelector as SFS
