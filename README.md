@@ -15,7 +15,7 @@ able to forecast the community’s electricity production and each member’s co
 ## Installation
 
 ```bash
-git clone https://github.com/votreutilisateur/votreprojet.git
+git clone git@github.com:lmisselyn/Master-thesis.git
 cd /path_to_project
 python3 -m venv venv
 source venv/bin/activate
